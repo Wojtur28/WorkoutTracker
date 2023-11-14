@@ -1,10 +1,20 @@
 package com.example.workouttracker.user;
 
 
+import com.example.workouttracker.AuditBase;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
-public class User extends AuditBase{
+@Entity(name = "user")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class User extends AuditBase {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
