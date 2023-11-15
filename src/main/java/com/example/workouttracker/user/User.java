@@ -3,6 +3,9 @@ package com.example.workouttracker.user;
 
 import com.example.workouttracker.AuditBase;
 import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,7 +13,6 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 import java.util.Set;
-
 
 @Entity(name = "user")
 @Inheritance(strategy = InheritanceType.JOINED)
