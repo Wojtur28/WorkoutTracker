@@ -1,10 +1,22 @@
 package com.example.workouttracker.user;
 
 
+import com.example.workouttracker.AuditBase;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
 
-public class User extends AuditBase{
+import java.util.List;
+import java.util.Set;
+
+
+@Entity(name = "user")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class User extends AuditBase {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
@@ -25,5 +37,14 @@ public class User extends AuditBase{
     @NotNull
     @Length(min = 3, max = 32, message = "Password must be between 3 and 32 characters long")
     private String password;
+
+    @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role_name", nullable = false)
+    @Enumerated(EnumType.STRING)
+    Set<RoleType> roles;
+
+    @OneToMany(mappedBy = "user")
+    private List<UserMeasurements> userMeasurements;
 
 }

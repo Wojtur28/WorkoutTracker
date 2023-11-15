@@ -1,5 +1,6 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker;
 
+import com.example.workouttracker.user.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -31,7 +32,7 @@ public abstract class AuditBase {
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modifiedby")
-    private UUID modifiedBy;
+    private User modifiedBy;
 
     @Column(name = "modifiedby", insertable = false, updatable = false)
     private UUID modifiedById;
