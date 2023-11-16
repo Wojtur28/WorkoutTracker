@@ -14,7 +14,7 @@ import org.hibernate.validator.constraints.Length;
 import java.util.List;
 import java.util.Set;
 
-@Entity(name = "user")
+@Entity(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -46,7 +46,7 @@ public class User extends AuditBase {
     @Enumerated(EnumType.STRING)
     Set<RoleType> roles;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "users")
     private List<UserMeasurements> userMeasurements;
 
 }
