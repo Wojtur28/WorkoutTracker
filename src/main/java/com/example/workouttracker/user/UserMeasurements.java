@@ -4,10 +4,10 @@ import com.example.workouttracker.AuditBase;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-
-import java.util.List;
+import lombok.Data;
 
 @Entity(name = "user_measurements")
+@Data
 public class UserMeasurements extends AuditBase {
 
     private double weight;

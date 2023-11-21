@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
-@Entity(name = "training")
+@Entity(name = "trainings")
 @Data
 public class Training extends AuditBase {
 
@@ -22,6 +22,7 @@ public class Training extends AuditBase {
     private String description;
 
     @OneToMany(mappedBy = "training", fetch = FetchType.LAZY)
+
     private Set<Exercise> exercises;
 
     @ElementCollection(targetClass = TrainingCategory.class, fetch = FetchType.EAGER)
