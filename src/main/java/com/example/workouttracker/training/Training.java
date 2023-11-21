@@ -4,7 +4,6 @@ package com.example.workouttracker.training;
 import com.example.workouttracker.AuditBase;
 import com.example.workouttracker.exercise.Exercise;
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
