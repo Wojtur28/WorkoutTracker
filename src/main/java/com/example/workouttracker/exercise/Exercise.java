@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
-@Entity(name = "exercise")
+@Entity(name = "exercises")
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class Exercise extends AuditBase {
@@ -23,6 +23,5 @@ public class Exercise extends AuditBase {
     private String name;
 
     private String description;
-
 
 }
