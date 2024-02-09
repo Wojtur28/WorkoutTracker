@@ -34,9 +34,6 @@ public abstract class AuditBase {
     @JoinColumn(name = "modifiedby")
     private User modifiedBy;
 
-    @Column(name = "modifiedby", insertable = false, updatable = false)
-    private UUID modifiedById;
-
     @CreatedDate
     @NotNull
     @Column(name = "createdon")
