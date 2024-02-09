@@ -2,6 +2,7 @@ package com.example.workouttracker.user;
 
 
 import com.example.workouttracker.AuditBase;
+import com.example.workouttracker.userMeasurement.UserMeasurement;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
@@ -47,6 +48,6 @@ public class User extends AuditBase {
     Set<RoleType> roles;
 
     @OneToMany(mappedBy = "users")
-    private List<UserMeasurements> userMeasurements;
+    private List<UserMeasurement> userMeasurements;
 
 }

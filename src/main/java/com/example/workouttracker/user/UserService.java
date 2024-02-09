@@ -1,12 +1,10 @@
 package com.example.workouttracker.user;
 
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -20,9 +18,9 @@ public class UserService {
     }
 
     public ResponseEntity<User> getUser(String userId) {
-        Optional<User> user = userRepository.findById(UUID.fromString(userId));
-        return user.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return userRepository.findById(UUID.fromString(userId))
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<User> getUserByUsername(String username) {

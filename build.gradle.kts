@@ -37,7 +37,7 @@ repositories {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+//    implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.flywaydb:flyway-core:9.16.3")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
@@ -46,6 +46,8 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+
 }
 
 tasks.withType<Test> {
