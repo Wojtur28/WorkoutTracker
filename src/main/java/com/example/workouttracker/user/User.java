@@ -47,7 +47,7 @@ public class User extends AuditBase {
     @Enumerated(EnumType.STRING)
     Set<RoleType> roles;
 
-    @OneToMany(mappedBy = "users")
+    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<UserMeasurement> userMeasurements;
 
 }

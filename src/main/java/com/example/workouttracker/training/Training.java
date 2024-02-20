@@ -21,9 +21,8 @@ public class Training extends AuditBase {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "training", fetch = FetchType.LAZY)
-
-    private Set<Exercise> exercises;
+    @OneToMany(mappedBy = "training", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Exercise> exercises;
 
     @ElementCollection(targetClass = TrainingCategory.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "training_category", joinColumns = @JoinColumn(name = "training_id"))

@@ -1,5 +1,7 @@
 package com.example.workouttracker.training;
 
+import com.example.workouttracker.dto.TrainingDto;
+import com.example.workouttracker.mapper.TrainingMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,13 +15,15 @@ public class TrainingService {
 
     private final TrainingRepository trainingRepository;
 
+    private final TrainingMapper trainingMapper;
 
-    public ResponseEntity<List<Training>> getTrainings() {
-        return ResponseEntity.ok(trainingRepository.findAll());
+    public ResponseEntity<List<TrainingDto>> getTrainings() {
+        return ResponseEntity.ok(trainingMapper.toDto(trainingRepository.findAll()));
     }
 
-    public ResponseEntity<Training> getTraining(String trainingId) {
+    public ResponseEntity<TrainingDto> getTraining(String trainingId) {
         return trainingRepository.findById(UUID.fromString(trainingId))
+                .map(trainingMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

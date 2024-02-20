@@ -1,12 +1,16 @@
 package com.example.workouttracker.exercise;
 
+import com.example.workouttracker.dto.ExerciseDto;
+import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -14,12 +18,15 @@ public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
 
-    public ResponseEntity<List<Exercise>> getExercises() {
-        return ResponseEntity.ok(exerciseRepository.findAll());
+    private final ExerciseMapper exerciseMapper;
+
+    public ResponseEntity<List<ExerciseDto>> getExercises() {
+        return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.findAll()));
     }
 
-    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
+                .map(exerciseMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

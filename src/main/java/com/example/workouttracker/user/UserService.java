@@ -1,5 +1,7 @@
 package com.example.workouttracker.user;
 
+import com.example.workouttracker.dto.UserDto;
+import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,30 +15,33 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userRepository.findAll());
+    private final UserMapper userMapper;
+
+    public ResponseEntity<List<UserDto>> getUsers() {
+        return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
     }
 
-    public ResponseEntity<User> getUser(String userId) {
+    public ResponseEntity<UserDto> getUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))
+                .map(userMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> getUserByUsername(String username) {
+    public ResponseEntity<UserDto> getUserByUsername(String username) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
-    public ResponseEntity<User> getUserByEmail(String email) {
+    public ResponseEntity<UserDto> getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(user);
+        return ResponseEntity.ok(userMapper.toDto(user));
     }
 
     public ResponseEntity<User> createUser(User user) {
