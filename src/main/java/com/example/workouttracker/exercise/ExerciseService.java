@@ -1,5 +1,7 @@
 package com.example.workouttracker.exercise;
 
+import com.example.workouttracker.dto.ExerciseDto;
+import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -14,12 +16,15 @@ public class ExerciseService {
 
     private final ExerciseRepository exerciseRepository;
 
-    public ResponseEntity<List<Exercise>> getExercises() {
-        return ResponseEntity.ok(exerciseRepository.findAll());
+    private final ExerciseMapper exerciseMapper;
+
+    public ResponseEntity<List<ExerciseDto>> getExercises() {
+        return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.findAll()));
     }
 
-    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
+                .map(exerciseMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -34,17 +39,18 @@ public class ExerciseService {
                 .map(existingExercise -> {
                     existingExercise.setName(exercise.getName());
                     existingExercise.setDescription(exercise.getDescription());
+                    existingExercise.setTraining(exercise.getTraining());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Exercise> deleteExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(exercise -> {
                     exerciseRepository.delete(exercise);
-                    return ResponseEntity.ok(exercise);
+                    return ResponseEntity.ok().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

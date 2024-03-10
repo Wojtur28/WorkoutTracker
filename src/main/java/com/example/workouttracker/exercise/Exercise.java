@@ -6,22 +6,21 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import lombok.NoArgsConstructor;
 
 @Entity(name = "exercises")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Exercise extends AuditBase {
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "training_id")
-    @NotNull
-    private Training training;
 
     private String name;
 
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "training_id")
+    private Training training;
 }

@@ -1,4 +1,4 @@
-package com.example.workouttracker.training;
+package com.example.workouttracker.trainingCategory;
 
 public enum TrainingCategory {
 

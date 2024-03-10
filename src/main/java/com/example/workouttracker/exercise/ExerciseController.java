@@ -1,5 +1,6 @@
 package com.example.workouttracker.exercise;
 
+import com.example.workouttracker.dto.ExerciseDto;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,27 +15,27 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @GetMapping
-    public ResponseEntity<List<Exercise>> getExercises() {
+    public ResponseEntity<List<ExerciseDto>> getExercisesPage() {
         return exerciseService.getExercises();
     }
 
     @GetMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
         return exerciseService.getExercise(exerciseId);
     }
 
     @PostMapping
-    public ResponseEntity<Exercise> createExercise(Exercise exercise) {
+    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
         return exerciseService.createExercise(exercise);
     }
 
     @PutMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
+    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody Exercise exercise) {
         return exerciseService.updateExercise(exerciseId, exercise);
     }
 
     @DeleteMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> deleteExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {
         return exerciseService.deleteExercise(exerciseId);
     }
 }
