@@ -1,6 +1,6 @@
 package com.example.workouttracker.dto;
 
-import com.example.workouttracker.training.TrainingCategory;
+import com.example.workouttracker.trainingCategory.TrainingCategory;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -2,22 +2,25 @@ package com.example.workouttracker.exercise;
 
 import com.example.workouttracker.AuditBase;
 import com.example.workouttracker.training.Training;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+import lombok.NoArgsConstructor;
 
 @Entity(name = "exercises")
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
 public class Exercise extends AuditBase {
 
     private String name;
 
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
     private Training training;
 }

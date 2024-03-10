@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,24 +29,9 @@ public class UserService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<UserDto> getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(userMapper.toDto(user));
-    }
-
-    public ResponseEntity<UserDto> getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(userMapper.toDto(user));
-    }
-
     public ResponseEntity<User> createUser(User user) {
         User newUser = userRepository.save(user);
+        newUser.setRoles(Collections.singleton(RoleType.USER));
         return ResponseEntity.ok(newUser);
     }
 
@@ -57,6 +43,7 @@ public class UserService {
                     existingUser.setLastName(user.getLastName());
                     existingUser.setEmail(user.getEmail());
                     existingUser.setPassword(user.getPassword());
+                    existingUser.setRoles(user.getRoles());
                     userRepository.save(existingUser);
                     return ResponseEntity.ok(existingUser);
                 })
@@ -64,11 +51,11 @@ public class UserService {
     }
 
 
-    public ResponseEntity<User> deleteUser(String userId) {
+    public ResponseEntity<Void> deleteUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))
                 .map(user -> {
                     userRepository.delete(user);
-                    return ResponseEntity.ok(user);
+                    return ResponseEntity.ok().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

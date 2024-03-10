@@ -8,9 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -41,17 +39,18 @@ public class ExerciseService {
                 .map(existingExercise -> {
                     existingExercise.setName(exercise.getName());
                     existingExercise.setDescription(exercise.getDescription());
+                    existingExercise.setTraining(exercise.getTraining());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Exercise> deleteExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(exercise -> {
                     exerciseRepository.delete(exercise);
-                    return ResponseEntity.ok(exercise);
+                    return ResponseEntity.ok().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

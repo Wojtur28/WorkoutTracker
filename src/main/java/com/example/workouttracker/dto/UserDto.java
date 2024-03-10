@@ -1,11 +1,9 @@
 package com.example.workouttracker.dto;
 
 import com.example.workouttracker.user.RoleType;
-import com.example.workouttracker.userMeasurement.UserMeasurement;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Set;
 
 @Getter

@@ -35,7 +35,7 @@ public class TrainingController {
     }
 
     @DeleteMapping("/{trainingId}")
-    public ResponseEntity<Training> deleteTraining(@PathVariable String trainingId) {
+    public ResponseEntity<Void> deleteTraining(@PathVariable String trainingId) {
         return trainingService.deleteTraining(trainingId);
     }
 }

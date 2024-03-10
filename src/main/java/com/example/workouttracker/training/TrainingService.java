@@ -46,11 +46,11 @@ public class TrainingService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Training> deleteTraining(String trainingId) {
+    public ResponseEntity<Void> deleteTraining(String trainingId) {
         return trainingRepository.findById(UUID.fromString(trainingId))
                 .map(training -> {
                     trainingRepository.delete(training);
-                    return ResponseEntity.ok(training);
+                    return ResponseEntity.ok().<Void>build();
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }

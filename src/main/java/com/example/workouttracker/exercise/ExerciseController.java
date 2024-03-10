@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -31,12 +30,12 @@ public class ExerciseController {
     }
 
     @PutMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
+    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody Exercise exercise) {
         return exerciseService.updateExercise(exerciseId, exercise);
     }
 
     @DeleteMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> deleteExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {
         return exerciseService.deleteExercise(exerciseId);
     }
 }
