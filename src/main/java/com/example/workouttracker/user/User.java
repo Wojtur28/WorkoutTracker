@@ -25,6 +25,7 @@ public class User extends AuditBase implements UserDetails {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
+    @Column(unique = true)
     private String username;
 
     @NotNull

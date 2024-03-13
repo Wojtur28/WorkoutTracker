@@ -32,26 +32,26 @@ public class UserService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> createUser(User user) {
+    public ResponseEntity<UserDto> createUser(User user) {
         String encodedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encodedPassword);
         user.setRoles(Collections.singleton(RoleType.USER));
-        User newUser = userRepository.save(user);
+        UserDto newUser = userMapper.toDto(userRepository.save(user));
 
         return ResponseEntity.ok(newUser);
     }
 
-    public ResponseEntity<User> updateUser(String id, User user) {
+    public ResponseEntity<UserDto> updateUser(String id, User user) {
         return userRepository.findById(UUID.fromString(id))
-                .map(existingUser -> {
-                    existingUser.setUsername(user.getUsername());
-                    existingUser.setFirstName(user.getFirstName());
-                    existingUser.setLastName(user.getLastName());
-                    existingUser.setEmail(user.getEmail());
-                    existingUser.setPassword(user.getPassword());
-                    existingUser.setRoles(user.getRoles());
-                    userRepository.save(existingUser);
-                    return ResponseEntity.ok(existingUser);
+                .map(userToUpdate -> {
+                    userToUpdate.setUsername(user.getUsername());
+                    userToUpdate.setEmail(user.getEmail());
+                    userToUpdate.setFirstName(user.getFirstName());
+                    userToUpdate.setLastName(user.getLastName());
+                    userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+                    userToUpdate.setRoles(user.getRoles());
+                    UserDto updatedUser = userMapper.toDto(userRepository.save(userToUpdate));
+                    return ResponseEntity.ok(updatedUser);
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
