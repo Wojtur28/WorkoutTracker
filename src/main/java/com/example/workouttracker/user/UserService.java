@@ -4,6 +4,7 @@ import com.example.workouttracker.dto.UserDto;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -18,6 +19,8 @@ public class UserService {
 
     private final UserMapper userMapper;
 
+    private final PasswordEncoder passwordEncoder;
+
     public ResponseEntity<List<UserDto>> getUsers() {
         return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
     }
@@ -30,8 +33,11 @@ public class UserService {
     }
 
     public ResponseEntity<User> createUser(User user) {
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
+        user.setRoles(Collections.singleton(RoleType.USER));
         User newUser = userRepository.save(user);
-        newUser.setRoles(Collections.singleton(RoleType.USER));
+
         return ResponseEntity.ok(newUser);
     }
 
