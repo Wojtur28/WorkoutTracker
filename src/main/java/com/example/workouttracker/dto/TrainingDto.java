@@ -12,6 +12,6 @@ public class TrainingDto {
     private String id;
     private String name;
     private String description;
-    private List<ExerciseDto> exercisesDto;
+    private List<ExerciseDto> exercises;
     private List<TrainingCategory> trainingCategories;
 }
