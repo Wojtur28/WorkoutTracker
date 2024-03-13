@@ -4,22 +4,24 @@ package com.example.workouttracker.user;
 import com.example.workouttracker.AuditBase;
 import com.example.workouttracker.userMeasurement.UserMeasurement;
 import jakarta.persistence.*;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class User extends AuditBase {
+public class User extends AuditBase implements UserDetails {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
@@ -27,6 +29,7 @@ public class User extends AuditBase {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Email must be between 3 and 32 characters long")
+    @Column(unique = true)
     private String email;
 
     @NotNull
@@ -38,7 +41,7 @@ public class User extends AuditBase {
     private String lastName;
 
     @NotNull
-    @Length(min = 3, max = 32, message = "Password must be between 3 and 32 characters long")
+    @Length(min = 3, max = 255, message = "Password must be between 3 and 32 characters long")
     private String password;
 
     @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
@@ -50,4 +53,30 @@ public class User extends AuditBase {
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private List<UserMeasurement> userMeasurements;
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.name()))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
+    }
 }
