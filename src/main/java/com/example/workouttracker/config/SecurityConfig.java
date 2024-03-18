@@ -1,6 +1,6 @@
 package com.example.workouttracker.config;
 
-import com.example.workouttracker.user.User;
+import com.example.workouttracker.user.UserEntity;
 import com.example.workouttracker.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -36,13 +36,13 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
-            User user = userRepository.findByUsername(username)
+            UserEntity userEntity = userRepository.findByUsername(username)
                     .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
 
             return org.springframework.security.core.userdetails.User.builder()
-                    .username(user.getUsername())
-                    .password(user.getPassword())
-                    .authorities(user.getRoles().toString())
+                    .username(userEntity.getUsername())
+                    .password(userEntity.getPassword())
+                    .authorities(userEntity.getRoles().toString())
                     .build();
         };
     }

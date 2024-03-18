@@ -25,13 +25,13 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDto> createUser(@RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserEntity userEntity) {
+        return userService.createUser(userEntity);
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") String userId, @RequestBody User user) {
-        return userService.updateUser(userId, user);
+    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") String userId, @RequestBody UserEntity userEntity) {
+        return userService.updateUser(userId, userEntity);
     }
 
     @DeleteMapping("/{userId}")

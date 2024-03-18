@@ -1,7 +1,7 @@
 package com.example.workouttracker.mapper;
 
 import com.example.workouttracker.dto.UserDto;
-import com.example.workouttracker.user.User;
+import com.example.workouttracker.user.UserEntity;
 import org.mapstruct.Mapper;
 
 import java.util.List;
@@ -9,12 +9,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = BaseMapper.class)
 public interface UserMapper {
 
-    UserDto toDto(User user);
+    UserDto toDto(UserEntity userEntity);
 
-    User toEntity(UserDto userDto);
+    UserEntity toEntity(UserDto userDto);
 
-    List<UserDto> toDto(List<User> users);
+    List<UserDto> toDto(List<UserEntity> userEntities);
 
-    List<User> toEntity(List<UserDto> userDtos);
+    List<UserEntity> toEntity(List<UserDto> userDtos);
 
 }

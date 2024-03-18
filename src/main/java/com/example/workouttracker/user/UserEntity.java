@@ -2,7 +2,7 @@ package com.example.workouttracker.user;
 
 
 import com.example.workouttracker.AuditBase;
-import com.example.workouttracker.userMeasurement.UserMeasurement;
+import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class User extends AuditBase implements UserDetails {
+public class UserEntity extends AuditBase implements UserDetails {
 
     @NotNull
     @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
@@ -52,7 +52,7 @@ public class User extends AuditBase implements UserDetails {
     Set<RoleType> roles;
 
     @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
-    private List<UserMeasurement> userMeasurements;
+    private List<UserMeasurementEntity> userMeasurementEntities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

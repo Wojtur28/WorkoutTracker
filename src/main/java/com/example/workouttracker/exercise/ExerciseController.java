@@ -25,13 +25,13 @@ public class ExerciseController {
     }
 
     @PostMapping
-    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
-        return exerciseService.createExercise(exercise);
+    public ResponseEntity<ExerciseEntity> createExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        return exerciseService.createExercise(exerciseEntity);
     }
 
     @PutMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody Exercise exercise) {
-        return exerciseService.updateExercise(exerciseId, exercise);
+    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable String exerciseId, @RequestBody ExerciseEntity exerciseEntity) {
+        return exerciseService.updateExercise(exerciseId, exerciseEntity);
     }
 
     @DeleteMapping("/{exerciseId}")

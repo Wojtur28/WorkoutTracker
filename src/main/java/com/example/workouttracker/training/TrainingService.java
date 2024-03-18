@@ -28,18 +28,18 @@ public class TrainingService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Training> createTraining(Training training) {
-        Training newTraining = trainingRepository.save(training);
-        return ResponseEntity.ok(newTraining);
+    public ResponseEntity<TrainingEntity> createTraining(TrainingEntity trainingEntity) {
+        TrainingEntity newTrainingEntity = trainingRepository.save(trainingEntity);
+        return ResponseEntity.ok(newTrainingEntity);
     }
 
-    public ResponseEntity<Training> updateTraining(String trainingId, Training training) {
+    public ResponseEntity<TrainingEntity> updateTraining(String trainingId, TrainingEntity trainingEntity) {
         return trainingRepository.findById(UUID.fromString(trainingId))
                 .map(existingTraining -> {
-                    existingTraining.setName(training.getName());
-                    existingTraining.setDescription(training.getDescription());
-                    existingTraining.setExercises(training.getExercises());
-                    existingTraining.setTrainingCategories(training.getTrainingCategories());
+                    existingTraining.setName(trainingEntity.getName());
+                    existingTraining.setDescription(trainingEntity.getDescription());
+                    existingTraining.setExerciseEntities(trainingEntity.getExerciseEntities());
+                    existingTraining.setTrainingCategories(trainingEntity.getTrainingCategories());
                     trainingRepository.save(existingTraining);
                     return ResponseEntity.ok(existingTraining);
                 })

@@ -25,13 +25,13 @@ public class TrainingController {
     }
 
     @PostMapping
-    public ResponseEntity<Training> createTraining(@RequestBody Training training) {
-        return trainingService.createTraining(training);
+    public ResponseEntity<TrainingEntity> createTraining(@RequestBody TrainingEntity trainingEntity) {
+        return trainingService.createTraining(trainingEntity);
     }
 
     @PutMapping("/{trainingId}")
-    public ResponseEntity<Training> updateTraining(@PathVariable String trainingId, @RequestBody Training training) {
-        return trainingService.updateTraining(trainingId, training);
+    public ResponseEntity<TrainingEntity> updateTraining(@PathVariable String trainingId, @RequestBody TrainingEntity trainingEntity) {
+        return trainingService.updateTraining(trainingId, trainingEntity);
     }
 
     @DeleteMapping("/{trainingId}")

@@ -29,17 +29,17 @@ public class ExerciseService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Exercise> createExercise(Exercise exercise) {
-        Exercise newExercise = exerciseRepository.save(exercise);
-        return ResponseEntity.ok(newExercise);
+    public ResponseEntity<ExerciseEntity> createExercise(ExerciseEntity exerciseEntity) {
+        ExerciseEntity newExerciseEntity = exerciseRepository.save(exerciseEntity);
+        return ResponseEntity.ok(newExerciseEntity);
     }
 
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
+    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable String exerciseId, ExerciseEntity exerciseEntity) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(existingExercise -> {
-                    existingExercise.setName(exercise.getName());
-                    existingExercise.setDescription(exercise.getDescription());
-                    existingExercise.setTraining(exercise.getTraining());
+                    existingExercise.setName(exerciseEntity.getName());
+                    existingExercise.setDescription(exerciseEntity.getDescription());
+                    existingExercise.setTrainingEntity(exerciseEntity.getTrainingEntity());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })

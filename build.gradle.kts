@@ -58,6 +58,8 @@ dependencies {
     testImplementation("junit:junit:4.12")
     implementation("org.mapstruct:mapstruct:1.6.0.Beta1")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.0.Beta1")
+    compileOnly("javax.servlet:servlet-api:3.0-alpha-1")
+    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
 }
 
 tasks.withType<Test> {
@@ -69,28 +71,26 @@ tasks.bootBuildImage {
 }
 
  openApiGenerate {
+     generatorName.set("spring")
+     inputSpec.set("A:\\Projekty\\WorkoutTracker\\src\\main\\resources\\contract\\contract.yml")
+     outputDir.set("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger")
      configOptions.set(mapOf(
              "generateModelTests" to "false",
              "generateApiTests" to "false",
+             "interfaceOnly" to "true",
+             "useTags" to "true",
      ))
-     generatorName.set("java")
-     inputSpec.set("A:\\Projekty\\WorkoutTracker\\src\\main\\resources\\contract\\contract.yml")
-     outputDir.set("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger")
-     apiPackage.set("com.example.api")
-     modelPackage.set("com.example.model")
-     invokerPackage.set("com.example.invoker")
-
  }
 
  sourceSets {
      main {
          java {
-             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\main")
+             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\src\\main")
          }
      }
      test {
          java {
-             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\test")
+             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\src\\test")
          }
      }
  }

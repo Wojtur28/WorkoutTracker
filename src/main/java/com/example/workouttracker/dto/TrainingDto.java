@@ -1,6 +1,6 @@
 package com.example.workouttracker.dto;
 
-import com.example.workouttracker.trainingCategory.TrainingCategory;
+import com.example.workouttracker.trainingCategory.TrainingCategoryEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +13,5 @@ public class TrainingDto {
     private String name;
     private String description;
     private List<ExerciseDto> exercises;
-    private List<TrainingCategory> trainingCategories;
+    private List<TrainingCategoryEntity> trainingCategories;
 }

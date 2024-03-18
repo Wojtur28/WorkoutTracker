@@ -14,27 +14,27 @@ public class UserMeasurementController {
     private final UserMeasurementService userMeasurementService;
 
     @GetMapping
-    public ResponseEntity<List<UserMeasurement>> getUserMeasurements() {
+    public ResponseEntity<List<UserMeasurementEntity>> getUserMeasurements() {
         return userMeasurementService.getUserMeasurements();
     }
 
     @GetMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurement> getUserMeasurement(@PathVariable String userMeasurementId) {
+    public ResponseEntity<UserMeasurementEntity> getUserMeasurement(@PathVariable String userMeasurementId) {
         return userMeasurementService.getUserMeasurement(userMeasurementId);
     }
 
     @PostMapping
-    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurement userMeasurement) {
-        return userMeasurementService.createUserMeasurement(userMeasurement);
+    public ResponseEntity<UserMeasurementEntity> createUserMeasurement(@RequestBody UserMeasurementEntity userMeasurementEntity) {
+        return userMeasurementService.createUserMeasurement(userMeasurementEntity);
     }
 
     @PutMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, UserMeasurement userMeasurement) {
-        return userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurement);
+    public ResponseEntity<UserMeasurementEntity> updateUserMeasurement(@PathVariable String userMeasurementId, UserMeasurementEntity userMeasurementEntity) {
+        return userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurementEntity);
     }
 
     @DeleteMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurement> deleteUserMeasurement(@PathVariable String userMeasurementId) {
+    public ResponseEntity<UserMeasurementEntity> deleteUserMeasurement(@PathVariable String userMeasurementId) {
         return userMeasurementService.deleteUserMeasurement(userMeasurementId);
     }
 }

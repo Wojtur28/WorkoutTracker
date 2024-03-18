@@ -32,24 +32,24 @@ public class UserService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<UserDto> createUser(User user) {
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        user.setRoles(Collections.singleton(RoleType.USER));
-        UserDto newUser = userMapper.toDto(userRepository.save(user));
+    public ResponseEntity<UserDto> createUser(UserEntity userEntity) {
+        String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
+        userEntity.setPassword(encodedPassword);
+        userEntity.setRoles(Collections.singleton(RoleType.USER));
+        UserDto newUser = userMapper.toDto(userRepository.save(userEntity));
 
         return ResponseEntity.ok(newUser);
     }
 
-    public ResponseEntity<UserDto> updateUser(String id, User user) {
+    public ResponseEntity<UserDto> updateUser(String id, UserEntity userEntity) {
         return userRepository.findById(UUID.fromString(id))
                 .map(userToUpdate -> {
-                    userToUpdate.setUsername(user.getUsername());
-                    userToUpdate.setEmail(user.getEmail());
-                    userToUpdate.setFirstName(user.getFirstName());
-                    userToUpdate.setLastName(user.getLastName());
-                    userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-                    userToUpdate.setRoles(user.getRoles());
+                    userToUpdate.setUsername(userEntity.getUsername());
+                    userToUpdate.setEmail(userEntity.getEmail());
+                    userToUpdate.setFirstName(userEntity.getFirstName());
+                    userToUpdate.setLastName(userEntity.getLastName());
+                    userToUpdate.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+                    userToUpdate.setRoles(userEntity.getRoles());
                     UserDto updatedUser = userMapper.toDto(userRepository.save(userToUpdate));
                     return ResponseEntity.ok(updatedUser);
                 })

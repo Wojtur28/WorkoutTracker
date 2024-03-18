@@ -12,7 +12,7 @@ paths:
     /user:
         get:
             summary: Get all users
-            operationId: getAllUsers
+            operationId: getUsers
             responses:
                 '200':
                     description: A list of users
@@ -34,7 +34,6 @@ components:
                     type: string
                 email:
                     type: string
-                    format: email
                 password:
                     type: string
                     format: password

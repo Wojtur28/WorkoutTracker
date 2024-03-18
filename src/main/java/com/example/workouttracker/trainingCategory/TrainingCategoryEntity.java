@@ -1,6 +1,6 @@
 package com.example.workouttracker.trainingCategory;
 
-public enum TrainingCategory {
+public enum TrainingCategoryEntity {
 
     POWERLIFTING("powerlifting"),
     OLYMPIC_WEIGHTLIFTING("olympic weightlifting"),
@@ -9,7 +9,7 @@ public enum TrainingCategory {
     OTHER("other");
     private String name;
 
-    private TrainingCategory(String name) {
+    private TrainingCategoryEntity(String name) {
         this.name = name;
     }
 }
