@@ -1,8 +1,8 @@
 package com.example.workouttracker.exercise;
 
-import com.example.workouttracker.dto.ExerciseDto;
 import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
+import org.openapitools.model.Exercise;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,11 +18,11 @@ public class ExerciseService {
 
     private final ExerciseMapper exerciseMapper;
 
-    public ResponseEntity<List<ExerciseDto>> getExercises() {
+    public ResponseEntity<List<Exercise>> getExercises() {
         return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.findAll()));
     }
 
-    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(exerciseMapper::toDto)
                 .map(ResponseEntity::ok)
@@ -39,7 +39,7 @@ public class ExerciseService {
                 .map(existingExercise -> {
                     existingExercise.setName(exerciseEntity.getName());
                     existingExercise.setDescription(exerciseEntity.getDescription());
-                    existingExercise.setTraining(exerciseEntity.getTraining());
+                    existingExercise.setTrainings(exerciseEntity.getTrainings());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })

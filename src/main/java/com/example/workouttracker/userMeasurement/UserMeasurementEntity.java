@@ -18,5 +18,5 @@ public class UserMeasurementEntity extends AuditBase {
     private double age;
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private UserEntity users;
+    private UserEntity user;
 }

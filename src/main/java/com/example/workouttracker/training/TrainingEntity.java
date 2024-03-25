@@ -23,7 +23,7 @@ public class TrainingEntity extends AuditBase {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trainings", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ExerciseEntity> exercises;
 
     @ElementCollection(targetClass = TrainingCategoryEntity.class, fetch = FetchType.LAZY)

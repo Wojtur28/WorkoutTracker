@@ -30,11 +30,46 @@ components:
             properties:
                 id:
                     type: string
-                name:
+                username:
                     type: string
                 email:
                     type: string
-                password:
+                firstName:
                     type: string
-                    format: password
+                lastName:
+                    type: string
+        Training:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                exercises:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/Exercise'
+                trainingCategories:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/TrainingCategory'
+        Exercise:
+            type: object
+            properties:
+                id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+        TrainingCategory:
+            type: string
+            enum:
+                - powerlifting
+                - olympic weightlifting
+                - cardio
+                - stretching
+                - other
 

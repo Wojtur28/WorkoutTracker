@@ -51,7 +51,7 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     Set<RoleType> roles;
 
-    @OneToMany(mappedBy = "users", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<UserMeasurementEntity> userMeasurementEntities;
 
     @Override
