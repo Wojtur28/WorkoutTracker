@@ -38,6 +38,22 @@ components:
                     type: string
                 lastName:
                     type: string
+                userMeasurements:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/UserMeasurement'
+        UserMeasurement:
+            type: object
+            properties:
+                id:
+                    type: string
+                date:
+                    type: string
+                    format: date
+                weight:
+                    type: number
+                height:
+                    type: number
         Training:
             type: object
             properties:
@@ -72,4 +88,5 @@ components:
                 - cardio
                 - stretching
                 - other
+
 

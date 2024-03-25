@@ -6,15 +6,11 @@ import org.openapitools.model.User;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = BaseMapper.class)
+@Mapper(componentModel = "spring")
 public interface UserMapper {
 
     User toDto(UserEntity userEntity);
 
-    UserEntity toEntity(User userDto);
-
     List<User> toDto(List<UserEntity> userEntities);
-
-    List<UserEntity> toEntity(List<User> userDtos);
 
 }

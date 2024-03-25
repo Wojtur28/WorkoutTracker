@@ -1,8 +1,10 @@
 package com.example.workouttracker.userMeasurement;
 
+import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.openapitools.model.UserMeasurement;
 
 import java.util.List;
 import java.util.UUID;
@@ -13,14 +15,16 @@ public class UserMeasurementService {
 
     private final UserMeasurementRepository userMeasurementRepository;
 
-    public ResponseEntity<UserMeasurementEntity> getUserMeasurement(String userMeasurementId) {
+    private final UserMeasurementMapper userMeasurementMapper;
+
+    public ResponseEntity<UserMeasurement> getUserMeasurement(String userMeasurementId) {
         return userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
-                .map(ResponseEntity::ok)
+                .map(userMeasurementEntity -> ResponseEntity.ok(userMeasurementMapper.toDto(userMeasurementEntity)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<List<UserMeasurementEntity>> getUserMeasurements() {
-        return ResponseEntity.ok(userMeasurementRepository.findAll());
+    public ResponseEntity<List<UserMeasurement>> getUserMeasurements() {
+        return ResponseEntity.ok(userMeasurementMapper.toDto(userMeasurementRepository.findAll()));
     }
 
     public ResponseEntity<UserMeasurementEntity> createUserMeasurement(UserMeasurementEntity userMeasurementEntity) {

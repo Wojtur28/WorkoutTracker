@@ -52,7 +52,7 @@ public class UserEntity extends AuditBase implements UserDetails {
     Set<RoleType> roles;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<UserMeasurementEntity> userMeasurementEntities;
+    private List<UserMeasurementEntity> userMeasurement;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

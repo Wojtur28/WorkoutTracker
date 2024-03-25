@@ -3,6 +3,7 @@ package com.example.workouttracker.userMeasurement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.openapitools.model.UserMeasurement;
 
 import java.util.List;
 
@@ -14,12 +15,12 @@ public class UserMeasurementController {
     private final UserMeasurementService userMeasurementService;
 
     @GetMapping
-    public ResponseEntity<List<UserMeasurementEntity>> getUserMeasurements() {
+    public ResponseEntity<List<UserMeasurement>> getUserMeasurements() {
         return userMeasurementService.getUserMeasurements();
     }
 
     @GetMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurementEntity> getUserMeasurement(@PathVariable String userMeasurementId) {
+    public ResponseEntity<UserMeasurement> getUserMeasurement(@PathVariable String userMeasurementId) {
         return userMeasurementService.getUserMeasurement(userMeasurementId);
     }
 

@@ -6,10 +6,8 @@ import org.openapitools.model.Training;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring", uses = ExerciseMapper.class)
+@Mapper(componentModel = "spring")
 public interface TrainingMapper {
-
-    TrainingEntity toEntity(Training trainingDto);
 
     Training toDto(TrainingEntity trainingEntity);
 
