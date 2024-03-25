@@ -39,7 +39,7 @@ public class ExerciseService {
                 .map(existingExercise -> {
                     existingExercise.setName(exerciseEntity.getName());
                     existingExercise.setDescription(exerciseEntity.getDescription());
-                    existingExercise.setTrainingEntity(exerciseEntity.getTrainingEntity());
+                    existingExercise.setTraining(exerciseEntity.getTraining());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })

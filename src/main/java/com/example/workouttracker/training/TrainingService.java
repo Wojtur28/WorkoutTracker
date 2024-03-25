@@ -38,7 +38,7 @@ public class TrainingService {
                 .map(existingTraining -> {
                     existingTraining.setName(trainingEntity.getName());
                     existingTraining.setDescription(trainingEntity.getDescription());
-                    existingTraining.setExerciseEntities(trainingEntity.getExerciseEntities());
+                    existingTraining.setExercises(trainingEntity.getExercises());
                     existingTraining.setTrainingCategories(trainingEntity.getTrainingCategories());
                     trainingRepository.save(existingTraining);
                     return ResponseEntity.ok(existingTraining);

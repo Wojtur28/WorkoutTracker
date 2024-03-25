@@ -24,7 +24,7 @@ public class TrainingEntity extends AuditBase {
     private String description;
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ExerciseEntity> exerciseEntities;
+    private List<ExerciseEntity> exercises;
 
     @ElementCollection(targetClass = TrainingCategoryEntity.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "training_category", joinColumns = @JoinColumn(name = "training_id"))
