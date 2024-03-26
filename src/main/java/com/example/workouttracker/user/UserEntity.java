@@ -2,6 +2,7 @@ package com.example.workouttracker.user;
 
 
 import com.example.workouttracker.AuditBase;
+import com.example.workouttracker.training.TrainingEntity;
 import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -44,6 +45,9 @@ public class UserEntity extends AuditBase implements UserDetails {
     @NotNull
     @Length(min = 3, max = 255, message = "Password must be between 3 and 32 characters long")
     private String password;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TrainingEntity> trainings;
 
     @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
