@@ -1,0 +1,5 @@
+ALTER TABLE exercises
+ADD COLUMN sets INT;
+
+ALTER TABLE exercises
+ADD COLUMN reps INT;

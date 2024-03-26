@@ -20,6 +20,10 @@ public class ExerciseEntity extends AuditBase {
 
     private String description;
 
+    private int sets;
+
+    private int reps;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
     private TrainingEntity trainings;

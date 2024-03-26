@@ -80,6 +80,10 @@ components:
                     type: string
                 description:
                     type: string
+                sets:
+                    type: integer
+                reps:
+                    type: integer
         TrainingCategory:
             type: string
             enum:
@@ -88,5 +92,3 @@ components:
                 - cardio
                 - stretching
                 - other
-
-
