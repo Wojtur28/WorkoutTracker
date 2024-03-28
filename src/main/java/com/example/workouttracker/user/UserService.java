@@ -25,7 +25,7 @@ public class UserService {
         return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
     }
 
-    public ResponseEntity<org.openapitools.model.User> getUser(String userId) {
+    public ResponseEntity<User> getUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))
                 .map(userMapper::toDto)
                 .map(ResponseEntity::ok)

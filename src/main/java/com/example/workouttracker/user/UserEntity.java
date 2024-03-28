@@ -6,8 +6,7 @@ import com.example.workouttracker.training.TrainingEntity;
 import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -22,6 +21,9 @@ import java.util.stream.Collectors;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
 @EqualsAndHashCode(callSuper = true)
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserEntity extends AuditBase implements UserDetails {
 
     @NotNull

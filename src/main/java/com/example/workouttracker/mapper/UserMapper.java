@@ -11,6 +11,8 @@ public interface UserMapper {
 
     User toDto(UserEntity userEntity);
 
+    UserEntity toEntity(User user);
+
     List<User> toDto(List<UserEntity> userEntities);
 
 }

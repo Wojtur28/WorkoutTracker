@@ -43,6 +43,7 @@ public class SecurityConfig {
 
             return org.springframework.security.core.userdetails.User.builder()
                     .username(userEntity.getUsername())
+                    //TODO: use email instead of username
                     .password(userEntity.getPassword())
                     .authorities(userEntity.getRoles().toString())
                     .build();
