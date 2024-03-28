@@ -1,6 +1,6 @@
 package com.example.workouttracker;
 
-import com.example.workouttracker.user.User;
+import com.example.workouttracker.user.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -27,12 +27,12 @@ public abstract class AuditBase {
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createdby")
-    private User createdBy;
+    private UserEntity createdBy;
 
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modifiedby")
-    private User modifiedBy;
+    private UserEntity modifiedBy;
 
     @CreatedDate
     @NotNull

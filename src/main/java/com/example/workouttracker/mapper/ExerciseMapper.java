@@ -1,19 +1,16 @@
 package com.example.workouttracker.mapper;
 
-import com.example.workouttracker.dto.ExerciseDto;
-import com.example.workouttracker.exercise.Exercise;
+import com.example.workouttracker.exercise.ExerciseEntity;
 import org.mapstruct.Mapper;
+import org.openapitools.model.Exercise;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface ExerciseMapper {
 
-    Exercise toEntity(ExerciseDto exerciseDto);
+    Exercise toDto(ExerciseEntity exerciseEntity);
 
-    ExerciseDto toDto(Exercise exercise);
+    List<Exercise> toDto(List<ExerciseEntity> exerciseEntity);
 
-    List<ExerciseDto> toDto(List<Exercise> exercise);
-
-    List<Exercise> toEntity(List<ExerciseDto> exerciseDto);
 }

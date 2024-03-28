@@ -1,7 +1,7 @@
 package com.example.workouttracker.training;
 
-import com.example.workouttracker.dto.TrainingDto;
 import lombok.AllArgsConstructor;
+import org.openapitools.model.Training;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,23 +15,23 @@ public class TrainingController {
     private final TrainingService trainingService;
 
     @GetMapping
-    public ResponseEntity<List<TrainingDto>> getTrainings() {
+    public ResponseEntity<List<Training>> getTrainings() {
         return trainingService.getTrainings();
     }
 
     @GetMapping("/{trainingId}")
-    public ResponseEntity<TrainingDto> getTraining(@PathVariable String trainingId) {
+    public ResponseEntity<Training> getTraining(@PathVariable String trainingId) {
         return trainingService.getTraining(trainingId);
     }
 
     @PostMapping
-    public ResponseEntity<Training> createTraining(@RequestBody Training training) {
-        return trainingService.createTraining(training);
+    public ResponseEntity<TrainingEntity> createTraining(@RequestBody TrainingEntity trainingEntity) {
+        return trainingService.createTraining(trainingEntity);
     }
 
     @PutMapping("/{trainingId}")
-    public ResponseEntity<Training> updateTraining(@PathVariable String trainingId, @RequestBody Training training) {
-        return trainingService.updateTraining(trainingId, training);
+    public ResponseEntity<TrainingEntity> updateTraining(@PathVariable String trainingId, @RequestBody TrainingEntity trainingEntity) {
+        return trainingService.updateTraining(trainingId, trainingEntity);
     }
 
     @DeleteMapping("/{trainingId}")

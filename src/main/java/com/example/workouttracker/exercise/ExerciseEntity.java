@@ -1,7 +1,7 @@
 package com.example.workouttracker.exercise;
 
 import com.example.workouttracker.AuditBase;
-import com.example.workouttracker.training.Training;
+import com.example.workouttracker.training.TrainingEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -14,13 +14,17 @@ import lombok.NoArgsConstructor;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-public class Exercise extends AuditBase {
+public class ExerciseEntity extends AuditBase {
 
     private String name;
 
     private String description;
 
+    private int sets;
+
+    private int reps;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
-    private Training training;
+    private TrainingEntity trainings;
 }

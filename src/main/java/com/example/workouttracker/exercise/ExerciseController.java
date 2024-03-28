@@ -1,7 +1,7 @@
 package com.example.workouttracker.exercise;
 
-import com.example.workouttracker.dto.ExerciseDto;
 import lombok.AllArgsConstructor;
+import org.openapitools.model.Exercise;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,23 +15,23 @@ public class ExerciseController {
     private final ExerciseService exerciseService;
 
     @GetMapping
-    public ResponseEntity<List<ExerciseDto>> getExercisesPage() {
+    public ResponseEntity<List<Exercise>> getExercisesPage() {
         return exerciseService.getExercises();
     }
 
     @GetMapping("/{exerciseId}")
-    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
         return exerciseService.getExercise(exerciseId);
     }
 
     @PostMapping
-    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
-        return exerciseService.createExercise(exercise);
+    public ResponseEntity<ExerciseEntity> createExercise(@RequestBody ExerciseEntity exerciseEntity) {
+        return exerciseService.createExercise(exerciseEntity);
     }
 
     @PutMapping("/{exerciseId}")
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody Exercise exercise) {
-        return exerciseService.updateExercise(exerciseId, exercise);
+    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable String exerciseId, @RequestBody ExerciseEntity exerciseEntity) {
+        return exerciseService.updateExercise(exerciseId, exerciseEntity);
     }
 
     @DeleteMapping("/{exerciseId}")

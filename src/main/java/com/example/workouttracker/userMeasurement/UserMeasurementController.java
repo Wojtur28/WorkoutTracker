@@ -3,6 +3,7 @@ package com.example.workouttracker.userMeasurement;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.openapitools.model.UserMeasurement;
 
 import java.util.List;
 
@@ -24,17 +25,17 @@ public class UserMeasurementController {
     }
 
     @PostMapping
-    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurement userMeasurement) {
-        return userMeasurementService.createUserMeasurement(userMeasurement);
+    public ResponseEntity<UserMeasurementEntity> createUserMeasurement(@RequestBody UserMeasurementEntity userMeasurementEntity) {
+        return userMeasurementService.createUserMeasurement(userMeasurementEntity);
     }
 
     @PutMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, UserMeasurement userMeasurement) {
-        return userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurement);
+    public ResponseEntity<UserMeasurementEntity> updateUserMeasurement(@PathVariable String userMeasurementId, UserMeasurementEntity userMeasurementEntity) {
+        return userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurementEntity);
     }
 
     @DeleteMapping("/{userMeasurementId}")
-    public ResponseEntity<UserMeasurement> deleteUserMeasurement(@PathVariable String userMeasurementId) {
+    public ResponseEntity<UserMeasurementEntity> deleteUserMeasurement(@PathVariable String userMeasurementId) {
         return userMeasurementService.deleteUserMeasurement(userMeasurementId);
     }
 }

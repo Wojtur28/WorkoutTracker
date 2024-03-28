@@ -1,8 +1,8 @@
 package com.example.workouttracker.exercise;
 
-import com.example.workouttracker.dto.ExerciseDto;
 import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
+import org.openapitools.model.Exercise;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,28 +18,28 @@ public class ExerciseService {
 
     private final ExerciseMapper exerciseMapper;
 
-    public ResponseEntity<List<ExerciseDto>> getExercises() {
+    public ResponseEntity<List<Exercise>> getExercises() {
         return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.findAll()));
     }
 
-    public ResponseEntity<ExerciseDto> getExercise(@PathVariable String exerciseId) {
+    public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(exerciseMapper::toDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<Exercise> createExercise(Exercise exercise) {
-        Exercise newExercise = exerciseRepository.save(exercise);
-        return ResponseEntity.ok(newExercise);
+    public ResponseEntity<ExerciseEntity> createExercise(ExerciseEntity exerciseEntity) {
+        ExerciseEntity newExerciseEntity = exerciseRepository.save(exerciseEntity);
+        return ResponseEntity.ok(newExerciseEntity);
     }
 
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
+    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable String exerciseId, ExerciseEntity exerciseEntity) {
         return exerciseRepository.findById(UUID.fromString(exerciseId))
                 .map(existingExercise -> {
-                    existingExercise.setName(exercise.getName());
-                    existingExercise.setDescription(exercise.getDescription());
-                    existingExercise.setTraining(exercise.getTraining());
+                    existingExercise.setName(exerciseEntity.getName());
+                    existingExercise.setDescription(exerciseEntity.getDescription());
+                    existingExercise.setTrainings(exerciseEntity.getTrainings());
                     exerciseRepository.save(existingExercise);
                     return ResponseEntity.ok(existingExercise);
                 })
