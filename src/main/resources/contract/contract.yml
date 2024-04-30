@@ -5,8 +5,11 @@ info:
 
 
 servers:
-    - url: http://localhost:8080
+    - url: http://188.68.247.208:8080
       description: Local server
+
+security:
+    - basicAuth: []
 
 paths:
     /user:
@@ -22,8 +25,38 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
+    /training:
+        get:
+            summary: Get all trainings
+            operationId: getTrainings
+            responses:
+                '200':
+                    description: A list of trainings
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Training'
+    /exercise:
+        get:
+            summary: Get all exercises
+            operationId: getExercises
+            responses:
+                '200':
+                    description: A list of exercises
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Exercise'
 
 components:
+    securitySchemes:
+        basicAuth:
+            type: http
+            scheme: basic
     schemas:
         User:
             type: object
