@@ -10,6 +10,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
+
 @Entity(name = "exercises")
 @Data
 @EqualsAndHashCode(callSuper = true)
@@ -20,9 +22,11 @@ public class ExerciseEntity extends AuditBase {
 
     private String description;
 
-    private int sets;
+    @NotNull
+    private int sets = 1;
 
-    private int reps;
+    @NotNull
+    private int reps = 1;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")

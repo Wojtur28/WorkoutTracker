@@ -35,11 +35,12 @@ repositories {
 }
 
 dependencies {
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.flywaydb:flyway-core:9.16.3")
-    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation ("org.springframework.boot:spring-boot-starter-security")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.47") {
         exclude(group = "org.slf4j", module = "slf4j-simple")
@@ -72,8 +73,8 @@ tasks.bootBuildImage {
 
  openApiGenerate {
      generatorName.set("spring")
-     inputSpec.set("A:\\Projekty\\WorkoutTracker\\src\\main\\resources\\contract\\contract.yml")
-     outputDir.set("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger")
+     inputSpec.set("/Users/wojtur/IdeaProjects/WorkoutTracker/src/main/resources/contract/contract.yml")
+     outputDir.set("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger")
      configOptions.set(mapOf(
              "generateModelTests" to "false",
              "generateApiTests" to "false",
@@ -85,12 +86,12 @@ tasks.bootBuildImage {
  sourceSets {
      main {
          java {
-             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\src\\main")
+             srcDir("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger/src/main")
          }
      }
      test {
          java {
-             srcDir("A:\\Projekty\\WorkoutTracker\\build\\generated-sources\\swagger\\src\\test")
+             srcDir("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger/src/test")
          }
      }
  }
