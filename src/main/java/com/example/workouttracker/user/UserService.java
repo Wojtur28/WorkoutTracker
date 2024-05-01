@@ -44,7 +44,6 @@ public class UserService {
     public ResponseEntity<User> updateUser(String id, UserEntity userEntity) {
         return userRepository.findById(UUID.fromString(id))
                 .map(userToUpdate -> {
-                    userToUpdate.setUsername(userEntity.getUsername());
                     userToUpdate.setEmail(userEntity.getEmail());
                     userToUpdate.setFirstName(userEntity.getFirstName());
                     userToUpdate.setLastName(userEntity.getLastName());

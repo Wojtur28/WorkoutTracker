@@ -5,6 +5,7 @@ import com.example.workouttracker.AuditBase;
 import com.example.workouttracker.training.TrainingEntity;
 import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -28,6 +29,7 @@ public class UserEntity extends AuditBase implements UserDetails {
 
 
     @NotNull
+    @NotBlank
     @Length(min = 3, max = 32, message = "Email must be between 3 and 32 characters long")
     @Column(unique = true)
     private String email;
@@ -70,21 +72,21 @@ public class UserEntity extends AuditBase implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
