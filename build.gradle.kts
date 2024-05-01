@@ -42,6 +42,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core:9.16.3")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation ("org.springframework.boot:spring-boot-starter-security")
+    implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.47") {
         exclude(group = "org.slf4j", module = "slf4j-simple")
     }
