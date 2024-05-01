@@ -81,6 +81,8 @@ tasks.bootBuildImage {
              "interfaceOnly" to "true",
              "useTags" to "true",
      ))
+     apiPackage.set("org.openapitools.api")
+     modelPackage.set("org.openapitools.model")
  }
 
  sourceSets {
