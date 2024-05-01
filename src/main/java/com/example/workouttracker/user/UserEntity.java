@@ -26,10 +26,6 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserEntity extends AuditBase implements UserDetails {
 
-    @NotNull
-    @Length(min = 3, max = 32, message = "Username must be between 3 and 32 characters long")
-    @Column(unique = true)
-    private String username;
 
     @NotNull
     @Length(min = 3, max = 32, message = "Email must be between 3 and 32 characters long")
@@ -65,6 +61,11 @@ public class UserEntity extends AuditBase implements UserDetails {
         return roles.stream()
                 .map(role -> new SimpleGrantedAuthority(role.name()))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override
