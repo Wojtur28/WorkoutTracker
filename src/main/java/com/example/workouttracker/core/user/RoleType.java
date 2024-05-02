@@ -1,4 +1,4 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker.core.user;
 
 
 public enum RoleType {

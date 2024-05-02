@@ -1,9 +1,9 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker.core.user;
 
 
 import com.example.workouttracker.AuditBase;
-import com.example.workouttracker.training.TrainingEntity;
-import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
+import com.example.workouttracker.core.training.TrainingEntity;
+import com.example.workouttracker.core.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity extends AuditBase implements UserDetails {
-
 
     @NotNull
     @NotBlank

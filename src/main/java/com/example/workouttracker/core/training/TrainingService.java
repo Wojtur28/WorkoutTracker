@@ -1,4 +1,4 @@
-package com.example.workouttracker.training;
+package com.example.workouttracker.core.training;
 
 import com.example.workouttracker.mapper.TrainingMapper;
 import lombok.AllArgsConstructor;
@@ -31,7 +31,7 @@ public class TrainingService {
     public ResponseEntity<Training> createTraining(Training training) {
         TrainingEntity newTrainingEntity = trainingMapper.toEntity(training);
         trainingRepository.save(newTrainingEntity);
-        return ResponseEntity.ok(training);
+        return ResponseEntity.ok(trainingMapper.toDto(newTrainingEntity));
     }
 
     public ResponseEntity<Training> updateTraining(String trainingId, Training training) {

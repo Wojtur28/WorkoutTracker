@@ -1,4 +1,4 @@
-package com.example.workouttracker.training;
+package com.example.workouttracker.core.training;
 
 import lombok.AllArgsConstructor;
 import org.openapitools.model.Training;

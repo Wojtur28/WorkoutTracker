@@ -1,4 +1,4 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker.core.user;
 
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
@@ -40,7 +40,6 @@ public class UserService {
         // TODO: We shouldn't be able to update the password like this
         //  in the future we should add a mechanism to reset the password in email
     }
-
 
     public ResponseEntity<Void> deleteUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))

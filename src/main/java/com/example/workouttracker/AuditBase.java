@@ -1,6 +1,6 @@
 package com.example.workouttracker;
 
-import com.example.workouttracker.user.UserEntity;
+import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.example.workouttracker.exercise;
+package com.example.workouttracker.core.exercise;
 
 import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
@@ -29,21 +29,20 @@ public class ExerciseService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<ExerciseEntity> createExercise(ExerciseEntity exerciseEntity) {
-        ExerciseEntity newExerciseEntity = exerciseRepository.save(exerciseEntity);
-        return ResponseEntity.ok(newExerciseEntity);
+    public ResponseEntity<Exercise> createExercise(Exercise exercise) {
+        ExerciseEntity newExerciseEntity = exerciseMapper.toEntity(exercise);
+        exerciseRepository.save(newExerciseEntity);
+        return ResponseEntity.ok(exerciseMapper.toDto(newExerciseEntity));
     }
 
-    public ResponseEntity<ExerciseEntity> updateExercise(@PathVariable String exerciseId, ExerciseEntity exerciseEntity) {
-        return exerciseRepository.findById(UUID.fromString(exerciseId))
-                .map(existingExercise -> {
-                    existingExercise.setName(exerciseEntity.getName());
-                    existingExercise.setDescription(exerciseEntity.getDescription());
-                    existingExercise.setTrainings(exerciseEntity.getTrainings());
-                    exerciseRepository.save(existingExercise);
-                    return ResponseEntity.ok(existingExercise);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
+        ExerciseEntity exerciseEntity = exerciseRepository.findById(UUID.fromString(exerciseId))
+                .orElseThrow(() -> new RuntimeException("Exercise not found"));
+
+        exerciseEntity.setName(exercise.getName());
+        exerciseEntity.setDescription(exercise.getDescription());
+
+        return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.save(exerciseEntity)));
     }
 
     public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {

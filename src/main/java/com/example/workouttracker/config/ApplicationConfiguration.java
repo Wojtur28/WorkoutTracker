@@ -1,6 +1,6 @@
 package com.example.workouttracker.config;
 
-import com.example.workouttracker.user.UserRepository;
+import com.example.workouttracker.core.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

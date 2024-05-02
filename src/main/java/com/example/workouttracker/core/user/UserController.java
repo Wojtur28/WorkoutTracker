@@ -1,4 +1,4 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker.core.user;
 
 import lombok.AllArgsConstructor;
 import org.openapitools.model.User;
@@ -29,7 +29,7 @@ public class UserController implements UserApi {
         return userService.updateUser(userId, user);
     }
 
-    @DeleteMapping("/{userId}")
+    @Override
     public ResponseEntity<Void> deleteUser(@PathVariable("userId") String userId) {
         return userService.deleteUser(userId);
     }
