@@ -134,6 +134,10 @@ paths:
             responses:
                 '200':
                     description: Training created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Training'
     /training/{id}:
         get:
             tags:
@@ -173,6 +177,10 @@ paths:
             responses:
                 '200':
                     description: Training updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Training'
         delete:
             tags:
                 - training

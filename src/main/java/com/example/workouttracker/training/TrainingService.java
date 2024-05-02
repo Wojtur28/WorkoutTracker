@@ -28,22 +28,20 @@ public class TrainingService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<TrainingEntity> createTraining(TrainingEntity trainingEntity) {
-        TrainingEntity newTrainingEntity = trainingRepository.save(trainingEntity);
-        return ResponseEntity.ok(newTrainingEntity);
+    public ResponseEntity<Training> createTraining(Training training) {
+        TrainingEntity newTrainingEntity = trainingMapper.toEntity(training);
+        trainingRepository.save(newTrainingEntity);
+        return ResponseEntity.ok(training);
     }
 
-    public ResponseEntity<TrainingEntity> updateTraining(String trainingId, TrainingEntity trainingEntity) {
-        return trainingRepository.findById(UUID.fromString(trainingId))
-                .map(existingTraining -> {
-                    existingTraining.setName(trainingEntity.getName());
-                    existingTraining.setDescription(trainingEntity.getDescription());
-                    existingTraining.setExercises(trainingEntity.getExercises());
-                    existingTraining.setTrainingCategories(trainingEntity.getTrainingCategories());
-                    trainingRepository.save(existingTraining);
-                    return ResponseEntity.ok(existingTraining);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<Training> updateTraining(String trainingId, Training training) {
+        TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
+                .orElseThrow(() -> new RuntimeException("Training not found"));
+
+        trainingEntity.setName(training.getName());
+        trainingEntity.setDescription(training.getDescription());
+
+        return ResponseEntity.ok(trainingMapper.toDto(trainingRepository.save(trainingEntity)));
     }
 
     public ResponseEntity<Void> deleteTraining(String trainingId) {

@@ -13,4 +13,8 @@ public interface TrainingMapper {
 
     List<Training> toDto(List<TrainingEntity> trainingEntity);
 
+    TrainingEntity toEntity(Training training);
+
+
+
 }
