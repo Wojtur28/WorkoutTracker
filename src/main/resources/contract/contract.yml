@@ -9,7 +9,7 @@ servers:
       description: Local server
 
 security:
-    - basicAuth: []
+    - bearerAuth: []
 
 tags:
     - name: user
@@ -37,20 +37,6 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
-        post:
-            tags:
-                - user
-            summary: Create user
-            operationId: createUser
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-            responses:
-                '200':
-                    description: User created
 
     /user/{id}:
         get:
@@ -91,6 +77,10 @@ paths:
             responses:
                 '200':
                     description: User updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
         delete:
             tags:
                 - user
@@ -272,9 +262,10 @@ paths:
 
 components:
     securitySchemes:
-        basicAuth:
+        bearerAuth:
             type: http
-            scheme: basic
+            scheme: bearer
+            bearerFormat: JWT
     schemas:
         User:
             type: object
@@ -300,13 +291,12 @@ components:
             properties:
                 id:
                     type: string
-                date:
-                    type: string
-                    format: date
                 weight:
                     type: number
                 height:
                     type: number
+                createdAt:
+                    type: string
         Training:
             type: object
             properties:
@@ -315,6 +305,8 @@ components:
                 name:
                     type: string
                 description:
+                    type: string
+                createdAt:
                     type: string
                 exercises:
                     type: array
@@ -337,6 +329,8 @@ components:
                     type: integer
                 reps:
                     type: integer
+                createdAt:
+                    type: string
         TrainingCategory:
             type: string
             enum:

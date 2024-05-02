@@ -4,7 +4,6 @@ import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -19,8 +18,6 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    private final PasswordEncoder passwordEncoder;
-
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
     }
@@ -32,27 +29,19 @@ public class UserService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> createUser(UserEntity userEntity) {
-        String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
-        userEntity.setPassword(encodedPassword);
+    public ResponseEntity<User> updateUser(String id, User user) {
+        UserEntity userEntity = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        userEntity.setEmail(user.getEmail());
+        userEntity.setFirstName(user.getFirstName());
+        userEntity.setLastName(user.getLastName());
+        /*userEntity.setPassword(passwordEncoder.encode(user.getPassword()));*/
+        //TODO: Probably we don't want let users to change their password but
+        // we should add mechanism to send email with link to reset password
         userEntity.setRoles(Collections.singleton(RoleType.USER));
-        User newUser = userMapper.toDto(userRepository.save(userEntity));
 
-        return ResponseEntity.ok(newUser);
-    }
-
-    public ResponseEntity<User> updateUser(String id, UserEntity userEntity) {
-        return userRepository.findById(UUID.fromString(id))
-                .map(userToUpdate -> {
-                    userToUpdate.setEmail(userEntity.getEmail());
-                    userToUpdate.setFirstName(userEntity.getFirstName());
-                    userToUpdate.setLastName(userEntity.getLastName());
-                    userToUpdate.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-                    userToUpdate.setRoles(userEntity.getRoles());
-                    User updatedUser = userMapper.toDto(userRepository.save(userToUpdate));
-                    return ResponseEntity.ok(updatedUser);
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        return ResponseEntity.ok(userMapper.toDto(userRepository.save(userEntity)));
     }
 
 
