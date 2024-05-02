@@ -1,7 +1,7 @@
-package com.example.workouttracker.exercise;
+package com.example.workouttracker.core.exercise;
 
 import com.example.workouttracker.AuditBase;
-import com.example.workouttracker.training.TrainingEntity;
+import com.example.workouttracker.core.training.TrainingEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -30,5 +30,5 @@ public class ExerciseEntity extends AuditBase {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
-    private TrainingEntity trainings;
+    private TrainingEntity training;
 }

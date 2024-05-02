@@ -1,4 +1,4 @@
-package com.example.workouttracker.userMeasurement;
+package com.example.workouttracker.core.userMeasurement;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

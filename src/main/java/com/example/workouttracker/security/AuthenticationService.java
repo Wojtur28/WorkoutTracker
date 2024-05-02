@@ -1,14 +1,16 @@
 package com.example.workouttracker.security;
 
-import com.example.workouttracker.user.RoleType;
-import com.example.workouttracker.user.UserEntity;
-import com.example.workouttracker.user.UserRepository;
+import com.example.workouttracker.core.user.RoleType;
+import com.example.workouttracker.core.user.UserEntity;
+import com.example.workouttracker.core.user.UserRepository;
+import com.example.workouttracker.core.userMeasurement.UserMeasurementEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -32,6 +34,7 @@ public class AuthenticationService {
         user.setLastName(input.getLastName());
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRoles(Set.of(RoleType.USER));
+        user.setUserMeasurement(List.of(new UserMeasurementEntity()));
 
         return userRepository.save(user);
     }

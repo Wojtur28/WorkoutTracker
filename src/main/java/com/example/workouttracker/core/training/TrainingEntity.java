@@ -1,10 +1,10 @@
-package com.example.workouttracker.training;
+package com.example.workouttracker.core.training;
 
 
 import com.example.workouttracker.AuditBase;
-import com.example.workouttracker.exercise.ExerciseEntity;
-import com.example.workouttracker.trainingCategory.TrainingCategoryEntity;
-import com.example.workouttracker.user.UserEntity;
+import com.example.workouttracker.core.trainingCategory.TrainingCategoryEntity;
+import com.example.workouttracker.core.exercise.ExerciseEntity;
+import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,7 +24,7 @@ public class TrainingEntity extends AuditBase {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "trainings", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ExerciseEntity> exercises;
 
     @ManyToOne(fetch = FetchType.LAZY)

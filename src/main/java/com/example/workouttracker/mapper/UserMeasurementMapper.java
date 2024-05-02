@@ -1,6 +1,6 @@
 package com.example.workouttracker.mapper;
 
-import com.example.workouttracker.userMeasurement.UserMeasurementEntity;
+import com.example.workouttracker.core.userMeasurement.UserMeasurementEntity;
 import org.mapstruct.Mapper;
 import org.openapitools.model.UserMeasurement;
 
@@ -12,4 +12,6 @@ public interface UserMeasurementMapper {
     UserMeasurement toDto(UserMeasurementEntity userMeasurementEntity);
 
     List<UserMeasurement> toDto(List<UserMeasurementEntity> userMeasurementEntities);
+
+    UserMeasurementEntity toEntity(UserMeasurement userMeasurement);
 }

@@ -1,6 +1,6 @@
 package com.example.workouttracker.mapper;
 
-import com.example.workouttracker.training.TrainingEntity;
+import com.example.workouttracker.core.training.TrainingEntity;
 import org.mapstruct.Mapper;
 import org.openapitools.model.Training;
 

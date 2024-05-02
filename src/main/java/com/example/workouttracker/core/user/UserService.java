@@ -1,13 +1,11 @@
-package com.example.workouttracker.user;
+package com.example.workouttracker.core.user;
 
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.User;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +16,6 @@ public class UserService {
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
-
-    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<List<User>> getUsers() {
         return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
@@ -32,29 +28,18 @@ public class UserService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<User> createUser(UserEntity userEntity) {
-        String encodedPassword = passwordEncoder.encode(userEntity.getPassword());
-        userEntity.setPassword(encodedPassword);
-        userEntity.setRoles(Collections.singleton(RoleType.USER));
-        User newUser = userMapper.toDto(userRepository.save(userEntity));
-
-        return ResponseEntity.ok(newUser);
-    }
-
-    public ResponseEntity<User> updateUser(String id, UserEntity userEntity) {
+    public ResponseEntity<User> updateUser(String id, User user) {
         return userRepository.findById(UUID.fromString(id))
-                .map(userToUpdate -> {
-                    userToUpdate.setEmail(userEntity.getEmail());
-                    userToUpdate.setFirstName(userEntity.getFirstName());
-                    userToUpdate.setLastName(userEntity.getLastName());
-                    userToUpdate.setPassword(passwordEncoder.encode(userEntity.getPassword()));
-                    userToUpdate.setRoles(userEntity.getRoles());
-                    User updatedUser = userMapper.toDto(userRepository.save(userToUpdate));
-                    return ResponseEntity.ok(updatedUser);
+                .map(userEntity -> {
+                    userEntity.setFirstName(user.getFirstName());
+                    userEntity.setLastName(user.getLastName());
+                    userEntity.setEmail(user.getEmail());
+                    return ResponseEntity.ok(userMapper.toDto(userRepository.save(userEntity)));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
+        // TODO: We shouldn't be able to update the password like this
+        //  in the future we should add a mechanism to reset the password in email
     }
-
 
     public ResponseEntity<Void> deleteUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))

@@ -37,29 +37,15 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
-        post:
-            tags:
-                - user
-            summary: Create user
-            operationId: createUser
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/User'
-            responses:
-                '200':
-                    description: User created
 
-    /user/{id}:
+    /user/{userId}:
         get:
             tags:
                 - user
             summary: Get user by id
             operationId: getUserById
             parameters:
-                - name: id
+                - name: userId
                   in: path
                   required: true
                   schema:
@@ -77,7 +63,7 @@ paths:
             summary: Update user
             operationId: updateUser
             parameters:
-                - name: id
+                - name: userId
                   in: path
                   required: true
                   schema:
@@ -91,13 +77,17 @@ paths:
             responses:
                 '200':
                     description: User updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
         delete:
             tags:
                 - user
             summary: Delete user
             operationId: deleteUser
             parameters:
-                - name: id
+                - name: userId
                   in: path
                   required: true
                   schema:
@@ -138,14 +128,14 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Training'
-    /training/{id}:
+    /training/{trainingId}:
         get:
             tags:
                 - training
             summary: Get training by id
             operationId: getTrainingById
             parameters:
-                - name: id
+                - name: trainingId
                   in: path
                   required: true
                   schema:
@@ -163,7 +153,7 @@ paths:
             summary: Update training
             operationId: updateTraining
             parameters:
-                - name: id
+                - name: trainingId
                   in: path
                   required: true
                   schema:
@@ -187,7 +177,7 @@ paths:
             summary: Delete training
             operationId: deleteTraining
             parameters:
-                - name: id
+                - name: trainingId
                   in: path
                   required: true
                   schema:
@@ -224,14 +214,18 @@ paths:
             responses:
                 '200':
                     description: Exercise created
-    /exercise/{id}:
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Exercise'
+    /exercise/{exerciseId}:
         get:
             tags:
                 - exercise
             summary: Get exercise by id
             operationId: getExerciseById
             parameters:
-                - name: id
+                - name: exerciseId
                   in: path
                   required: true
                   schema:
@@ -249,7 +243,7 @@ paths:
             summary: Update exercise
             operationId: updateExercise
             parameters:
-                - name: id
+                - name: exerciseId
                   in: path
                   required: true
                   schema:
@@ -263,13 +257,17 @@ paths:
             responses:
                 '200':
                     description: Exercise updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Exercise'
         delete:
             tags:
                 - exercise
             summary: Delete exercise
             operationId: deleteExercise
             parameters:
-                - name: id
+                - name: exerciseId
                   in: path
                   required: true
                   schema:
@@ -277,6 +275,96 @@ paths:
             responses:
                 '200':
                     description: Exercise deleted
+    /usermeasurement:
+        get:
+            tags:
+                - userMeasurement
+            summary: Get all user measurements
+            operationId: getUserMeasurements
+            responses:
+                '200':
+                    description: A list of user measurements
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/UserMeasurement'
+        post:
+            tags:
+                - userMeasurement
+            summary: Create user measurement
+            operationId: createUserMeasurement
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserMeasurement'
+            responses:
+                '200':
+                    description: User measurement created
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserMeasurement'
+    /usermeasurement/{userMeasurementId}:
+        get:
+            tags:
+                - userMeasurement
+            summary: Get user measurement by id
+            operationId: getUserMeasurementById
+            parameters:
+                - name: userMeasurementId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: A user measurement
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserMeasurement'
+        put:
+            tags:
+                - userMeasurement
+            summary: Update user measurement
+            operationId: updateUserMeasurement
+            parameters:
+                - name: userMeasurementId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserMeasurement'
+            responses:
+                '200':
+                    description: User measurement updated
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/UserMeasurement'
+        delete:
+            tags:
+                - userMeasurement
+            summary: Delete user measurement
+            operationId: deleteUserMeasurement
+            parameters:
+                - name: userMeasurementId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: User measurement deleted
 
 components:
     securitySchemes:
@@ -288,6 +376,10 @@ components:
             type: object
             properties:
                 id:
+                    type: string
+                createdOn:
+                    type: string
+                modifiedOn:
                     type: string
                 email:
                     type: string
@@ -308,17 +400,27 @@ components:
             properties:
                 id:
                     type: string
-                date:
+                createdOn:
                     type: string
-                    format: date
+                modifiedOn:
+                    type: string
                 weight:
                     type: number
                 height:
                     type: number
+                age:
+                    type: number
+
+                user:
+                    $ref: '#/components/schemas/User'
         Training:
             type: object
             properties:
                 id:
+                    type: string
+                createdOn:
+                    type: string
+                modifiedOn:
                     type: string
                 name:
                     type: string
@@ -337,6 +439,10 @@ components:
             properties:
                 id:
                     type: string
+                createdOn:
+                    type: string
+                modifiedOn:
+                    type: string
                 name:
                     type: string
                 description:
@@ -345,6 +451,8 @@ components:
                     type: integer
                 reps:
                     type: integer
+                training:
+                    $ref: '#/components/schemas/Training'
         TrainingCategory:
             type: string
             enum:
@@ -353,3 +461,4 @@ components:
                 - cardio
                 - stretching
                 - other
+

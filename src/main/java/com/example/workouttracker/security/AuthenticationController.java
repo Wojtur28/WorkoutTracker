@@ -1,6 +1,6 @@
 package com.example.workouttracker.security;
 
-import com.example.workouttracker.user.UserEntity;
+import com.example.workouttracker.core.user.UserEntity;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
