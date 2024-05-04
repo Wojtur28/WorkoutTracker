@@ -1,0 +1,2 @@
+ALTER TABLE user_role
+    ALTER COLUMN role_name DROP NOT NULL;
