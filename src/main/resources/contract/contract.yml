@@ -95,6 +95,21 @@ paths:
             responses:
                 '200':
                     description: User deleted
+    /password-reset:
+        post:
+            tags:
+                - email
+            summary: Reset user password
+            operationId: resetUserPassword
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/UserPasswordReset'
+            responses:
+                '200':
+                    description: Email with password reset link sent
     /training:
         get:
             tags:
@@ -401,6 +416,11 @@ components:
                     type: array
                     items:
                         $ref: '#/components/schemas/Training'
+        UserPasswordReset:
+            type: object
+            properties:
+                email:
+                    type: string
         UserMeasurement:
             type: object
             properties:
