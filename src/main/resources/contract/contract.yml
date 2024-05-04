@@ -387,6 +387,12 @@ components:
                     type: string
                 lastName:
                     type: string
+                gender:
+                    type: string
+                    enum:
+                        - MALE
+                        - FEMALE
+                        - OTHER
                 userMeasurements:
                     type: array
                     items:

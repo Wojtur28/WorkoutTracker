@@ -45,16 +45,25 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Length(min = 3, max = 255, message = "Password must be between 3 and 32 characters long")
     private String password;
 
+    @NotNull
+    private boolean isTermsAndConditionsAccepted;
+
+    @ElementCollection(targetClass = UserGender.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_gender", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "user_gender", nullable = false)
+    @Enumerated(EnumType.STRING)
+    Set<UserGender> genders;
+
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TrainingEntity> trainings;
 
     @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "role_name", nullable = false)
+    @Column(name = "user_role", nullable = false)
     @Enumerated(EnumType.STRING)
     Set<RoleType> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<UserMeasurementEntity> userMeasurement;
 
     @Override
