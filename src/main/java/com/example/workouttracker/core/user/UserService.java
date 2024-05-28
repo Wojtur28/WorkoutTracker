@@ -37,8 +37,7 @@ public class UserService {
                     return ResponseEntity.ok(userMapper.toDto(userRepository.save(userEntity)));
                 })
                 .orElseGet(() -> ResponseEntity.notFound().build());
-        // TODO: We shouldn't be able to update the password like this
-        //  in the future we should add a mechanism to reset the password in email
+
     }
 
     public ResponseEntity<Void> deleteUser(String userId) {
