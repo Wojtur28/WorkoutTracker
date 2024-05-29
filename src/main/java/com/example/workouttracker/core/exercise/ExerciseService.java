@@ -35,14 +35,16 @@ public class ExerciseService {
         return ResponseEntity.ok(exerciseMapper.toDto(newExerciseEntity));
     }
 
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, Exercise exercise) {
-        ExerciseEntity exerciseEntity = exerciseRepository.findById(UUID.fromString(exerciseId))
-                .orElseThrow(() -> new RuntimeException("Exercise not found"));
-
-        exerciseEntity.setName(exercise.getName());
-        exerciseEntity.setDescription(exercise.getDescription());
-
-        return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.save(exerciseEntity)));
+    public ResponseEntity<Exercise> updateExercise(String exerciseId, Exercise exercise) {
+        return exerciseRepository.findById(UUID.fromString(exerciseId))
+                .map(exerciseEntity -> {
+                    exerciseEntity.setName(exercise.getName());
+                    exerciseEntity.setDescription(exercise.getDescription());
+                    exerciseEntity.setSets(exercise.getSets());
+                    exerciseEntity.setReps(exercise.getReps());
+                    return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.save(exerciseEntity)));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<Void> deleteExercise(@PathVariable String exerciseId) {
