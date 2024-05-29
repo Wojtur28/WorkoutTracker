@@ -35,13 +35,13 @@ public class TrainingService {
     }
 
     public ResponseEntity<Training> updateTraining(String trainingId, Training training) {
-        TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
-                .orElseThrow(() -> new RuntimeException("Training not found"));
-
-        trainingEntity.setName(training.getName());
-        trainingEntity.setDescription(training.getDescription());
-
-        return ResponseEntity.ok(trainingMapper.toDto(trainingRepository.save(trainingEntity)));
+        return trainingRepository.findById(UUID.fromString(trainingId))
+                .map(trainingEntity -> {
+                    trainingEntity.setName(training.getName());
+                    trainingEntity.setDescription(training.getDescription());
+                    return ResponseEntity.ok(trainingMapper.toDto(trainingRepository.save(trainingEntity)));
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     public ResponseEntity<Void> deleteTraining(String trainingId) {

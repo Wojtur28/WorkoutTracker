@@ -6,9 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -16,6 +14,8 @@ import javax.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class ExerciseEntity extends AuditBase {
 
     private String name;
@@ -23,10 +23,10 @@ public class ExerciseEntity extends AuditBase {
     private String description;
 
     @NotNull
-    private int sets = 1;
+    private int sets;
 
     @NotNull
-    private int reps = 1;
+    private int reps;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")

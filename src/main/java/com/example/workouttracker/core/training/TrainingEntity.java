@@ -6,9 +6,7 @@ import com.example.workouttracker.core.trainingCategory.TrainingCategoryEntity;
 import com.example.workouttracker.core.exercise.ExerciseEntity;
 import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -16,6 +14,8 @@ import java.util.List;
 @Entity(name = "trainings")
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class TrainingEntity extends AuditBase {
 
     @Column(name = "name")

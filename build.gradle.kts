@@ -37,6 +37,7 @@ repositories {
 dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
+    implementation("org.slf4j:slf4j-api:2.0.13")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.flywaydb:flyway-core:9.16.3")
@@ -59,7 +60,7 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("junit:junit:4.12")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     implementation("org.mapstruct:mapstruct:1.6.0.Beta1")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.0.Beta1")
     compileOnly("javax.servlet:servlet-api:3.0-alpha-1")
