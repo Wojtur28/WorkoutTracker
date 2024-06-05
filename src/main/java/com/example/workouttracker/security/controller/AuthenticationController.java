@@ -1,6 +1,11 @@
-package com.example.workouttracker.security;
+package com.example.workouttracker.security.controller;
 
 import com.example.workouttracker.core.user.UserEntity;
+import com.example.workouttracker.security.dto.SignInResponse;
+import com.example.workouttracker.security.dto.SignInUser;
+import com.example.workouttracker.security.dto.SignUpUser;
+import com.example.workouttracker.security.service.AuthenticationService;
+import com.example.workouttracker.security.service.JwtService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

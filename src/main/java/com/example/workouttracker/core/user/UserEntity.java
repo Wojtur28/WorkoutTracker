@@ -46,7 +46,7 @@ public class UserEntity extends AuditBase implements UserDetails {
     private String password;
 
     @NotNull
-    private boolean isTermsAndConditionsAccepted;
+    private Boolean isTermsAndConditionsAccepted;
 
     @ElementCollection(targetClass = UserGender.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_gender", joinColumns = @JoinColumn(name = "user_id"))

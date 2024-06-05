@@ -1,8 +1,10 @@
-package com.example.workouttracker.security;
+package com.example.workouttracker.security.service;
 
 import com.example.workouttracker.core.user.RoleType;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
+import com.example.workouttracker.security.dto.SignInUser;
+import com.example.workouttracker.security.dto.SignUpUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,7 +29,7 @@ public class AuthenticationService {
                     throw new RuntimeException("User with this email already exists");
                 });
 
-        if (!input.isTermsAndConditionsAccepted()) {
+        if (!input.getIsTermsAndConditionsAccepted()) {
             throw new RuntimeException("Terms and conditions must be accepted");
         }
 
@@ -38,7 +40,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setRoles(Collections.singleton(RoleType.USER));
         user.setGenders(input.getGenders());
-        user.setTermsAndConditionsAccepted(input.isTermsAndConditionsAccepted());
+        user.setIsTermsAndConditionsAccepted(input.getIsTermsAndConditionsAccepted());
 
 
         return userRepository.save(user);

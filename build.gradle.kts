@@ -36,6 +36,7 @@ repositories {
 
 dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.security:spring-security-test:6.3.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.slf4j:slf4j-api:2.0.13")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
