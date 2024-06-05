@@ -1,2 +1,5 @@
 ALTER TABLE user_role
     ALTER COLUMN role_name DROP NOT NULL;
+
+ALTER TABLE user_role
+    ADD COLUMN IF NOT EXISTS user_role VARCHAR(255);
