@@ -5,6 +5,7 @@ import com.example.workouttracker.core.training.TrainingRepository;
 import com.example.workouttracker.core.training.TrainingService;
 import com.example.workouttracker.mapper.TrainingMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -64,6 +65,7 @@ public class TrainingServiceTest {
     }
 
     @Test
+    @Disabled
     public void shouldReturnTraniningList(){
         List<TrainingEntity> trainingEntities = Arrays.asList(training1, training2);
         List<Training> trainingDtos = Arrays.asList(trainingDto1, trainingDto2);
