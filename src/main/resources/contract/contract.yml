@@ -524,8 +524,6 @@ components:
                     type: integer
                 reps:
                     type: integer
-                training:
-                    $ref: '#/components/schemas/Training'
         TrainingCategory:
             type: string
             enum:
