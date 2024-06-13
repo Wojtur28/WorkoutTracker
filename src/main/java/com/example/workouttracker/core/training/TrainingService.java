@@ -3,6 +3,7 @@ package com.example.workouttracker.core.training;
 import com.example.workouttracker.mapper.TrainingMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.Training;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class TrainingService {
 
     private final TrainingMapper trainingMapper;
 
-    public ResponseEntity<List<Training>> getTrainings() {
-        return ResponseEntity.ok(trainingMapper.toDto(trainingRepository.findAll()));
+    public ResponseEntity<List<Training>> getTrainings(Integer page, Integer size) {
+        return ResponseEntity.ok(trainingRepository.findAll(PageRequest.of(page, size)).map(trainingMapper::toDto).getContent());
     }
 
     public ResponseEntity<Training> getTraining(String trainingId) {

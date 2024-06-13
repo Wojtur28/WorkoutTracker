@@ -15,8 +15,9 @@ public class UserMeasurementController implements UserMeasurementApi {
     private final UserMeasurementService userMeasurementService;
 
     @Override
-    public ResponseEntity<List<UserMeasurement>> getUserMeasurements() {
-        return userMeasurementService.getUserMeasurements();
+    public ResponseEntity<List<UserMeasurement>> getUserMeasurements(@RequestParam Integer page,
+                                                                     @RequestParam Integer size) {
+        return userMeasurementService.getUserMeasurements(page, size);
     }
 
     @Override

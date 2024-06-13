@@ -15,8 +15,9 @@ public class UserController implements UserApi {
     private final UserService userService;
 
     @Override
-    public ResponseEntity<List<User>> getUsers() {
-        return userService.getUsers();
+    public ResponseEntity<List<User>> getUsers(@RequestParam Integer page,
+                                               @RequestParam Integer size) {
+        return userService.getUsers(page, size);
     }
 
     @Override

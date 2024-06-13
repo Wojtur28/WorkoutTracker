@@ -4,6 +4,7 @@ import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
 import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.UserMeasurement;
@@ -27,8 +28,8 @@ public class UserMeasurementService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    public ResponseEntity<List<UserMeasurement>> getUserMeasurements() {
-        return ResponseEntity.ok(userMeasurementMapper.toDto(userMeasurementRepository.findAll()));
+    public ResponseEntity<List<UserMeasurement>> getUserMeasurements(Integer page, Integer size) {
+        return ResponseEntity.ok(userMeasurementRepository.findAll(PageRequest.of(page, size)).stream().map(userMeasurementMapper::toDto).toList());
     }
 
     public ResponseEntity<UserMeasurement> createUserMeasurement(UserMeasurement userMeasurement) {
