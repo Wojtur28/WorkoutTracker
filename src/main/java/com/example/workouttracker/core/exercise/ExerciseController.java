@@ -15,8 +15,9 @@ public class ExerciseController implements ExerciseApi {
     private final ExerciseService exerciseService;
 
     @Override
-    public ResponseEntity<List<Exercise>> getExercises() {
-        return exerciseService.getExercises();
+    public ResponseEntity<List<Exercise>> getExercises(@RequestParam Integer page,
+                                                       @RequestParam Integer size) {
+        return exerciseService.getExercises(size, page);
     }
 
     @Override

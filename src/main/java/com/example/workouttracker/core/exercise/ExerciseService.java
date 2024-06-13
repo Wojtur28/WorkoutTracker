@@ -3,6 +3,7 @@ package com.example.workouttracker.core.exercise;
 import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.Exercise;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +19,8 @@ public class ExerciseService {
 
     private final ExerciseMapper exerciseMapper;
 
-    public ResponseEntity<List<Exercise>> getExercises() {
-        return ResponseEntity.ok(exerciseMapper.toDto(exerciseRepository.findAll()));
+    public ResponseEntity<List<Exercise>> getExercises(Integer size, Integer page) {
+        return ResponseEntity.ok(exerciseRepository.findAll(PageRequest.of(page, size)).map(exerciseMapper::toDto).getContent());
     }
 
     public ResponseEntity<Exercise> getExercise(@PathVariable String exerciseId) {

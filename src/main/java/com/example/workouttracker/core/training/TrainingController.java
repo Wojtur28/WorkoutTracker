@@ -15,8 +15,9 @@ public class TrainingController implements TrainingApi {
     private final TrainingService trainingService;
 
     @Override
-    public ResponseEntity<List<Training>> getTrainings() {
-        return trainingService.getTrainings();
+    public ResponseEntity<List<Training>> getTrainings(@RequestParam Integer page,
+                                                       @RequestParam Integer size) {
+        return trainingService.getTrainings(page, size);
     }
 
     @Override

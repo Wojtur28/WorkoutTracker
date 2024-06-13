@@ -3,6 +3,7 @@ package com.example.workouttracker.core.user;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.User;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -17,8 +18,8 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public ResponseEntity<List<User>> getUsers() {
-        return ResponseEntity.ok(userMapper.toDto(userRepository.findAll()));
+    public ResponseEntity<List<User>> getUsers(Integer page, Integer size) {
+        return ResponseEntity.ok(userRepository.findAll(PageRequest.of(page, size)).map(userMapper::toDto).getContent());
     }
 
     public ResponseEntity<User> getUser(String userId) {
