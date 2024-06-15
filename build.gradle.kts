@@ -1,4 +1,7 @@
- buildscript {
+import java.text.SimpleDateFormat
+import java.util.*
+
+buildscript {
     repositories {
         maven {
             url = uri("https://plugins.gradle.org/m2/")
@@ -18,7 +21,9 @@ plugins {
 }
 
 group = "com.example"
-version = "0.0.1-SNAPSHOT"
+ val dateFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
+ val formattedDate = dateFormat.format(Date())
+ version = "0.0.1-$formattedDate"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_20
