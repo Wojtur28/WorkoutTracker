@@ -26,6 +26,11 @@ public class UserController implements UserApi {
     }
 
     @Override
+    public ResponseEntity<User> getCurrentUser() {
+        return userService.getCurrentUser();
+    }
+
+    @Override
     public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @RequestBody User user) {
         return userService.updateUser(userId, user);
     }

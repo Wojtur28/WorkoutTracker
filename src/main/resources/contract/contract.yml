@@ -52,6 +52,19 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
+    /user/me:
+        get:
+            tags:
+                - user
+            summary: Get user current user
+            operationId: getCurrentUser
+            responses:
+                '200':
+                    description: A user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
 
     /user/{userId}:
         get:
