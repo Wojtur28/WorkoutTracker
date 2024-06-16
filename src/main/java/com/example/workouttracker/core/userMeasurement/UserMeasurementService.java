@@ -1,11 +1,11 @@
 package com.example.workouttracker.core.userMeasurement;
 
+import com.example.workouttracker.core.exception.UserMeasurementException;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
 import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.UserMeasurement;
 
@@ -22,44 +22,44 @@ public class UserMeasurementService {
 
     private final UserRepository userRepository;
 
-    public ResponseEntity<UserMeasurement> getUserMeasurement(String userMeasurementId) {
+    public List<UserMeasurement> getUserMeasurements(Integer page, Integer size) {
+        return userMeasurementRepository.findAll(PageRequest.of(page, size))
+                .map(userMeasurementMapper::toDto).getContent();
+    }
+
+    public UserMeasurement getUserMeasurement(String userMeasurementId) {
         return userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
-                .map(userMeasurementEntity -> ResponseEntity.ok(userMeasurementMapper.toDto(userMeasurementEntity)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .map(userMeasurementMapper::toDto)
+                .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.NOT_FOUND));
     }
 
-    public ResponseEntity<List<UserMeasurement>> getUserMeasurements(Integer page, Integer size) {
-        return ResponseEntity.ok(userMeasurementRepository.findAll(PageRequest.of(page, size)).stream().map(userMeasurementMapper::toDto).toList());
-    }
+    public UserMeasurement createUserMeasurement(UserMeasurement userMeasurement) {
+        UserEntity user = userRepository.findById(UUID.fromString(userMeasurement.getUser().getId()))
+                .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.USER_NOT_FOUND));
 
-    public ResponseEntity<UserMeasurement> createUserMeasurement(UserMeasurement userMeasurement) {
-         UserEntity user = userRepository.findById(UUID.fromString(userMeasurement.getUser().getId())).orElse(null);
-        if (user == null) {
-            return ResponseEntity.notFound().build();
-        }
         UserMeasurementEntity newUserMeasurementEntity = userMeasurementMapper.toEntity(userMeasurement);
         newUserMeasurementEntity.setUser(user);
         userMeasurementRepository.save(newUserMeasurementEntity);
-        return ResponseEntity.ok(userMeasurementMapper.toDto(newUserMeasurementEntity));
+
+        return userMeasurementMapper.toDto(newUserMeasurementEntity);
     }
 
-    public ResponseEntity<UserMeasurement> updateUserMeasurement(String userMeasurementId, UserMeasurement userMeasurement) {
-        return userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
-                .map(existingUserMeasurementEntity -> {
-                    UserMeasurementEntity updatedUserMeasurementEntity = userMeasurementMapper.toEntity(userMeasurement);
-                    updatedUserMeasurementEntity.setId(existingUserMeasurementEntity.getId());
-                    userMeasurementRepository.save(updatedUserMeasurementEntity);
-                    return ResponseEntity.ok(userMeasurementMapper.toDto(updatedUserMeasurementEntity));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public UserMeasurement updateUserMeasurement(String userMeasurementId, UserMeasurement userMeasurement) {
+        UserMeasurementEntity existingUserMeasurementEntity = userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
+                .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.NOT_FOUND));
+
+        existingUserMeasurementEntity.setWeight(userMeasurement.getWeight().doubleValue());
+        existingUserMeasurementEntity.setHeight(userMeasurement.getHeight().doubleValue());
+        existingUserMeasurementEntity.setAge(userMeasurement.getAge().doubleValue());
+
+        userMeasurementRepository.save(existingUserMeasurementEntity);
+
+        return userMeasurementMapper.toDto(existingUserMeasurementEntity);
     }
 
-    public ResponseEntity<Void> deleteUserMeasurement(String userMeasurementId) {
-        return userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
-                .map(userMeasurementEntity -> {
-                    userMeasurementRepository.delete(userMeasurementEntity);
-                    return ResponseEntity.ok().<Void>build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public void deleteUserMeasurement(String userMeasurementId) {
+        UserMeasurementEntity userMeasurementEntity = userMeasurementRepository.findById(UUID.fromString(userMeasurementId))
+                .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.NOT_FOUND));
+        userMeasurementRepository.delete(userMeasurementEntity);
     }
 }

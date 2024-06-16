@@ -1,4 +1,4 @@
-package com.example.workouttracker.security.dto;
+package com.example.workouttracker.config.security.dto;
 
 import com.example.workouttracker.core.user.UserGender;
 import lombok.AllArgsConstructor;

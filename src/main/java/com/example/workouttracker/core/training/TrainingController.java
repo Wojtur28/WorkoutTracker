@@ -1,10 +1,13 @@
 package com.example.workouttracker.core.training;
 
+import com.example.workouttracker.core.exception.TrainingException;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.Training;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.openapitools.api.TrainingApi;
+import org.openapitools.model.ErrorResponse;
 
 import java.util.List;
 
@@ -17,26 +20,50 @@ public class TrainingController implements TrainingApi {
     @Override
     public ResponseEntity<List<Training>> getTrainings(@RequestParam Integer page,
                                                        @RequestParam Integer size) {
-        return trainingService.getTrainings(page, size);
+        List<Training> trainings = trainingService.getTrainings(page, size);
+        return ResponseEntity.ok(trainings);
     }
 
     @Override
     public ResponseEntity<Training> getTrainingById(@PathVariable String trainingId) {
-        return trainingService.getTraining(trainingId);
+        Training training = trainingService.getTraining(trainingId);
+        return ResponseEntity.ok(training);
     }
 
     @Override
     public ResponseEntity<Training> createTraining(@RequestBody Training training) {
-        return trainingService.createTraining(training);
+        Training createdTraining = trainingService.createTraining(training);
+        return ResponseEntity.ok(createdTraining);
     }
 
     @Override
     public ResponseEntity<Training> updateTraining(@PathVariable String trainingId, @RequestBody Training training) {
-        return trainingService.updateTraining(trainingId, training);
+        Training updatedTraining = trainingService.updateTraining(trainingId, training);
+        return ResponseEntity.ok(updatedTraining);
     }
 
     @Override
     public ResponseEntity<Void> deleteTraining(@PathVariable String trainingId) {
-        return trainingService.deleteTraining(trainingId);
+        trainingService.deleteTraining(trainingId);
+        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleException(TrainingException e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        switch (e.getFailReason()) {
+            case NOT_FOUND:
+                errorResponse.setCode("TRAINING_NOT_FOUND");
+                errorResponse.setMessage("Training not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+            case USER_NOT_FOUND:
+                errorResponse.setCode("USER_NOT_FOUND");
+                errorResponse.setMessage("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+            default:
+                errorResponse.setCode("INTERNAL_SERVER_ERROR");
+                errorResponse.setMessage("Internal server error");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+        }
     }
 }

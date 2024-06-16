@@ -1,4 +1,4 @@
-package com.example.workouttracker.security;
+package com.example.workouttracker.config.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;

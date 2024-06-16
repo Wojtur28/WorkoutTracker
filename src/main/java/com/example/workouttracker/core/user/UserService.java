@@ -1,10 +1,10 @@
 package com.example.workouttracker.core.user;
 
+import com.example.workouttracker.core.exception.UserException;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import org.openapitools.model.User;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,43 +19,39 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public ResponseEntity<List<User>> getUsers(Integer page, Integer size) {
-        return ResponseEntity.ok(userRepository.findAll(PageRequest.of(page, size)).map(userMapper::toDto).getContent());
+    public List<User> getUsers(Integer page, Integer size) {
+        return userRepository.findAll(PageRequest.of(page, size))
+                .map(userMapper::toDto).getContent();
     }
 
-    public ResponseEntity<User> getUser(String userId) {
+    public User getUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))
                 .map(userMapper::toDto)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
     }
 
-    public ResponseEntity<User> getCurrentUser() {
+    public User getCurrentUser() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .map(userMapper::toDto)
-                .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
     }
 
-    public ResponseEntity<User> updateUser(String id, User user) {
-        return userRepository.findById(UUID.fromString(id))
-                .map(userEntity -> {
-                    userEntity.setFirstName(user.getFirstName());
-                    userEntity.setLastName(user.getLastName());
-                    userEntity.setEmail(user.getEmail());
-                    return ResponseEntity.ok(userMapper.toDto(userRepository.save(userEntity)));
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public User updateUser(String id, User user) {
+        UserEntity existingUser = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
 
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setEmail(user.getEmail());
+
+        userRepository.save(existingUser);
+        return userMapper.toDto(existingUser);
     }
 
-    public ResponseEntity<Void> deleteUser(String userId) {
-        return userRepository.findById(UUID.fromString(userId))
-                .map(user -> {
-                    userRepository.delete(user);
-                    return ResponseEntity.ok().<Void>build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    public void deleteUser(String userId) {
+        UserEntity user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        userRepository.delete(user);
     }
 
 }

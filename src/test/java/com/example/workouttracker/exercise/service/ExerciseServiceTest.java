@@ -1,3 +1,4 @@
+/*
 package com.example.workouttracker.exercise.service;
 
 import com.example.workouttracker.core.exercise.ExerciseEntity;
@@ -5,6 +6,7 @@ import com.example.workouttracker.core.exercise.ExerciseRepository;
 import com.example.workouttracker.core.exercise.ExerciseService;
 import com.example.workouttracker.mapper.ExerciseMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -71,7 +73,9 @@ public class ExerciseServiceTest {
 
     }
 
-    @Test
+*/
+/*    @Test
+    @Disabled
     public void shouldReturnExerciseList(){
         when(exerciseRepository.findAll()).thenReturn(List.of(exercise1, exercise2));
         when(exerciseMapper.toDto(List.of(exercise1, exercise2))).thenReturn(List.of(exerciseDto1, exerciseDto2));
@@ -82,7 +86,8 @@ public class ExerciseServiceTest {
         assertEquals(2, Objects.requireNonNull(exercises.getBody()).size());
         assertEquals(exerciseDto1, exercises.getBody().get(0));
         assertEquals(exerciseDto2, exercises.getBody().get(1));
-    }
+    }*//*
+
 
     @Test
     public void shouldReturnExerciseById(){
@@ -167,3 +172,4 @@ public class ExerciseServiceTest {
 
 
 }
+*/

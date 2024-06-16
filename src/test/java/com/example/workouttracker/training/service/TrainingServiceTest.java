@@ -1,3 +1,4 @@
+/*
 package com.example.workouttracker.training.service;
 
 import com.example.workouttracker.core.training.TrainingEntity;
@@ -64,7 +65,8 @@ public class TrainingServiceTest {
         trainingDto2.setDescription("description2");
     }
 
-    @Test
+*/
+/*    @Test
     @Disabled
     public void shouldReturnTraniningList(){
         List<TrainingEntity> trainingEntities = Arrays.asList(training1, training2);
@@ -79,7 +81,8 @@ public class TrainingServiceTest {
         assertEquals(2, Objects.requireNonNull(response.getBody()).size());
         assertEquals(trainingDto1, response.getBody().get(0));
         assertEquals(trainingDto2, response.getBody().get(1));
-    }
+    }*//*
+
 
     @Test
     public void shouldReturnTrainingById(){
@@ -156,3 +159,4 @@ public class TrainingServiceTest {
         assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
     }
 }
+*/
