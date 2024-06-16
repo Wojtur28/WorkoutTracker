@@ -1,6 +1,6 @@
-package com.example.workouttracker.security;
+package com.example.workouttracker.config.security;
 
-import com.example.workouttracker.security.service.JwtService;
+import com.example.workouttracker.config.security.service.JwtService;
 import jakarta.servlet.ServletException;
 import lombok.AllArgsConstructor;
 import org.springframework.lang.NonNull;

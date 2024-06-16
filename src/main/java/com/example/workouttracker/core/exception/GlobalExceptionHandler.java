@@ -1,4 +1,4 @@
-package com.example.workouttracker.exception;
+package com.example.workouttracker.core.exception;
 
 import org.slf4j.Logger;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -42,7 +42,7 @@ public class GlobalExceptionHandler {
             properties.put("errorCode", "BAD_CREDENTIALS");
         } else if (exception instanceof UsernameNotFoundException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), exception.getMessage());
-            properties.put("description", "The username was not found");
+            properties.put("description", "The email was not found");
             properties.put("errorCode", "USER_NOT_FOUND");
         } else if (exception instanceof AuthenticationException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), exception.getMessage());

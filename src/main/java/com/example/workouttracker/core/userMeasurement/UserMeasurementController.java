@@ -1,10 +1,13 @@
 package com.example.workouttracker.core.userMeasurement;
 
+import com.example.workouttracker.core.exception.UserMeasurementException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.openapitools.model.UserMeasurement;
 import org.openapitools.api.UserMeasurementApi;
+import org.openapitools.model.ErrorResponse;
 
 import java.util.List;
 
@@ -17,26 +20,50 @@ public class UserMeasurementController implements UserMeasurementApi {
     @Override
     public ResponseEntity<List<UserMeasurement>> getUserMeasurements(@RequestParam Integer page,
                                                                      @RequestParam Integer size) {
-        return userMeasurementService.getUserMeasurements(page, size);
+        List<UserMeasurement> userMeasurements = userMeasurementService.getUserMeasurements(page, size);
+        return ResponseEntity.ok(userMeasurements);
     }
 
     @Override
     public ResponseEntity<UserMeasurement> getUserMeasurementById(@PathVariable String userMeasurementId) {
-        return userMeasurementService.getUserMeasurement(userMeasurementId);
+        UserMeasurement userMeasurement = userMeasurementService.getUserMeasurement(userMeasurementId);
+        return ResponseEntity.ok(userMeasurement);
     }
 
     @Override
     public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurement userMeasurement) {
-        return userMeasurementService.createUserMeasurement(userMeasurement);
+        UserMeasurement createdUserMeasurement = userMeasurementService.createUserMeasurement(userMeasurement);
+        return ResponseEntity.ok(createdUserMeasurement);
     }
 
     @Override
     public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, @RequestBody UserMeasurement userMeasurement) {
-        return userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurement);
+        UserMeasurement updatedUserMeasurement = userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurement);
+        return ResponseEntity.ok(updatedUserMeasurement);
     }
 
     @Override
     public ResponseEntity<Void> deleteUserMeasurement(@PathVariable String userMeasurementId) {
-        return userMeasurementService.deleteUserMeasurement(userMeasurementId);
+        userMeasurementService.deleteUserMeasurement(userMeasurementId);
+        return ResponseEntity.ok().build();
+    }
+
+    @ExceptionHandler(UserMeasurementException.class)
+    public ResponseEntity<String> handleException(UserMeasurementException e) {
+        ErrorResponse errorResponse = new ErrorResponse();
+        switch (e.getFailReason()) {
+            case NOT_FOUND:
+                errorResponse.setCode("USER_MEASUREMENT_NOT_FOUND");
+                errorResponse.setMessage("User measurement not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+            case USER_NOT_FOUND:
+                errorResponse.setCode("USER_NOT_FOUND");
+                errorResponse.setMessage("User not found");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+            default:
+                errorResponse.setCode("INTERNAL_SERVER_ERROR");
+                errorResponse.setMessage("Internal server error");
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+        }
     }
 }

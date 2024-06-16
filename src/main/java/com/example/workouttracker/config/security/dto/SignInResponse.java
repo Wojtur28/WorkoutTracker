@@ -1,4 +1,4 @@
-package com.example.workouttracker.security.dto;
+package com.example.workouttracker.config.security.dto;
 
 import lombok.Getter;
 import lombok.Setter;

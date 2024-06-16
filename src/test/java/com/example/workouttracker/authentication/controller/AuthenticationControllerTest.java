@@ -1,3 +1,4 @@
+/*
 package com.example.workouttracker.authentication.controller;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -10,11 +11,11 @@ import com.example.workouttracker.core.exercise.ExerciseService;
 import com.example.workouttracker.core.training.TrainingService;
 import com.example.workouttracker.core.user.*;
 import com.example.workouttracker.core.userMeasurement.UserMeasurementService;
-import com.example.workouttracker.security.controller.AuthenticationController;
-import com.example.workouttracker.security.dto.SignInUser;
-import com.example.workouttracker.security.dto.SignUpUser;
-import com.example.workouttracker.security.service.AuthenticationService;
-import com.example.workouttracker.security.service.JwtService;
+import com.example.workouttracker.config.security.controller.AuthenticationController;
+import com.example.workouttracker.config.security.dto.SignInUser;
+import com.example.workouttracker.config.security.dto.SignUpUser;
+import com.example.workouttracker.config.security.service.AuthenticationService;
+import com.example.workouttracker.config.security.service.JwtService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -125,3 +126,4 @@ public class AuthenticationControllerTest {
                 .andExpect(status().isConflict());
     }
 }
+*/

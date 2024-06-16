@@ -1,10 +1,10 @@
-package com.example.workouttracker.security.service;
+package com.example.workouttracker.config.security.service;
 
+import com.example.workouttracker.config.security.dto.SignInUser;
+import com.example.workouttracker.config.security.dto.SignUpUser;
 import com.example.workouttracker.core.user.RoleType;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
-import com.example.workouttracker.security.dto.SignInUser;
-import com.example.workouttracker.security.dto.SignUpUser;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

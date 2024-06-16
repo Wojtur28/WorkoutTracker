@@ -1,4 +1,4 @@
-package com.example.workouttracker.security.service;
+package com.example.workouttracker.config.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
