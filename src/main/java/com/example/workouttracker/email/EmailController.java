@@ -1,8 +1,8 @@
 package com.example.workouttracker.email;
 
+import com.example.workouttracker.config.security.service.JwtService;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
-import com.example.workouttracker.security.JwtService;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

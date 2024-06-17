@@ -1,10 +1,11 @@
 package com.example.workouttracker.email;
 
+import com.example.workouttracker.config.security.service.JwtService;
 import com.example.workouttracker.core.user.UserRepository;
-import com.example.workouttracker.security.JwtService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;

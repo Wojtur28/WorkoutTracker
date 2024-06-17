@@ -28,6 +28,21 @@ paths:
                 - user
             summary: Get all users
             operationId: getUsers
+            parameters:
+                - name: page
+                  in: query
+                  description: "Page number"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                - name: size
+                  in: query
+                  description: "Number of items per page"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
             responses:
                 '200':
                     description: A list of users
@@ -37,6 +52,55 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/User'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+    /user/me:
+        get:
+            tags:
+                - user
+            summary: Get user current user
+            operationId: getCurrentUser
+            responses:
+                '200':
+                    description: A user
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/User'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
 
     /user/{userId}:
         get:
@@ -57,6 +121,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/User'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         put:
             tags:
                 - user
@@ -81,6 +169,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/User'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         delete:
             tags:
                 - user
@@ -95,12 +207,52 @@ paths:
             responses:
                 '200':
                     description: User deleted
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /training:
         get:
             tags:
                 - training
             summary: Get all trainings
             operationId: getTrainings
+            parameters:
+                - name: page
+                  in: query
+                  description: "Page number"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                - name: size
+                  in: query
+                  description: "Number of items per page"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
             responses:
                 '200':
                     description: A list of trainings
@@ -110,6 +262,25 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Training'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
         post:
             tags:
                 - training
@@ -128,6 +299,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Training'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /training/{trainingId}:
         get:
             tags:
@@ -147,6 +337,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Training'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         put:
             tags:
                 - training
@@ -171,6 +385,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Training'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         delete:
             tags:
                 - training
@@ -185,12 +423,52 @@ paths:
             responses:
                 '200':
                     description: Training deleted
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /exercise:
         get:
             tags:
                 - exercise
             summary: Get all exercises
             operationId: getExercises
+            parameters:
+                - name: page
+                  in: query
+                  description: "Page number"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                - name: size
+                  in: query
+                  description: "Number of items per page"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
             responses:
                 '200':
                     description: A list of exercises
@@ -200,6 +478,24 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/Exercise'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         post:
             tags:
                 - exercise
@@ -218,6 +514,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Exercise'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /exercise/{exerciseId}:
         get:
             tags:
@@ -237,6 +552,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Exercise'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         put:
             tags:
                 - exercise
@@ -261,6 +600,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Exercise'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         delete:
             tags:
                 - exercise
@@ -275,12 +638,52 @@ paths:
             responses:
                 '200':
                     description: Exercise deleted
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /usermeasurement:
         get:
             tags:
                 - userMeasurement
             summary: Get all user measurements
             operationId: getUserMeasurements
+            parameters:
+                - name: page
+                  in: query
+                  description: "Page number"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                - name: size
+                  in: query
+                  description: "Number of items per page"
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
             responses:
                 '200':
                     description: A list of user measurements
@@ -290,6 +693,24 @@ paths:
                                 type: array
                                 items:
                                     $ref: '#/components/schemas/UserMeasurement'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         post:
             tags:
                 - userMeasurement
@@ -308,6 +729,25 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UserMeasurement'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
     /usermeasurement/{userMeasurementId}:
         get:
             tags:
@@ -327,6 +767,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UserMeasurement'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         put:
             tags:
                 - userMeasurement
@@ -351,6 +815,30 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/UserMeasurement'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
         delete:
             tags:
                 - userMeasurement
@@ -365,12 +853,37 @@ paths:
             responses:
                 '200':
                     description: User measurement deleted
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
 
 components:
     securitySchemes:
-        basicAuth:
+        bearerAuth:
             type: http
-            scheme: basic
+            scheme: bearer
+            bearerFormat: JWT
     schemas:
         User:
             type: object
@@ -416,7 +929,6 @@ components:
                     type: number
                 age:
                     type: number
-
                 user:
                     $ref: '#/components/schemas/User'
         Training:
@@ -457,8 +969,6 @@ components:
                     type: integer
                 reps:
                     type: integer
-                training:
-                    $ref: '#/components/schemas/Training'
         TrainingCategory:
             type: string
             enum:
@@ -467,4 +977,11 @@ components:
                 - cardio
                 - stretching
                 - other
+        ErrorResponse:
+            type: object
+            properties:
+                code:
+                    type: string
+                message:
+                    type: string
 

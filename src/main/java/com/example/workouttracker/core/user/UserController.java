@@ -30,11 +30,11 @@ public class UserController implements UserApi {
         return ResponseEntity.ok(user);
     }
 
-/*    @Override
+    @Override
     public ResponseEntity<User> getCurrentUser() {
         User user = userService.getCurrentUser();
         return ResponseEntity.ok(user);
-    }*/
+    }
 
     @Override
     public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @RequestBody User user) {
