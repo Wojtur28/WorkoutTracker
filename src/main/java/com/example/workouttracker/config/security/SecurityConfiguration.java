@@ -1,4 +1,4 @@
-package com.example.workouttracker.security;
+package com.example.workouttracker.config.security;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

@@ -1,0 +1,1 @@
+ALTER TABLE users ADD COLUMN IF NOT EXISTS is_terms_and_conditions_accepted BOOLEAN;
