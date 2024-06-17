@@ -3,3 +3,6 @@ ALTER TABLE user_role
 
 ALTER TABLE user_role
     ADD COLUMN IF NOT EXISTS user_role VARCHAR(255);
+
+ALTER TABLE user_role
+    ADD COLUMN IF NOT EXISTS user_role VARCHAR(255);
