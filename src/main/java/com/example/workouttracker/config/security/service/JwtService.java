@@ -62,6 +62,16 @@ public class JwtService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
+
+        System.out.println("Token username: " + username);
+        System.out.println("UserDetails username: " + userDetails.getUsername());
+
+        boolean isEquals = username.equals(userDetails.getUsername());
+        System.out.println("Is username equal: " + isEquals);
+
+        boolean isExpired = isTokenExpired(token);
+        System.out.println("Is token expired: " + isExpired);
+
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
@@ -85,5 +95,26 @@ public class JwtService {
     private Key getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public String generatePasswordResetToken(String email) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("email", email);
+        return buildToken(claims, email, jwtExpiration);
+    }
+
+    private String buildToken(Map<String, Object> claims, String subject, long expiration) {
+        return Jwts
+                .builder()
+                .setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String extractEmail(String token) {
+        return extractClaim(token, claims -> claims.get("email", String.class));
     }
 }

@@ -11,9 +11,22 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  mail:
+    host: smtp.mailtrap.io
+    port: 2525
+    username: test
+    password: test
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        debug: true
 
 security:
   jwt:
     secret-key: test
     expiration-time: 3600000
+
 
