@@ -1,8 +1,6 @@
 package com.example.workouttracker.core.userMeasurement;
 
 import com.example.workouttracker.core.exception.UserMeasurementException;
-import com.example.workouttracker.core.user.UserEntity;
-import com.example.workouttracker.core.user.UserRepository;
 import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -20,8 +18,6 @@ public class UserMeasurementService {
 
     private final UserMeasurementMapper userMeasurementMapper;
 
-    private final UserRepository userRepository;
-
     public List<UserMeasurement> getUserMeasurements(Integer page, Integer size) {
         return userMeasurementRepository.findAll(PageRequest.of(page, size))
                 .map(userMeasurementMapper::toDto).getContent();
@@ -34,11 +30,8 @@ public class UserMeasurementService {
     }
 
     public UserMeasurement createUserMeasurement(UserMeasurement userMeasurement) {
-        UserEntity user = userRepository.findById(UUID.fromString(userMeasurement.getUser().getId()))
-                .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.USER_NOT_FOUND));
-
         UserMeasurementEntity newUserMeasurementEntity = userMeasurementMapper.toEntity(userMeasurement);
-        newUserMeasurementEntity.setUser(user);
+
         userMeasurementRepository.save(newUserMeasurementEntity);
 
         return userMeasurementMapper.toDto(newUserMeasurementEntity);
