@@ -9,6 +9,7 @@ import org.openapitools.model.Training;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.openapitools.model.TrainingDetails;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,9 +30,9 @@ public class TrainingService {
                 .map(trainingMapper::toDto).getContent();
     }
 
-    public Training getTraining(String trainingId) {
+    public TrainingDetails getTraining(String trainingId) {
         return trainingRepository.findById(UUID.fromString(trainingId))
-                .map(trainingMapper::toDto)
+                .map(trainingMapper::toDetailsDto)
                 .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
     }
 
@@ -45,16 +46,16 @@ public class TrainingService {
         return trainingMapper.toDto(newTrainingEntity);
     }
 
-    public Training updateTraining(String trainingId, Training training) {
-        TrainingEntity existingTraining = trainingRepository.findById(UUID.fromString(trainingId))
+    public TrainingDetails updateTraining(String trainingId, TrainingDetails trainingDetails) {
+        TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
                 .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
 
-        existingTraining.setName(training.getName());
-        existingTraining.setDescription(training.getDescription());
+        trainingEntity.setName(trainingDetails.getName());
+        trainingEntity.setDescription(trainingDetails.getDescription());
 
-        trainingRepository.save(existingTraining);
+        trainingRepository.save(trainingEntity);
 
-        return trainingMapper.toDto(existingTraining);
+        return trainingMapper.toDetailsDto(trainingEntity);
     }
 
     public void deleteTraining(String trainingId) {

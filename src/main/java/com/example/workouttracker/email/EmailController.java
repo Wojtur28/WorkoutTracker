@@ -13,11 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.openapitools.model.UserPasswordReset;
-import org.openapitools.api.EmailApi;
 
 @RestController
 @AllArgsConstructor
-public class EmailController implements EmailApi {
+public class EmailController {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
