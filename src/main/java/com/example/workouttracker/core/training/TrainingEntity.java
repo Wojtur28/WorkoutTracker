@@ -6,6 +6,8 @@ import com.example.workouttracker.core.trainingCategory.TrainingCategoryEntity;
 import com.example.workouttracker.core.exercise.ExerciseEntity;
 import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
 public class TrainingEntity extends AuditBase {
 
     @Column(name = "name")
+    @NotNull
+    @NotBlank
     private String name;
 
     @Column(name = "description")
@@ -29,11 +33,13 @@ public class TrainingEntity extends AuditBase {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @NotNull
     private UserEntity user;
 
     @ElementCollection(targetClass = TrainingCategoryEntity.class, fetch = FetchType.LAZY)
     @CollectionTable(name = "training_category", joinColumns = @JoinColumn(name = "training_id"))
     @Column(name = "category_name", nullable = false)
     @Enumerated(EnumType.STRING)
+    @NotNull
     private List<TrainingCategoryEntity> trainingCategories;
 }
