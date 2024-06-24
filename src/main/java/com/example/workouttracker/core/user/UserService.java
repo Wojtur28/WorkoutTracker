@@ -7,6 +7,7 @@ import org.openapitools.model.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.openapitools.model.UserDetails;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,9 +25,9 @@ public class UserService {
                 .map(userMapper::toDto).getContent();
     }
 
-    public User getUser(String userId) {
+    public UserDetails getUser(String userId) {
         return userRepository.findById(UUID.fromString(userId))
-                .map(userMapper::toDto)
+                .map(userMapper::toDetailsDto)
                 .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
     }
 
@@ -36,8 +37,8 @@ public class UserService {
                 .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
     }
 
-    public User updateUser(String id, User user) {
-        UserEntity existingUser = userRepository.findById(UUID.fromString(id))
+    public User updateCurrentUser(User user) {
+        UserEntity existingUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
 
         existingUser.setFirstName(user.getFirstName());
@@ -46,6 +47,18 @@ public class UserService {
 
         userRepository.save(existingUser);
         return userMapper.toDto(existingUser);
+    }
+
+    public UserDetails updateUser(String id, UserDetails userDetails) {
+        UserEntity existingUser = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+
+        existingUser.setFirstName(userDetails.getFirstName());
+        existingUser.setLastName(userDetails.getLastName());
+        existingUser.setEmail(userDetails.getEmail());
+
+        userRepository.save(existingUser);
+        return userMapper.toDetailsDto(existingUser);
     }
 
     public void deleteUser(String userId) {

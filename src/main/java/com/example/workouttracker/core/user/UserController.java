@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.openapitools.api.UserApi;
 import org.openapitools.model.ErrorResponse;
+import org.openapitools.model.UserDetails;
 
 import java.util.List;
 
@@ -25,8 +26,8 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {
-        User user = userService.getUser(userId);
+    public ResponseEntity<UserDetails> getUserById(@PathVariable("userId") String userId) {
+        UserDetails user = userService.getUser(userId);
         return ResponseEntity.ok(user);
     }
 
@@ -37,8 +38,14 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> updateUser(@PathVariable("userId") String userId, @RequestBody User user) {
-        User updatedUser = userService.updateUser(userId, user);
+    public ResponseEntity<User> updateCurrentUser(User user) {
+        User updatedUser = userService.updateCurrentUser(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @Override
+    public ResponseEntity<UserDetails> updateUser(@PathVariable("userId") String userId, @RequestBody UserDetails userDetails) {
+        UserDetails updatedUser = userService.updateUser(userId, userDetails);
         return ResponseEntity.ok(updatedUser);
     }
 
