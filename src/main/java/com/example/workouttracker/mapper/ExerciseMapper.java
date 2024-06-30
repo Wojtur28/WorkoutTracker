@@ -3,6 +3,7 @@ package com.example.workouttracker.mapper;
 import com.example.workouttracker.core.exercise.ExerciseEntity;
 import org.mapstruct.Mapper;
 import org.openapitools.model.Exercise;
+import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
 
@@ -14,5 +15,7 @@ public interface ExerciseMapper {
     List<Exercise> toDto(List<ExerciseEntity> exerciseEntity);
 
     ExerciseEntity toEntity(Exercise exercise);
+
+    ExerciseEntity toEntity(ExerciseCreate exerciseCreate);
 
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.openapitools.model.UserMeasurement;
 import org.openapitools.api.UserMeasurementApi;
 import org.openapitools.model.ErrorResponse;
+import org.openapitools.model.UserMeasurementCreate;
 
 import java.util.List;
 
@@ -31,14 +32,14 @@ public class UserMeasurementController implements UserMeasurementApi {
     }
 
     @Override
-    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurement userMeasurement) {
-        UserMeasurement createdUserMeasurement = userMeasurementService.createUserMeasurement(userMeasurement);
+    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurementCreate userMeasurementCreate) {
+        UserMeasurement createdUserMeasurement = userMeasurementService.createUserMeasurement(userMeasurementCreate);
         return ResponseEntity.ok(createdUserMeasurement);
     }
 
     @Override
-    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, @RequestBody UserMeasurement userMeasurement) {
-        UserMeasurement updatedUserMeasurement = userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurement);
+    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, @RequestBody UserMeasurementCreate userMeasurementCreate) {
+        UserMeasurement updatedUserMeasurement = userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurementCreate);
         return ResponseEntity.ok(updatedUserMeasurement);
     }
 

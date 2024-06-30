@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.openapitools.api.ExerciseApi;
 import org.openapitools.model.ErrorResponse;
+import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
 
@@ -31,14 +32,14 @@ public class ExerciseController implements ExerciseApi {
     }
 
     @Override
-    public ResponseEntity<Exercise> createExercise(@RequestBody Exercise exercise) {
-        Exercise createdExercise = exerciseService.createExercise(exercise);
+    public ResponseEntity<Exercise> createExercise(@RequestBody ExerciseCreate exerciseCreate) {
+        Exercise createdExercise = exerciseService.createExercise(exerciseCreate);
         return ResponseEntity.ok(createdExercise);
     }
 
     @Override
-    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody Exercise exercise) {
-        Exercise updatedExercise = exerciseService.updateExercise(exerciseId, exercise);
+    public ResponseEntity<Exercise> updateExercise(@PathVariable String exerciseId, @RequestBody ExerciseCreate exerciseCreate) {
+        Exercise updatedExercise = exerciseService.updateExercise(exerciseId, exerciseCreate);
         return ResponseEntity.ok(updatedExercise);
     }
 

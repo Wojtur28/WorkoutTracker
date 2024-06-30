@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.TrainingDetails;
+import org.openapitools.model.TrainingCreate;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,8 +37,8 @@ public class TrainingService {
                 .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
     }
 
-    public Training createTraining(Training training) {
-        TrainingEntity newTrainingEntity = trainingMapper.toEntity(training);
+    public Training createTraining(TrainingCreate trainingCreate) {
+        TrainingEntity newTrainingEntity = trainingMapper.toEntity(trainingCreate);
         newTrainingEntity.setUser(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new TrainingException(TrainingException.FailReason.USER_NOT_FOUND)));
 
@@ -46,12 +47,12 @@ public class TrainingService {
         return trainingMapper.toDto(newTrainingEntity);
     }
 
-    public TrainingDetails updateTraining(String trainingId, TrainingDetails trainingDetails) {
+    public TrainingDetails updateTraining(String trainingId, TrainingCreate trainingCreate) {
         TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
                 .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
 
-        trainingEntity.setName(trainingDetails.getName());
-        trainingEntity.setDescription(trainingDetails.getDescription());
+        trainingEntity.setName(trainingCreate.getName());
+        trainingEntity.setDescription(trainingCreate.getDescription());
 
         trainingRepository.save(trainingEntity);
 
