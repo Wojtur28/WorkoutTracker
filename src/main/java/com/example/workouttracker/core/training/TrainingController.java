@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.openapitools.api.TrainingApi;
 import org.openapitools.model.ErrorResponse;
 import org.openapitools.model.TrainingDetails;
+import org.openapitools.model.TrainingCreate;
 
 import java.util.List;
 
@@ -32,14 +33,14 @@ public class TrainingController implements TrainingApi {
     }
 
     @Override
-    public ResponseEntity<Training> createTraining(@RequestBody Training training) {
-        Training createdTraining = trainingService.createTraining(training);
+    public ResponseEntity<Training> createTraining(@RequestBody TrainingCreate trainingCreate) {
+        Training createdTraining = trainingService.createTraining(trainingCreate);
         return ResponseEntity.ok(createdTraining);
     }
 
     @Override
-    public ResponseEntity<TrainingDetails> updateTraining(@PathVariable String trainingId, @RequestBody TrainingDetails trainingDetails) {
-        TrainingDetails updatedTraining = trainingService.updateTraining(trainingId, trainingDetails);
+    public ResponseEntity<TrainingDetails> updateTraining(@PathVariable String trainingId, @RequestBody TrainingCreate trainingCreate) {
+        TrainingDetails updatedTraining = trainingService.updateTraining(trainingId, trainingCreate);
         return ResponseEntity.ok(updatedTraining);
     }
 

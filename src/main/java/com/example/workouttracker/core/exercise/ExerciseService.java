@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.openapitools.model.Exercise;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,20 +30,20 @@ public class ExerciseService {
                 .orElseThrow(() -> new ExerciseException(ExerciseException.FailReason.NOT_FOUND));
     }
 
-    public Exercise createExercise(Exercise exercise) {
-        ExerciseEntity newExerciseEntity = exerciseMapper.toEntity(exercise);
+    public Exercise createExercise(ExerciseCreate exerciseCreate) {
+        ExerciseEntity newExerciseEntity = exerciseMapper.toEntity(exerciseCreate);
         exerciseRepository.save(newExerciseEntity);
         return exerciseMapper.toDto(newExerciseEntity);
     }
 
-    public Exercise updateExercise(String exerciseId, Exercise exercise) {
+    public Exercise updateExercise(String exerciseId, ExerciseCreate exerciseCreate) {
         ExerciseEntity existingExercise = exerciseRepository.findById(UUID.fromString(exerciseId))
                 .orElseThrow(() -> new ExerciseException(ExerciseException.FailReason.NOT_FOUND));
 
-        existingExercise.setName(exercise.getName());
-        existingExercise.setDescription(exercise.getDescription());
-        existingExercise.setSets(exercise.getSets());
-        existingExercise.setReps(exercise.getReps());
+        existingExercise.setName(exerciseCreate.getName());
+        existingExercise.setDescription(exerciseCreate.getDescription());
+        existingExercise.setSets(exerciseCreate.getSets());
+        existingExercise.setReps(exerciseCreate.getReps());
 
         exerciseRepository.save(existingExercise);
         return exerciseMapper.toDto(existingExercise);

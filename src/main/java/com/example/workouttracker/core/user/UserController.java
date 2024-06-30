@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.openapitools.api.UserApi;
 import org.openapitools.model.ErrorResponse;
 import org.openapitools.model.UserDetails;
+import org.openapitools.model.UserCreate;
 
 import java.util.List;
 
@@ -38,14 +39,14 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> updateCurrentUser(User user) {
-        User updatedUser = userService.updateCurrentUser(user);
+    public ResponseEntity<User> updateCurrentUser(UserCreate userCreate) {
+        User updatedUser = userService.updateCurrentUser(userCreate);
         return ResponseEntity.ok(updatedUser);
     }
 
     @Override
-    public ResponseEntity<UserDetails> updateUser(@PathVariable("userId") String userId, @RequestBody UserDetails userDetails) {
-        UserDetails updatedUser = userService.updateUser(userId, userDetails);
+    public ResponseEntity<UserDetails> updateUser(@PathVariable("userId") String userId, @RequestBody UserCreate userCreate) {
+        UserDetails updatedUser = userService.updateUser(userId, userCreate);
         return ResponseEntity.ok(updatedUser);
     }
 

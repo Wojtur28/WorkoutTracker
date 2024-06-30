@@ -4,6 +4,7 @@ import com.example.workouttracker.core.training.TrainingEntity;
 import org.mapstruct.Mapper;
 import org.openapitools.model.Training;
 import org.openapitools.model.TrainingDetails;
+import org.openapitools.model.TrainingCreate;
 
 import java.util.List;
 
@@ -19,5 +20,7 @@ public interface TrainingMapper {
     TrainingDetails toDetailsDto(TrainingEntity trainingEntity);
 
     TrainingEntity toEntity(TrainingDetails trainingDetails);
+
+    TrainingEntity toEntity(TrainingCreate trainingCreate);
 
 }

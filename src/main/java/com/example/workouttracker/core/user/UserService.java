@@ -3,17 +3,20 @@ package com.example.workouttracker.core.user;
 import com.example.workouttracker.core.exception.UserException;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.openapitools.model.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.UserDetails;
+import org.openapitools.model.UserCreate;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -37,25 +40,37 @@ public class UserService {
                 .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
     }
 
-    public User updateCurrentUser(User user) {
-        UserEntity existingUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+    public User updateCurrentUser(UserCreate userCreate) {
+        try {
+            UserEntity existingUser = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
 
-        existingUser.setFirstName(user.getFirstName());
-        existingUser.setLastName(user.getLastName());
-        existingUser.setEmail(user.getEmail());
+            existingUser.setFirstName(userCreate.getFirstName());
+            existingUser.setLastName(userCreate.getLastName());
 
-        userRepository.save(existingUser);
-        return userMapper.toDto(existingUser);
+            if (userRepository.findByEmail(userCreate.getEmail()).isPresent()) {
+                throw new UserException(UserException.FailReason.NOT_UNIQUE_EMAIL);
+            }
+            existingUser.setEmail(userCreate.getEmail());
+
+            userRepository.save(existingUser);
+            return userMapper.toDto(existingUser);
+        } catch (UserException e) {
+            log.error("User not found: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while updating the user: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
-    public UserDetails updateUser(String id, UserDetails userDetails) {
+    public UserDetails updateUser(String id, UserCreate userCreate) {
         UserEntity existingUser = userRepository.findById(UUID.fromString(id))
                 .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
 
-        existingUser.setFirstName(userDetails.getFirstName());
-        existingUser.setLastName(userDetails.getLastName());
-        existingUser.setEmail(userDetails.getEmail());
+        existingUser.setFirstName(userCreate.getFirstName());
+        existingUser.setLastName(userCreate.getLastName());
+        existingUser.setEmail(userCreate.getEmail());
 
         userRepository.save(existingUser);
         return userMapper.toDetailsDto(existingUser);
