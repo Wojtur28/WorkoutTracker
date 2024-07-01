@@ -41,6 +41,8 @@ repositories {
 
 dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("org.apache.logging.log4j:log4j-to-slf4j:2.23.1")
+    implementation("org.apache.logging.log4j:log4j-api:2.23.1")
     testImplementation("org.springframework.security:spring-security-test:6.3.0")
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.slf4j:slf4j-api:2.0.13")
@@ -53,9 +55,8 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
-    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.47") {
-        exclude(group = "org.slf4j", module = "slf4j-simple")
-    }
+    implementation("org.springframework.boot:spring-boot-starter-logging")
+    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.47")
     // most of the dependencies above below are important for swagger codegen
     implementation("io.gsonfire:gson-fire:1.9.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
@@ -66,7 +67,6 @@ dependencies {
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
     annotationProcessor("org.projectlombok:lombok")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     implementation("org.mapstruct:mapstruct:1.6.0.Beta1")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.0.Beta1")

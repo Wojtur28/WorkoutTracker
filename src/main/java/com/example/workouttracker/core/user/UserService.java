@@ -20,7 +20,6 @@ import java.util.UUID;
 public class UserService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
 
     public List<User> getUsers(Integer page, Integer size) {
@@ -29,15 +28,31 @@ public class UserService {
     }
 
     public UserDetails getUser(String userId) {
-        return userRepository.findById(UUID.fromString(userId))
-                .map(userMapper::toDetailsDto)
-                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        try {
+            return userRepository.findById(UUID.fromString(userId))
+                    .map(userMapper::toDetailsDto)
+                    .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        } catch (UserException e) {
+            log.error("User not found: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while retrieving the user: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     public User getCurrentUser() {
-        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .map(userMapper::toDto)
-                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        try {
+            return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                    .map(userMapper::toDto)
+                    .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        } catch (UserException e) {
+            log.error("Current user not found: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while retrieving the current user: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     public User updateCurrentUser(UserCreate userCreate) {
@@ -56,7 +71,7 @@ public class UserService {
             userRepository.save(existingUser);
             return userMapper.toDto(existingUser);
         } catch (UserException e) {
-            log.error("User not found: {}", e.getMessage(), e);
+            log.error("User update failed: {}", e.getMessage(), e);
             throw e;
         } catch (Exception e) {
             log.error("An error occurred while updating the user: {}", e.getMessage(), e);
@@ -65,21 +80,36 @@ public class UserService {
     }
 
     public UserDetails updateUser(String id, UserCreate userCreate) {
-        UserEntity existingUser = userRepository.findById(UUID.fromString(id))
-                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+        try {
+            UserEntity existingUser = userRepository.findById(UUID.fromString(id))
+                    .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
 
-        existingUser.setFirstName(userCreate.getFirstName());
-        existingUser.setLastName(userCreate.getLastName());
-        existingUser.setEmail(userCreate.getEmail());
+            existingUser.setFirstName(userCreate.getFirstName());
+            existingUser.setLastName(userCreate.getLastName());
+            existingUser.setEmail(userCreate.getEmail());
 
-        userRepository.save(existingUser);
-        return userMapper.toDetailsDto(existingUser);
+            userRepository.save(existingUser);
+            return userMapper.toDetailsDto(existingUser);
+        } catch (UserException e) {
+            log.error("User not found for update: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while updating the user: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     public void deleteUser(String userId) {
-        UserEntity user = userRepository.findById(UUID.fromString(userId))
-                .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
-        userRepository.delete(user);
+        try {
+            UserEntity user = userRepository.findById(UUID.fromString(userId))
+                    .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+            userRepository.delete(user);
+        } catch (UserException e) {
+            log.error("User not found for deletion: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while deleting the user: {}", e.getMessage(), e);
+            throw e;
+        }
     }
-
 }

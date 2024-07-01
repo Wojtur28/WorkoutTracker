@@ -36,4 +36,8 @@ out/
 ### VS Code ###
 .vscode/
 
+
+### Others ###
 application.yaml
+
+.log

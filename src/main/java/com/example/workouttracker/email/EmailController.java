@@ -3,7 +3,6 @@ package com.example.workouttracker.email;
 import com.example.workouttracker.config.security.service.JwtService;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
-import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.openapitools.model.UserPasswordReset;
 
 @RestController
 @AllArgsConstructor
@@ -24,7 +22,7 @@ public class EmailController {
     private final EmailService emailService;
 
     @PostMapping("/request-password-reset")
-    public ResponseEntity<EmailResponse> requestPasswordReset(@RequestBody @Valid UserPasswordReset userPasswordReset) throws MessagingException {
+    public ResponseEntity<EmailResponse> requestPasswordReset(@RequestBody @Valid UserPasswordReset userPasswordReset) {
         emailService.sendPasswordResetEmail(userPasswordReset.getEmail());
         return ResponseEntity.ok(new EmailResponse("Password reset link sent to your email address."));
     }
