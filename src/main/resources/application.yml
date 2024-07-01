@@ -29,4 +29,13 @@ security:
     secret-key: test
     expiration-time: 3600000
 
+logging:
+  level:
+    org:
+      hibernate:
+        engine:
+          internal:
+            StatefulPersistenceContext: ERROR
+
+
 
