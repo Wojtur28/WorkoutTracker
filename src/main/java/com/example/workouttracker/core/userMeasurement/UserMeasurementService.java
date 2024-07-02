@@ -1,15 +1,19 @@
 package com.example.workouttracker.core.userMeasurement;
 
 import com.example.workouttracker.core.exception.UserMeasurementException;
+import com.example.workouttracker.core.user.UserEntity;
+import com.example.workouttracker.core.user.UserRepository;
 import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.UserMeasurement;
 import org.openapitools.model.UserMeasurementCreate;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -19,6 +23,7 @@ public class UserMeasurementService {
 
     private final UserMeasurementRepository userMeasurementRepository;
     private final UserMeasurementMapper userMeasurementMapper;
+    private final UserRepository userRepository;
 
     public List<UserMeasurement> getUserMeasurements(Integer page, Integer size) {
         log.info("Fetching user measurements with page: {} and size: {}", page, size);
@@ -44,7 +49,12 @@ public class UserMeasurementService {
     public UserMeasurement createUserMeasurement(UserMeasurementCreate userMeasurementCreate) {
         log.info("Creating new user measurement with details: {}", userMeasurementCreate);
         try {
+            Optional<UserEntity> user = Optional.ofNullable(userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName()))
+                    .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.USER_NOT_FOUND));
+
             UserMeasurementEntity newUserMeasurementEntity = userMeasurementMapper.toEntity(userMeasurementCreate);
+            newUserMeasurementEntity.setUser(user.get());
+
             userMeasurementRepository.save(newUserMeasurementEntity);
             return userMeasurementMapper.toDto(newUserMeasurementEntity);
         } catch (Exception e) {
