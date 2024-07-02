@@ -72,6 +72,10 @@ public class UserMeasurementService {
             existingUserMeasurementEntity.setWeight(userMeasurementCreate.getWeight().doubleValue());
             existingUserMeasurementEntity.setHeight(userMeasurementCreate.getHeight().doubleValue());
             existingUserMeasurementEntity.setAge(userMeasurementCreate.getAge().doubleValue());
+            existingUserMeasurementEntity.setArms(userMeasurementCreate.getArms().doubleValue());
+            existingUserMeasurementEntity.setChest(userMeasurementCreate.getChest().doubleValue());
+            existingUserMeasurementEntity.setBelly(userMeasurementCreate.getBelly().doubleValue());
+            existingUserMeasurementEntity.setLegs(userMeasurementCreate.getLegs().doubleValue());
 
             userMeasurementRepository.save(existingUserMeasurementEntity);
             return userMeasurementMapper.toDto(existingUserMeasurementEntity);

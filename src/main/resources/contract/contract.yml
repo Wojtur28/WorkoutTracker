@@ -1014,6 +1014,14 @@ components:
                     type: number
                 age:
                     type: number
+                arms:
+                    type: number
+                chest:
+                    type: number
+                belly:
+                    type: number
+                legs:
+                    type: number
         Training:
             type: object
             properties:
