@@ -997,6 +997,14 @@ components:
                     type: number
                 age:
                     type: number
+                arms:
+                    type: number
+                chest:
+                    type: number
+                belly:
+                    type: number
+                legs:
+                    type: number
         UserMeasurementCreate:
             type: object
             properties:
@@ -1005,6 +1013,14 @@ components:
                 height:
                     type: number
                 age:
+                    type: number
+                arms:
+                    type: number
+                chest:
+                    type: number
+                belly:
+                    type: number
+                legs:
                     type: number
         Training:
             type: object
@@ -1075,6 +1091,8 @@ components:
                     type: integer
                 reps:
                     type: integer
+                trainingId:
+                    type: string
 
         TrainingCategory:
             type: string

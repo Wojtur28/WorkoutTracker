@@ -17,6 +17,11 @@ public class UserMeasurementEntity extends AuditBase {
     private double weight;
     private double height;
     private double age;
+    private double arms;
+    private double chest;
+    private double belly;
+    private double legs;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserEntity user;
