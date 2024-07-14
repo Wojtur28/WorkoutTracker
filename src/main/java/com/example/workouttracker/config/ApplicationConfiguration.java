@@ -1,5 +1,6 @@
 package com.example.workouttracker.config;
 
+import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -11,6 +12,8 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -21,8 +24,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @AllArgsConstructor
+@EnableJpaAuditing(auditorAwareRef = "auditorProvider")
 public class ApplicationConfiguration {
     private final UserRepository userRepository;
+
+    @Bean
+    public AuditorAware<UserEntity> auditorProvider() {
+        return new AuditorAwareImpl();
+    }
 
     @Bean
     UserDetailsService userDetailsService() {

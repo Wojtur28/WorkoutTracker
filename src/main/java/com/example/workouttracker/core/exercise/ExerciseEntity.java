@@ -1,14 +1,13 @@
 package com.example.workouttracker.core.exercise;
 
 import com.example.workouttracker.AuditBase;
+import com.example.workouttracker.core.exercise.set.ExerciseSetEntity;
 import com.example.workouttracker.core.training.TrainingEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "exercises")
 @Data
@@ -22,11 +21,8 @@ public class ExerciseEntity extends AuditBase {
 
     private String description;
 
-    @NotNull
-    private int sets;
-
-    @NotNull
-    private int reps;
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ExerciseSetEntity> sets = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
