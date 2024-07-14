@@ -11,7 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.ExerciseCreate;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -70,8 +69,7 @@ public class ExerciseService {
 
             existingExercise.setName(exerciseCreate.getName());
             existingExercise.setDescription(exerciseCreate.getDescription());
-            existingExercise.setSets(exerciseCreate.getSets());
-            existingExercise.setReps(exerciseCreate.getReps());
+            existingExercise.setSets(exerciseMapper.toEntity(exerciseCreate).getSets());
 
             exerciseRepository.save(existingExercise);
             return exerciseMapper.toDto(existingExercise);
