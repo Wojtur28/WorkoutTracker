@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.openapitools.model.Training;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.openapitools.model.TrainingDetails;
@@ -26,8 +27,9 @@ public class TrainingService {
 
     public List<Training> getTrainings(Integer page, Integer size) {
         log.info("Fetching trainings with page: {} and size: {}", page, size);
-        return trainingRepository.findAll(PageRequest.of(page, size))
-                .map(trainingMapper::toDto).getContent();
+        return trainingRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "createdOn")))
+                .map(trainingMapper::toDto)
+                .getContent();
     }
 
     public TrainingDetails getTraining(String trainingId) {
