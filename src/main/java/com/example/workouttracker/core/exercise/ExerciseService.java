@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,11 +47,14 @@ public class ExerciseService {
     public Exercise createExercise(ExerciseCreate exerciseCreate) {
         log.info("Creating new exercise with details: {}", exerciseCreate);
         try {
-            Optional<TrainingEntity> training = Optional.ofNullable(trainingRepository.findById(UUID.fromString(exerciseCreate.getTrainingId()))
-                    .orElseThrow(() -> new ExerciseException(ExerciseException.FailReason.TRAINING_NOT_FOUND)));
+            TrainingEntity training = trainingRepository.findById(UUID.fromString(exerciseCreate.getTrainingId()))
+                    .orElseThrow(() -> new ExerciseException(ExerciseException.FailReason.TRAINING_NOT_FOUND));
 
             ExerciseEntity newExerciseEntity = exerciseMapper.toEntity(exerciseCreate);
-            newExerciseEntity.setTraining(training.get());
+            newExerciseEntity.setTraining(training);
+
+            newExerciseEntity.getSets().forEach(set -> set.setExercise(newExerciseEntity));
+
             exerciseRepository.save(newExerciseEntity);
             return exerciseMapper.toDto(newExerciseEntity);
         } catch (Exception e) {
@@ -69,7 +71,10 @@ public class ExerciseService {
 
             existingExercise.setName(exerciseCreate.getName());
             existingExercise.setDescription(exerciseCreate.getDescription());
-            existingExercise.setSets(exerciseMapper.toEntity(exerciseCreate).getSets());
+
+            existingExercise.getSets().clear();
+            existingExercise.getSets().addAll(exerciseMapper.toEntity(exerciseCreate).getSets());
+            existingExercise.getSets().forEach(set -> set.setExercise(existingExercise));
 
             exerciseRepository.save(existingExercise);
             return exerciseMapper.toDto(existingExercise);

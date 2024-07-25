@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity(name = "sets")
@@ -17,8 +16,9 @@ import lombok.*;
 @AllArgsConstructor
 public class ExerciseSetEntity extends AuditBase {
 
-    @NotNull
     private int reps;
+
+    private double weight;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_id")
