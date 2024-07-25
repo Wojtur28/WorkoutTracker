@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 import org.openapitools.model.UserDetails;
 import org.openapitools.model.UserCreate;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -62,11 +61,8 @@ public class UserService {
 
             existingUser.setFirstName(userCreate.getFirstName());
             existingUser.setLastName(userCreate.getLastName());
-
-            if (userRepository.findByEmail(userCreate.getEmail()).isPresent()) {
-                throw new UserException(UserException.FailReason.NOT_UNIQUE_EMAIL);
-            }
             existingUser.setEmail(userCreate.getEmail());
+            existingUser.setGenders(new HashSet<>(Collections.singleton(UserGender.valueOf(userCreate.getGender()))));
 
             userRepository.save(existingUser);
             return userMapper.toDto(existingUser);

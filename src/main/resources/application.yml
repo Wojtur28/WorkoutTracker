@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: test
-    username: test
-    password: test
+    url: jdbc:postgresql://localhost:5432/workout_wojtur
+    username: postgres
+    password: secret
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
@@ -14,8 +14,8 @@ spring:
   mail:
     host: smtp.mailtrap.io
     port: 2525
-    username: test
-    password: test
+    username: 6db8a64a2e5319
+    password: 847d7969d0cb17
     properties:
       mail:
         smtp:
@@ -26,7 +26,7 @@ spring:
 
 security:
   jwt:
-    secret-key: test
+    secret-key: itsmysecretkeywithlengthgreaterthan256bitsanditsverysecure
     expiration-time: 3600000
 
 logging:

@@ -1,6 +1,7 @@
 /*
 package com.example.workouttracker.user.service;
 
+import com.example.workouttracker.core.exception.UserException;
 import com.example.workouttracker.core.user.*;
 import com.example.workouttracker.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,14 +11,20 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.openapitools.model.User;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.openapitools.model.UserCreate;
+import org.openapitools.model.UserDetails;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,8 +41,9 @@ public class UserServiceTest {
 
     private UserEntity user1;
     private UserEntity user2;
-    private User userDto1;
-    private User userDto2;
+    private UserDetails userDetails1;
+    private UserDetails userDetails2;
+    private UserCreate userCreate;
 
     @BeforeEach
     public void setUp(){
@@ -61,118 +69,201 @@ public class UserServiceTest {
         user1.setId(UUID.randomUUID());
         user2.setId(UUID.randomUUID());
 
-        userDto1 = new User();
-        userDto1.setEmail("email1");
-        userDto1.setFirstName("firstName1");
-        userDto1.setLastName("lastName1");
+        userDetails1 = new UserDetails();
+        userDetails1.setEmail("email1");
+        userDetails1.setFirstName("firstName1");
+        userDetails1.setLastName("lastName1");
 
-        userDto2 = new User();
-        userDto2.setEmail("email2");
-        userDto2.setFirstName("firstName2");
-        userDto2.setLastName("lastName2");
+        userDetails2 = new UserDetails();
+        userDetails2.setEmail("email2");
+        userDetails2.setFirstName("firstName2");
+        userDetails2.setLastName("lastName2");
 
+        userCreate = new UserCreate();
+        userCreate.setEmail("newEmail");
+        userCreate.setFirstName("newFirstName");
+        userCreate.setLastName("newLastName");
     }
 
+    @Test
+    public void shouldReturnUsersList() {
+        when(userRepository.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(Arrays.asList(user1, user2)));
+        when(userMapper.toDto(any(UserEntity.class))).thenReturn(userDetails1).thenReturn(userDetails2);
 
-    */
-/*@Test
-    @Disabled
-    public void shouldReturnUsersList(){
-        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
-        when(userMapper.toDto(anyList())).thenReturn(Arrays.asList(userDto1, userDto2));
+        List<User> users = userService.getUsers(0, 10);
 
-        ResponseEntity<List<User>> responseEntity = userService.getUsers();
+        assertNotNull(users);
+        assertEquals(2, users.size());
+        assertEquals(userDetails1, users.get(0));
+        assertEquals(userDetails2, users.get(1));
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
-        List<User> userDTOs = responseEntity.getBody();
-        assertNotNull(userDTOs);
-        assertEquals(2, userDTOs.size());
-        assertEquals(userDto1, userDTOs.get(0));
-        assertEquals(userDto2, userDTOs.get(1));
-
-        verify(userRepository, times(1)).findAll();
-        verify(userMapper, times(1)).toDto(anyList());
-    }*//*
-
+        verify(userRepository, times(1)).findAll(any(PageRequest.class));
+        verify(userMapper, times(2)).toDto(any(UserEntity.class));
+    }
 
     @Test
-    public void shouldReturnUserById(){
+    public void shouldReturnUserById() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
-        when(userMapper.toDto(user1)).thenReturn(userDto1);
+        when(userMapper.toDetailsDto(user1)).thenReturn(userDetails1);
 
-        ResponseEntity<User> responseEntity = userService.getUser(user1.getId().toString());
+        UserDetails userDetails = userService.getUser(user1.getId().toString());
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
-        User userDTO = responseEntity.getBody();
-        assertNotNull(userDTO);
-        assertEquals(userDto1, userDTO);
+        assertNotNull(userDetails);
+        assertEquals(userDetails1, userDetails);
 
         verify(userRepository, times(1)).findById(user1.getId());
-        verify(userMapper, times(1)).toDto(user1);
+        verify(userMapper, times(1)).toDetailsDto(user1);
     }
 
     @Test
     public void shouldReturnNotFoundWhenUserNotFound() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
 
-        ResponseEntity<User> responseEntity = userService.getUser(user1.getId().toString());
+        assertThrows(UserException.class, () -> {
+            userService.getUser(user1.getId().toString());
+        });
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(404), responseEntity.getStatusCode());
+        verify(userRepository, times(1)).findById(user1.getId());
+    }
+
+    @Test
+    public void shouldReturnCurrentUser() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn(user1.getEmail());
+
+        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
+        when(userMapper.toDto(user1)).thenReturn(userDetails1);
+
+        User user = userService.getCurrentUser();
+
+        assertNotNull(user);
+        assertEquals(userDetails1, user);
+
+        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+        verify(userMapper, times(1)).toDto(user1);
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenCurrentUserNotFound() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn(user1.getEmail());
+
+        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(UserException.class, () -> {
+            userService.getCurrentUser();
+        });
+
+        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+    }
+
+    @Test
+    public void shouldUpdateCurrentUser() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn(user1.getEmail());
+
+        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
+        when(userRepository.findByEmail(userCreate.getEmail())).thenReturn(java.util.Optional.empty());
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user1);
+        when(userMapper.toDto(user1)).thenReturn(userDetails1);
+
+        User user = userService.updateCurrentUser(userCreate);
+
+        assertNotNull(user);
+        assertEquals(userDetails1, user);
+
+        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userMapper, times(1)).toDto(user1);
+    }
+
+    @Test
+    public void shouldReturnNotFoundWhenCurrentUserToUpdateNotFound() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn(user1.getEmail());
+
+        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.empty());
+
+        assertThrows(UserException.class, () -> userService.updateCurrentUser(userCreate));
+
+        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+    }
+
+    @Test
+    public void shouldReturnNotUniqueEmailWhenUpdatingCurrentUser() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContext securityContext = mock(SecurityContext.class);
+        SecurityContextHolder.setContext(securityContext);
+
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        when(authentication.getName()).thenReturn(user1.getEmail());
+
+        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
+        when(userRepository.findByEmail(userCreate.getEmail())).thenReturn(java.util.Optional.of(user2));
+
+        assertThrows(UserException.class, () -> userService.updateCurrentUser(userCreate));
+
+        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+        verify(userRepository, times(1)).findByEmail(userCreate.getEmail());
     }
 
     @Test
     public void shouldUpdateUser() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
-        when(userRepository.save(user1)).thenReturn(user1);
-        when(userMapper.toDto(user1)).thenReturn(userDto1);
+        when(userRepository.save(any(UserEntity.class))).thenReturn(user1);
+        when(userMapper.toDetailsDto(user1)).thenReturn(userDetails1);
 
-        User updatedUser = new User();
+        UserDetails userDetails = userService.updateUser(user1.getId().toString(), userCreate);
 
-        updatedUser.setEmail("newEmail");
-        updatedUser.setFirstName("newFirstName");
-        updatedUser.setLastName("newLastName");
+        assertNotNull(userDetails);
+        assertEquals(userDetails1, userDetails);
 
-        ResponseEntity<User> responseEntity = userService.updateUser(user1.getId().toString(), updatedUser);
-
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
-        User userDTO = responseEntity.getBody();
-        assertNotNull(userDTO);
-        assertEquals(userDto1, userDTO);
+        verify(userRepository, times(1)).findById(user1.getId());
+        verify(userRepository, times(1)).save(any(UserEntity.class));
+        verify(userMapper, times(1)).toDetailsDto(user1);
     }
 
     @Test
     public void shouldReturnNotFoundWhenUserToUpdateNotFound() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
 
-        ResponseEntity<User> responseEntity = userService.updateUser(user1.getId().toString(), new User());
+        assertThrows(UserException.class, () -> userService.updateUser(user1.getId().toString(), userCreate));
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(404), responseEntity.getStatusCode());
+        verify(userRepository, times(1)).findById(user1.getId());
     }
 
     @Test
     public void shouldDeleteUser() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
 
-        ResponseEntity<Void> responseEntity = userService.deleteUser(user1.getId().toString());
+        userService.deleteUser(user1.getId().toString());
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(200), responseEntity.getStatusCode());
+        verify(userRepository, times(1)).findById(user1.getId());
+        verify(userRepository, times(1)).delete(user1);
     }
 
     @Test
-
     public void shouldReturnNotFoundWhenUserToDeleteNotFound() {
         when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
 
-        ResponseEntity<Void> responseEntity = userService.deleteUser(user1.getId().toString());
+        assertThrows(UserException.class, () -> userService.deleteUser(user1.getId().toString()));
 
-        assertNotNull(responseEntity);
-        assertEquals(HttpStatusCode.valueOf(404), responseEntity.getStatusCode());
+        verify(userRepository, times(1)).findById(user1.getId());
     }
-}
-*/
+}*/
