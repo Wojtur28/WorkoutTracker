@@ -1,5 +1,6 @@
 package com.example.workouttracker.config.security.controller;
 
+import com.example.model.User;
 import com.example.workouttracker.config.security.dto.SignInResponse;
 import com.example.workouttracker.config.security.dto.SignInUser;
 import com.example.workouttracker.config.security.dto.SignUpUser;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.openapitools.model.User;
 
 
 @RequestMapping("/auth")

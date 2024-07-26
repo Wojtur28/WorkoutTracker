@@ -1,15 +1,15 @@
 package com.example.workouttracker.core.user;
 
+import com.example.api.UserApi;
+import com.example.model.ErrorResponse;
+import com.example.model.User;
+import com.example.model.UserCreate;
+import com.example.model.UserDetails;
 import com.example.workouttracker.core.exception.UserException;
 import lombok.AllArgsConstructor;
-import org.openapitools.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.openapitools.api.UserApi;
-import org.openapitools.model.ErrorResponse;
-import org.openapitools.model.UserDetails;
-import org.openapitools.model.UserCreate;
 
 import java.util.List;
 

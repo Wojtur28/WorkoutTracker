@@ -1,10 +1,10 @@
 package com.example.workouttracker.mapper;
 
+import com.example.model.Training;
+import com.example.model.TrainingCreate;
+import com.example.model.TrainingDetails;
 import com.example.workouttracker.core.training.TrainingEntity;
 import org.mapstruct.Mapper;
-import org.openapitools.model.Training;
-import org.openapitools.model.TrainingDetails;
-import org.openapitools.model.TrainingCreate;
 
 import java.util.List;
 

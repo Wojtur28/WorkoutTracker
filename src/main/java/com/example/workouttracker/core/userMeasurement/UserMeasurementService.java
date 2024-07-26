@@ -1,5 +1,7 @@
 package com.example.workouttracker.core.userMeasurement;
 
+import com.example.model.UserMeasurement;
+import com.example.model.UserMeasurementCreate;
 import com.example.workouttracker.core.exception.UserMeasurementException;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.core.user.UserRepository;
@@ -9,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.openapitools.model.UserMeasurement;
-import org.openapitools.model.UserMeasurementCreate;
 
 import java.util.List;
 import java.util.Optional;

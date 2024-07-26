@@ -1,14 +1,14 @@
 package com.example.workouttracker.core.userMeasurement;
 
+import com.example.api.UserMeasurementApi;
+import com.example.model.ErrorResponse;
+import com.example.model.UserMeasurement;
+import com.example.model.UserMeasurementCreate;
 import com.example.workouttracker.core.exception.UserMeasurementException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.openapitools.model.UserMeasurement;
-import org.openapitools.api.UserMeasurementApi;
-import org.openapitools.model.ErrorResponse;
-import org.openapitools.model.UserMeasurementCreate;
 
 import java.util.List;
 

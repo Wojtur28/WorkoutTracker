@@ -1,17 +1,18 @@
 package com.example.workouttracker.core.training;
 
+import com.example.api.TrainingApi;
+import com.example.model.ErrorResponse;
+import com.example.model.Training;
+import com.example.model.TrainingCreate;
+import com.example.model.TrainingDetails;
 import com.example.workouttracker.core.exception.TrainingException;
 import lombok.AllArgsConstructor;
-import org.openapitools.model.Training;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.openapitools.api.TrainingApi;
-import org.openapitools.model.ErrorResponse;
-import org.openapitools.model.TrainingDetails;
-import org.openapitools.model.TrainingCreate;
 
 import java.util.List;
+
 
 @RestController
 @AllArgsConstructor

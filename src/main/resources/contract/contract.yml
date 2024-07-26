@@ -3,13 +3,10 @@ info:
     title: WorkoutTracker
     version: 1.0.0
 
-
 servers:
     - url: http://188.68.247.208:8080
       description: Local server
 
-security:
-    - bearerAuth: []
 
 tags:
     - name: user
@@ -18,8 +15,6 @@ tags:
       description: Training operations
     - name: exercise
       description: Exercise operations
-
-
 
 paths:
     /user:
