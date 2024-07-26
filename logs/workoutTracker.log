@@ -1232,3 +1232,7 @@
 {"@timestamp":"2024-07-26T11:11:54.77+02:00","@version":"1","message":"Initializing Spring DispatcherServlet 'dispatcherServlet'","logger_name":"org.apache.catalina.core.ContainerBase.[Tomcat].[localhost].[/]","thread_name":"http-nio-8080-exec-1","level":"INFO","level_value":20000}
 2024-07-26 11:11:55,386 INFO o.s.a.AbstractOpenApiResource [http-nio-8080-exec-7] Init duration for springdoc-openapi is: 369 ms
 {"@timestamp":"2024-07-26T11:11:55.386+02:00","@version":"1","message":"Init duration for springdoc-openapi is: 369 ms","logger_name":"org.springdoc.api.AbstractOpenApiResource","thread_name":"http-nio-8080-exec-7","level":"INFO","level_value":20000}
+2024-07-26 11:15:28,702 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown initiated...
+{"@timestamp":"2024-07-26T11:15:28.702+02:00","@version":"1","message":"HikariPool-1 - Shutdown initiated...","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"SpringApplicationShutdownHook","level":"INFO","level_value":20000}
+2024-07-26 11:15:28,705 INFO c.z.h.HikariDataSource [SpringApplicationShutdownHook] HikariPool-1 - Shutdown completed.
+{"@timestamp":"2024-07-26T11:15:28.705+02:00","@version":"1","message":"HikariPool-1 - Shutdown completed.","logger_name":"com.zaxxer.hikari.HikariDataSource","thread_name":"SpringApplicationShutdownHook","level":"INFO","level_value":20000}
