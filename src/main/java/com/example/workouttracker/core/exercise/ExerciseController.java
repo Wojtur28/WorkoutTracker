@@ -1,14 +1,14 @@
 package com.example.workouttracker.core.exercise;
 
+import com.example.api.ExerciseApi;
+import com.example.model.ErrorResponse;
+import com.example.model.Exercise;
+import com.example.model.ExerciseCreate;
 import com.example.workouttracker.core.exception.ExerciseException;
 import lombok.AllArgsConstructor;
-import org.openapitools.model.Exercise;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.openapitools.api.ExerciseApi;
-import org.openapitools.model.ErrorResponse;
-import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
 

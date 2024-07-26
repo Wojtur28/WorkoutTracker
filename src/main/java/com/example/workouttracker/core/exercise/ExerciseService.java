@@ -1,15 +1,15 @@
 package com.example.workouttracker.core.exercise;
 
+import com.example.model.Exercise;
+import com.example.model.ExerciseCreate;
 import com.example.workouttracker.core.exception.ExerciseException;
 import com.example.workouttracker.core.training.TrainingEntity;
 import com.example.workouttracker.core.training.TrainingRepository;
 import com.example.workouttracker.mapper.ExerciseMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openapitools.model.Exercise;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import org.openapitools.model.ExerciseCreate;
 
 import java.util.List;
 import java.util.UUID;

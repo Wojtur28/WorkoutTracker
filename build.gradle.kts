@@ -3,12 +3,10 @@ import java.util.*
 
 buildscript {
     repositories {
-        maven {
-            url = uri("https://plugins.gradle.org/m2/")
-        }
+        mavenCentral()
     }
     dependencies {
-        classpath("gradle.plugin.org.flywaydb:gradle-plugin-publishing:10.0.1")
+        classpath("io.swagger.codegen.v3:swagger-codegen-maven-plugin:3.0.16")
     }
 }
 
@@ -17,16 +15,17 @@ plugins {
     id("org.springframework.boot") version "3.1.5"
     id("io.spring.dependency-management") version "1.1.3"
     id("org.flywaydb.flyway") version "10.10.0"
-    id("org.openapi.generator") version "5.3.0"
+    id("org.hidetake.swagger.generator") version "2.19.2"
 }
 
 group = "com.example"
- val dateFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
- val formattedDate = dateFormat.format(Date())
- version = "0.0.1-$formattedDate"
+val dateFormat = SimpleDateFormat("yyyyMMdd-HHmmss")
+val formattedDate = dateFormat.format(Date())
+version = "0.0.1-$formattedDate"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_20
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 configurations {
@@ -40,6 +39,7 @@ repositories {
 }
 
 dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.apache.logging.log4j:log4j-to-slf4j:2.23.1")
     implementation("org.apache.logging.log4j:log4j-api:2.23.1")
@@ -47,17 +47,16 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation:3.1.5")
     implementation("org.slf4j:slf4j-api:2.0.13")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.flywaydb:flyway-core:9.16.3")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
     implementation("org.springframework.boot:spring-boot-starter-mail:3.2.5")
-    implementation ("org.springframework.boot:spring-boot-starter-security")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.jsonwebtoken:jjwt-api:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
     implementation("org.springframework.boot:spring-boot-starter-logging")
-    implementation("io.swagger.codegen.v3:swagger-codegen-generators:1.0.47")
-    // most of the dependencies above below are important for swagger codegen
+    swaggerCodegen("io.swagger.codegen.v3:swagger-codegen-cli:3.0.47")
+    // dependencies for swagger-codegen
     implementation("io.gsonfire:gson-fire:1.9.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
     implementation("org.threeten:threetenbp:1.6.8")
@@ -71,7 +70,12 @@ dependencies {
     implementation("org.mapstruct:mapstruct:1.6.0.Beta1")
     annotationProcessor("org.mapstruct:mapstruct-processor:1.6.0.Beta1")
     compileOnly("javax.servlet:servlet-api:3.0-alpha-1")
-    implementation("org.openapitools:jackson-databind-nullable:0.2.6")
+    implementation("javax.validation:validation-api:2.0.1.Final")
+    implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+}
+
+tasks.withType<JavaCompile> {
+    options.release.set(21)
 }
 
 tasks.withType<Test> {
@@ -82,29 +86,31 @@ tasks.bootBuildImage {
     builder.set("paketobuildpacks/builder-jammy-base:latest")
 }
 
- openApiGenerate {
-     generatorName.set("spring")
-     inputSpec.set("/Users/wojtur/IdeaProjects/WorkoutTracker/src/main/resources/contract/contract.yml")
-     outputDir.set("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger")
-     configOptions.set(mapOf(
-             "generateModelTests" to "false",
-             "generateApiTests" to "false",
-             "interfaceOnly" to "true",
-             "useTags" to "true",
-     ))
-     apiPackage.set("org.openapitools.api")
-     modelPackage.set("org.openapitools.model")
- }
+val apiPackage = "com.example.api"
+val modelPackage = "com.example.model"
+val swaggerFile = file("src/main/resources/contract/contract.yml")
 
- sourceSets {
-     main {
-         java {
-             srcDir("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger/src/main")
-         }
-     }
-     test {
-         java {
-             srcDir("/Users/wojtur/IdeaProjects/WorkoutTracker/build/generated-sources/swagger/src/test")
-         }
-     }
- }
+
+swaggerSources {
+    create("workoutTrackerApi") {
+        setInputFile(swaggerFile)
+        code.language = "spring"
+        code.outputDir = file("$buildDir/generated-sources")
+        code.components = listOf("apis", "models")
+        code.additionalProperties = mapOf(
+            "apiPackage" to apiPackage,
+            "modelPackage" to modelPackage,
+            "java8" to "true",
+            "interfaceOnly" to "true",
+            "useTags" to "true"
+        )
+    }
+}
+
+sourceSets {
+    main {
+        java {
+            srcDir("$buildDir/generated-sources/src/main/java")
+        }
+    }
+}

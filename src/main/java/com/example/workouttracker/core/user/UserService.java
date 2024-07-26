@@ -1,15 +1,15 @@
 package com.example.workouttracker.core.user;
 
+import com.example.model.User;
+import com.example.model.UserCreate;
+import com.example.model.UserDetails;
 import com.example.workouttracker.core.exception.UserException;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.openapitools.model.User;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.openapitools.model.UserDetails;
-import org.openapitools.model.UserCreate;
 
 import java.util.*;
 

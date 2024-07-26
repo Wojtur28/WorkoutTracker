@@ -1,9 +1,9 @@
 package com.example.workouttracker.mapper;
 
+import com.example.model.UserMeasurement;
+import com.example.model.UserMeasurementCreate;
 import com.example.workouttracker.core.userMeasurement.UserMeasurementEntity;
 import org.mapstruct.Mapper;
-import org.openapitools.model.UserMeasurement;
-import org.openapitools.model.UserMeasurementCreate;
 
 import java.util.List;
 
