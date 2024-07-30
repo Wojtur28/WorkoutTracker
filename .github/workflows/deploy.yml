@@ -50,7 +50,8 @@ jobs:
         env:
           VPS_USER: ${{ secrets.SERVER_USER }}
           VPS_HOST: ${{ secrets.SERVER_IP }}
+          SERVER_PASSWORD: ${{ secrets.SERVER_PASSWORD }}
         run: |
-          ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST << 'EOF'
+          sshpass -p "$SERVER_PASSWORD" ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST << 'EOF'
           sudo systemctl restart workouttracker.service
           EOF
