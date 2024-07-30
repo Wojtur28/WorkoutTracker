@@ -31,7 +31,7 @@ jobs:
           VPS_HOST: ${{ secrets.SERVER_IP }}
         run: |
           ssh $VPS_USER@$VPS_HOST << 'EOF'
-          cd /path/to/your/application
+          cd /home
           git pull origin main
           ./gradlew build
           sudo systemctl restart workouttracker.service
