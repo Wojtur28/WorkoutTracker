@@ -33,6 +33,6 @@ jobs:
           ssh $VPS_USER@$VPS_HOST << 'EOF'
           cd /home
           git pull origin main
-          ./gradlew build
+          gradle build
           sudo systemctl restart workouttracker.service
           EOF
