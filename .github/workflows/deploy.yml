@@ -18,14 +18,17 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.VPS_DEPLOY_KEY }}
 
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x gradlew
+
       - name: Deploy to VPS
         env:
-          VPS_USER: root
-          VPS_HOST: 188.68.247.208
-          VPS_PATH: /home
+            VPS_USER: ${{ secrets.SERVER_USER }}
+            VPS_HOST: ${{ secrets.SERVER_IP }}
         run: |
           ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST << 'EOF'
-          cd $VPS_PATH
+          cd ..
+          cd home
           git pull origin main
           ./gradlew build
           sudo systemctl restart workouttracker.service
