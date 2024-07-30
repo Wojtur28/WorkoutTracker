@@ -22,11 +22,14 @@ jobs:
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x gradlew
 
+      - name: Clean project
+        run: gradle clean
+
       - name: Generate Swagger Code
         run: gradle generateSwaggerCodeWorkoutTrackerApi
 
       - name: Build with Gradle
-        run: gradle clean build
+        run: gradle build
 
       - name: Upload artifact to server
         uses: appleboy/scp-action@master
