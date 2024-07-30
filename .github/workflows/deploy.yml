@@ -11,20 +11,24 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.VPS_DEPLOY_KEY }}
 
+      - name: Add server to known_hosts
+        run: |
+          ssh-keyscan ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x gradlew
 
       - name: Deploy to VPS
         env:
-            VPS_USER: ${{ secrets.SERVER_USER }}
-            VPS_HOST: ${{ secrets.SERVER_IP }}
+          VPS_USER: ${{ secrets.SERVER_USER }}
+          VPS_HOST: ${{ secrets.SERVER_IP }}
         run: |
           ssh -o StrictHostKeyChecking=no $VPS_USER@$VPS_HOST << 'EOF'
           cd ..
