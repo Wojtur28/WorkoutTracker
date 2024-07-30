@@ -1,4 +1,4 @@
-name: Deploy to VPS
+name: Build and Deploy to VPS
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,6 +18,12 @@ jobs:
         with:
           java-version: '21'
           distribution: 'adopt'
+
+      - name: Grant execute permission for Gradle Wrapper
+        run: chmod +x gradlew
+
+      - name: Generate Swagger Code
+        run: gradle generateSwaggerCodeWorkoutTrackerApi
 
       - name: Build with Gradle
         run: gradle clean build
