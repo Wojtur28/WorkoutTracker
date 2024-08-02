@@ -13,7 +13,6 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Builder
 @AllArgsConstructor
 public class ExerciseEntity extends AuditBase {
 
