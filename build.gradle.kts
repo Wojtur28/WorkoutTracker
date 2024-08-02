@@ -72,6 +72,7 @@ dependencies {
     compileOnly("javax.servlet:servlet-api:3.0-alpha-1")
     implementation("javax.validation:validation-api:2.0.1.Final")
     implementation("net.logstash.logback:logstash-logback-encoder:7.2")
+    implementation("javax.servlet:javax.servlet-api:4.0.1")
 }
 
 tasks.withType<JavaCompile> {
@@ -89,7 +90,6 @@ tasks.bootBuildImage {
 val apiPackage = "com.example.api"
 val modelPackage = "com.example.model"
 val swaggerFile = file("src/main/resources/contract/contract.yml")
-
 
 swaggerSources {
     create("workoutTrackerApi") {
@@ -113,4 +113,8 @@ sourceSets {
             srcDir("$buildDir/generated-sources/src/main/java")
         }
     }
+}
+
+tasks.named("compileJava") {
+    dependsOn(tasks.named("generateSwaggerCodeWorkoutTrackerApi"))
 }
