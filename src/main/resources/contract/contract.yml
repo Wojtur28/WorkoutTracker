@@ -1154,12 +1154,8 @@ components:
                     type: string
                 lastName:
                     type: string
-                gender:
+                genders:
                     type: string
-                    enum:
-                        - MALE
-                        - FEMALE
-                        - OTHER
                 userMeasurements:
                     type: array
                     items:
@@ -1179,12 +1175,9 @@ components:
                     type: string
                 lastName:
                     type: string
-                gender:
+                genders:
                     type: string
-                    enum:
-                        - MALE
-                        - FEMALE
-                        - OTHER
+
         UserCreate:
             type: object
             properties:

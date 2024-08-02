@@ -42,9 +42,10 @@ public class UserService {
 
     public User getCurrentUser() {
         try {
-            return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                    .map(userMapper::toDto)
+            UserEntity user = userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                     .orElseThrow(() -> new UserException(UserException.FailReason.NOT_FOUND));
+
+            return userMapper.toDto(user);
         } catch (UserException e) {
             log.error("Current user not found: {}", e.getMessage(), e);
             throw e;
@@ -83,6 +84,7 @@ public class UserService {
             existingUser.setFirstName(userCreate.getFirstName());
             existingUser.setLastName(userCreate.getLastName());
             existingUser.setEmail(userCreate.getEmail());
+            existingUser.setGenders(new HashSet<>(Collections.singleton(UserGender.valueOf(userCreate.getGender()))));
 
             userRepository.save(existingUser);
             return userMapper.toDetailsDto(existingUser);
