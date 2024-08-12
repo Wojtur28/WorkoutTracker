@@ -1,10 +1,7 @@
 package com.example.workouttracker.core.training;
 
 import com.example.api.TrainingApi;
-import com.example.model.ErrorResponse;
-import com.example.model.Training;
-import com.example.model.TrainingCreate;
-import com.example.model.TrainingDetails;
+import com.example.model.*;
 import com.example.workouttracker.core.exception.TrainingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -46,8 +43,20 @@ public class TrainingController implements TrainingApi {
     }
 
     @Override
+    public ResponseEntity<TrainingDetails> patchTrainingExercises(@PathVariable String trainingId, @RequestBody List<ExerciseUpdate> exercises) {
+        TrainingDetails updatedTraining = trainingService.patchExercisesInTraining(trainingId, exercises);
+        return ResponseEntity.ok(updatedTraining);
+    }
+
+    @Override
     public ResponseEntity<Void> deleteTraining(@PathVariable String trainingId) {
         trainingService.deleteTraining(trainingId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteExerciseFromTraining(@PathVariable String trainingId, @PathVariable String exerciseId) {
+        trainingService.deleteExerciseFromTraining(trainingId, exerciseId);
         return ResponseEntity.ok().build();
     }
 

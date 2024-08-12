@@ -12,6 +12,7 @@ public class TrainingException extends RuntimeException {
     public enum FailReason {
         NOT_FOUND,
         USER_NOT_FOUND,
+        EXERCISE_NOT_FOUND,
     }
 
     TrainingException.FailReason failReason;
