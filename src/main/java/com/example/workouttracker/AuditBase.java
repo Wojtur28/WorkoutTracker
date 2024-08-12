@@ -22,25 +22,30 @@ public abstract class AuditBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @EqualsAndHashCode.Include
     private UUID id;
 
     @CreatedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "createdby")
+    @EqualsAndHashCode.Exclude
     private UserEntity createdBy;
 
     @LastModifiedBy
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "modifiedby")
+    @EqualsAndHashCode.Exclude
     private UserEntity modifiedBy;
 
     @CreatedDate
     @NotNull
     @Column(name = "createdon")
+    @EqualsAndHashCode.Exclude
     private LocalDateTime createdOn = LocalDateTime.now();
 
     @LastModifiedDate
     @NotNull
     @Column(name = "modifiedon")
+    @EqualsAndHashCode.Exclude
     private LocalDateTime modifiedOn = LocalDateTime.now();
 }

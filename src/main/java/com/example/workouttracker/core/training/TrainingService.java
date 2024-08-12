@@ -1,9 +1,13 @@
 package com.example.workouttracker.core.training;
 
+import com.example.model.ExerciseUpdate;
 import com.example.model.Training;
 import com.example.model.TrainingCreate;
 import com.example.model.TrainingDetails;
 import com.example.workouttracker.core.exception.TrainingException;
+import com.example.workouttracker.core.exercise.ExerciseEntity;
+import com.example.workouttracker.core.exercise.ExerciseRepository;
+import com.example.workouttracker.core.exercise.set.ExerciseSetEntity;
 import com.example.workouttracker.core.user.UserRepository;
 import com.example.workouttracker.mapper.TrainingMapper;
 import lombok.AllArgsConstructor;
@@ -24,6 +28,7 @@ public class TrainingService {
     private final TrainingRepository trainingRepository;
     private final UserRepository userRepository;
     private final TrainingMapper trainingMapper;
+    private final ExerciseRepository exerciseRepository;
 
     public List<Training> getTrainings(Integer page, Integer size) {
         log.info("Fetching trainings with page: {} and size: {}", page, size);
@@ -87,6 +92,57 @@ public class TrainingService {
         }
     }
 
+    public TrainingDetails patchExercisesInTraining(String trainingId, List<ExerciseUpdate> exerciseUpdates) {
+        log.info("Adding or updating exercises in training with ID: {}", trainingId);
+        try {
+            TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
+                    .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
+
+            for (ExerciseUpdate update : exerciseUpdates) {
+                ExerciseEntity exerciseEntity;
+
+                if (update.getId() != null) {
+                    exerciseEntity = trainingEntity.getExercises().stream()
+                            .filter(exercise -> exercise.getId().equals(UUID.fromString(update.getId())))
+                            .findFirst()
+                            .orElseThrow(() -> new TrainingException(TrainingException.FailReason.EXERCISE_NOT_FOUND));
+
+                    exerciseEntity.setName(update.getName());
+
+                    exerciseEntity.getSets().clear();
+                } else {
+                    exerciseEntity = new ExerciseEntity();
+                    exerciseEntity.setName(update.getName());
+                    exerciseEntity.setTraining(trainingEntity);
+                    trainingEntity.getExercises().add(exerciseEntity);
+                }
+
+                List<ExerciseSetEntity> updatedSets = update.getSets().stream()
+                        .map(set -> {
+                            ExerciseSetEntity setEntity = new ExerciseSetEntity();
+                            setEntity.setReps(set.getReps());
+                            setEntity.setWeight(set.getWeight());
+                            setEntity.setExercise(exerciseEntity);
+                            return setEntity;
+                        }).toList();
+
+                exerciseEntity.getSets().addAll(updatedSets);
+
+                exerciseRepository.save(exerciseEntity);
+            }
+
+            trainingRepository.save(trainingEntity);
+            return trainingMapper.toDetailsDto(trainingEntity);
+        } catch (TrainingException e) {
+            log.error("Error occurred while adding or updating exercises: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while adding or updating exercises: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
+
     public void deleteTraining(String trainingId) {
         log.info("Deleting training with ID: {}", trainingId);
         try {
@@ -102,4 +158,30 @@ public class TrainingService {
             throw e;
         }
     }
+
+    public void deleteExerciseFromTraining(String trainingId, String exerciseId) {
+        log.info("Deleting exercise with ID: {} from training with ID: {}", exerciseId, trainingId);
+        try {
+            TrainingEntity trainingEntity = trainingRepository.findById(UUID.fromString(trainingId))
+                    .orElseThrow(() -> new TrainingException(TrainingException.FailReason.NOT_FOUND));
+
+            ExerciseEntity exerciseEntity = trainingEntity.getExercises().stream()
+                    .filter(exercise -> exercise.getId().equals(UUID.fromString(exerciseId)))
+                    .findFirst()
+                    .orElseThrow(() -> new TrainingException(TrainingException.FailReason.EXERCISE_NOT_FOUND));
+
+            trainingEntity.getExercises().remove(exerciseEntity);
+            exerciseRepository.delete(exerciseEntity);
+
+            trainingRepository.save(trainingEntity);
+            log.info("Exercise with ID: {} deleted successfully", exerciseId);
+        } catch (TrainingException e) {
+            log.error("Error occurred while deleting exercise: {}", e.getMessage(), e);
+            throw e;
+        } catch (Exception e) {
+            log.error("An error occurred while deleting exercise: {}", e.getMessage(), e);
+            throw e;
+        }
+    }
+
 }
