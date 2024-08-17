@@ -9,6 +9,7 @@ import com.example.workouttracker.mapper.UserMeasurementMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class UserMeasurementService {
 
     public List<UserMeasurement> getUserMeasurements(Integer page, Integer size) {
         log.info("Fetching user measurements with page: {} and size: {}", page, size);
-        return userMeasurementRepository.findAll(PageRequest.of(page, size))
+        return userMeasurementRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
                 .map(userMeasurementMapper::toDto).getContent();
     }
 
