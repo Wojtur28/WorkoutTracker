@@ -1,24 +1,24 @@
-/*
 package com.example.workouttracker.training.service;
 
+import com.example.model.Training;
+import com.example.model.TrainingDetails;
 import com.example.workouttracker.core.training.TrainingEntity;
 import com.example.workouttracker.core.training.TrainingRepository;
 import com.example.workouttracker.core.training.TrainingService;
 import com.example.workouttracker.mapper.TrainingMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openapitools.model.Training;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,126 +37,74 @@ public class TrainingServiceTest {
     @InjectMocks
     private TrainingService trainingService;
 
-    private TrainingEntity training1;
-    private TrainingEntity training2;
+    private TrainingEntity trainingEnity1;
+    private TrainingEntity trainingEnity2;
     private Training trainingDto1;
     private Training trainingDto2;
+    private TrainingDetails trainingDetailsDto1;
+    private TrainingDetails trainingDetailsDto2;
+    private final Integer page = 0;
+    private final Integer size = 10;
 
     @BeforeEach
     public void setUp(){
-        training1 = TrainingEntity.builder()
+        trainingEnity1 = TrainingEntity.builder()
                 .name("name1")
                 .description("description1")
                 .build();
-        training2 = TrainingEntity.builder()
+        trainingEnity2 = TrainingEntity.builder()
                 .name("name2")
                 .description("description2")
                 .build();
 
-        training1.setId(UUID.randomUUID());
-        training2.setId(UUID.randomUUID());
+        trainingEnity1.setId(UUID.randomUUID());
+        trainingEnity2.setId(UUID.randomUUID());
 
         trainingDto1 = new Training();
-        trainingDto1.setName("name1");
-        trainingDto1.setDescription("description1");
+        trainingDto1.setId(String.valueOf(trainingEnity1.getId()));
+        trainingDto1.setName(trainingEnity1.getName());
+        trainingDto1.setDescription(trainingEnity1.getDescription());
 
         trainingDto2 = new Training();
-        trainingDto2.setName("name2");
-        trainingDto2.setDescription("description2");
-    }
+        trainingDto2.setId(String.valueOf(trainingEnity2.getId()));
+        trainingDto2.setName(trainingEnity2.getName());
+        trainingDto2.setDescription(trainingEnity2.getDescription());
 
-*/
-/*    @Test
-    @Disabled
-    public void shouldReturnTraniningList(){
-        List<TrainingEntity> trainingEntities = Arrays.asList(training1, training2);
-        List<Training> trainingDtos = Arrays.asList(trainingDto1, trainingDto2);
-
-        when(trainingRepository.findAll()).thenReturn(trainingEntities);
-        when(trainingMapper.toDto(trainingEntities)).thenReturn(trainingDtos);
-
-        ResponseEntity<List<Training>> response = trainingService.getTrainings();
-
-        assertNotNull(response);
-        assertEquals(2, Objects.requireNonNull(response.getBody()).size());
-        assertEquals(trainingDto1, response.getBody().get(0));
-        assertEquals(trainingDto2, response.getBody().get(1));
-    }*//*
-
-
-    @Test
-    public void shouldReturnTrainingById(){
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.of(training1));
-        when(trainingMapper.toDto(training1)).thenReturn(trainingDto1);
-
-        ResponseEntity<Training> response = trainingService.getTraining(training1.getId().toString());
-
-        assertNotNull(response);
-        assertEquals(trainingDto1, response.getBody());
+        trainingDetailsDto1 = new TrainingDetails();
+        trainingDetailsDto1.setId(String.valueOf(trainingEnity1.getId()));
+        trainingDetailsDto1.setName(trainingEnity1.getName());
+        trainingDetailsDto1.setDescription(trainingEnity1.getDescription());
     }
 
     @Test
-    public void shouldReturnNotFoundWhenTrainingNotFound() {
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.empty());
+    public void shouldGetTrainingListAndReturnSuccess() {
+        Page<TrainingEntity> pageResult = new PageImpl<>(List.of(trainingEnity1,trainingEnity2));
 
-        ResponseEntity<Training> response = trainingService.getTraining(training1.getId().toString());
+        when(trainingRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn"))))
+                .thenReturn(pageResult);
+        when(trainingMapper.toDto(trainingEnity1)).thenReturn(trainingDto1);
+        when(trainingMapper.toDto(trainingEnity2)).thenReturn(trainingDto2);
 
-        assertNotNull(response);
-        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
+        List<Training> result = trainingService.getTrainings(page, size);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(trainingDto1, result.get(0));
+        assertEquals(trainingDto2, result.get(1));
     }
 
     @Test
-    public void shouldReturnTrainingWhenSaved(){
-        when(trainingMapper.toEntity(trainingDto1)).thenReturn(training1);
-        when(trainingRepository.save(training1)).thenReturn(training1);
-        when(trainingMapper.toDto(training1)).thenReturn(trainingDto1);
+    public void shouldGetTrainingByIdAndReturnSuccess() {
+        when(trainingRepository.findById(trainingEnity1.getId())).thenReturn(Optional.of(trainingEnity1));
+        when(trainingMapper.toDetailsDto(trainingEnity1)).thenReturn(trainingDetailsDto1);
 
-        ResponseEntity<Training> response = trainingService.createTraining(trainingDto1);
+        TrainingDetails result = trainingService.getTraining(String.valueOf(trainingEnity1.getId()));
 
-        assertNotNull(response);
-        assertEquals(trainingDto1, response.getBody());
+        assertNotNull(result);
+        assertEquals(trainingEnity1.getId(), UUID.fromString(result.getId()));
+        assertEquals(trainingEnity1.getName(), result.getName());
+        assertEquals(trainingEnity1.getDescription(), result.getDescription());
+
     }
 
-    @Test
-    public void shouldUpdateTraining() {
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.of(training1));
-        when(trainingRepository.save(training1)).thenReturn(training1);
-        when(trainingMapper.toDto(training1)).thenReturn(trainingDto1);
-
-        ResponseEntity<Training> response = trainingService.updateTraining(training1.getId().toString(), trainingDto1);
-
-        assertNotNull(response);
-        assertEquals(trainingDto1, response.getBody());
-    }
-
-    @Test
-    public void shouldReturnNotFoundWhenTrainingNotUpdated() {
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.empty());
-
-        ResponseEntity<Training> response = trainingService.updateTraining(training1.getId().toString(), trainingDto1);
-
-        assertNotNull(response);
-        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
-    }
-
-    @Test
-    public void shouldDeleteTraining() {
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.of(training1));
-
-        ResponseEntity<Void> response = trainingService.deleteTraining(training1.getId().toString());
-
-        assertNotNull(response);
-        assertEquals(HttpStatusCode.valueOf(200), response.getStatusCode());
-    }
-
-    @Test
-    public void shouldReturnNotFoundWhenTrainingNotDeleted() {
-        when(trainingRepository.findById(training1.getId())).thenReturn(java.util.Optional.empty());
-
-        ResponseEntity<Void> response = trainingService.deleteTraining(training1.getId().toString());
-
-        assertNotNull(response);
-        assertEquals(HttpStatusCode.valueOf(404), response.getStatusCode());
-    }
 }
-*/
