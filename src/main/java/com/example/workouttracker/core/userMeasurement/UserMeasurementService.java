@@ -28,7 +28,7 @@ public class UserMeasurementService {
 
     public List<UserMeasurement> getUserMeasurements(Integer page, Integer size) {
         log.info("Fetching user measurements with page: {} and size: {}", page, size);
-        return userMeasurementRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
+        return userMeasurementRepository.findByCreatedBy_Email(SecurityContextHolder.getContext().getAuthentication().getName(),PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
                 .map(userMeasurementMapper::toDto).getContent();
     }
 

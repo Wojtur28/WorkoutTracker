@@ -32,7 +32,7 @@ public class TrainingService {
 
     public List<Training> getTrainings(Integer page, Integer size) {
         log.info("Fetching trainings with page: {} and size: {}", page, size);
-        return trainingRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
+        return trainingRepository.findByCreatedBy_Email(SecurityContextHolder.getContext().getAuthentication().getName(),PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
                 .map(trainingMapper::toDto)
                 .getContent();
     }
