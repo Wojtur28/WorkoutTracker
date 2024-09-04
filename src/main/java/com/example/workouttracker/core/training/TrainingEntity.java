@@ -8,6 +8,7 @@ import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,7 +26,7 @@ public class TrainingEntity extends AuditBase {
     private String description;
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ExerciseEntity> exercises;
+    private List<ExerciseEntity> exercises = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

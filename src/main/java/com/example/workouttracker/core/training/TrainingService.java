@@ -142,7 +142,6 @@ public class TrainingService {
         }
     }
 
-
     public void deleteTraining(String trainingId) {
         log.info("Deleting training with ID: {}", trainingId);
         try {
