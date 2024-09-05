@@ -57,6 +57,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-logging")
     swaggerCodegen("io.swagger.codegen.v3:swagger-codegen-cli:3.0.47")
     implementation("org.springframework.boot:spring-boot-starter-actuator:3.3.0")
+    testImplementation("org.testcontainers:testcontainers:1.20.1")
     // dependencies for swagger-codegen
     implementation("io.gsonfire:gson-fire:1.9.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")
