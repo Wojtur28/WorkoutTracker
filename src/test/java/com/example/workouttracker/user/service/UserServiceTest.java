@@ -1,6 +1,8 @@
-/*
 package com.example.workouttracker.user.service;
 
+import com.example.model.User;
+import com.example.model.UserCreate;
+import com.example.model.UserDetails;
 import com.example.workouttracker.core.exception.UserException;
 import com.example.workouttracker.core.user.*;
 import com.example.workouttracker.mapper.UserMapper;
@@ -9,19 +11,17 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.openapitools.model.User;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.openapitools.model.UserCreate;
-import org.openapitools.model.UserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,231 +39,227 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private UserEntity user1;
-    private UserEntity user2;
-    private UserDetails userDetails1;
-    private UserDetails userDetails2;
+    private UserEntity userEntity1;
+    private UserEntity userEntity2;
+    private User userDto1;
+    private User userDto2;
+    private UserDetails userDetailsDto1;
     private UserCreate userCreate;
 
     @BeforeEach
-    public void setUp(){
-        user1 = UserEntity.builder()
-                .email("email1")
-                .firstName("firstName1")
-                .lastName("lastName1")
-                .password("password1")
-                .isTermsAndConditionsAccepted(true)
-                .genders(Set.of(UserGender.MALE))
-                .roles(Set.of(RoleType.ADMINISTRATOR))
-                .build();
-        user2 = UserEntity.builder()
-                .email("email2")
-                .firstName("firstName2")
-                .lastName("lastName2")
-                .password("password2")
-                .isTermsAndConditionsAccepted(false)
-                .genders(Set.of(UserGender.FEMALE))
-                .roles(Set.of(RoleType.USER))
+    public void setUp() {
+        userEntity1 = UserEntity.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("john.doe@example.com")
                 .build();
 
-        user1.setId(UUID.randomUUID());
-        user2.setId(UUID.randomUUID());
+        userEntity2 = UserEntity.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .email("jane.doe@example.com")
+                .build();
 
-        userDetails1 = new UserDetails();
-        userDetails1.setEmail("email1");
-        userDetails1.setFirstName("firstName1");
-        userDetails1.setLastName("lastName1");
+        userEntity1.setId(UUID.randomUUID());
+        userEntity2.setId(UUID.randomUUID());
 
-        userDetails2 = new UserDetails();
-        userDetails2.setEmail("email2");
-        userDetails2.setFirstName("firstName2");
-        userDetails2.setLastName("lastName2");
+        userDto1 = new User();
+        userDto1.setId(userEntity1.getId().toString());
+        userDto1.setFirstName(userEntity1.getFirstName());
+        userDto1.setLastName(userEntity1.getLastName());
+        userDto1.setEmail(userEntity1.getEmail());
+
+        userDto2 = new User();
+        userDto2.setId(userEntity2.getId().toString());
+        userDto2.setFirstName(userEntity2.getFirstName());
+        userDto2.setLastName(userEntity2.getLastName());
+        userDto2.setEmail(userEntity2.getEmail());
+
+        userDetailsDto1 = new UserDetails();
+        userDetailsDto1.setId(userEntity1.getId().toString());
+        userDetailsDto1.setFirstName(userEntity1.getFirstName());
+        userDetailsDto1.setLastName(userEntity1.getLastName());
+        userDetailsDto1.setEmail(userEntity1.getEmail());
 
         userCreate = new UserCreate();
-        userCreate.setEmail("newEmail");
-        userCreate.setFirstName("newFirstName");
-        userCreate.setLastName("newLastName");
+        userCreate.setFirstName("UpdatedFirstName");
+        userCreate.setLastName("UpdatedLastName");
+        userCreate.setEmail("updated.email@example.com");
+        userCreate.setGender("MALE");
     }
 
     @Test
-    public void shouldReturnUsersList() {
-        when(userRepository.findAll(any(PageRequest.class))).thenReturn(new PageImpl<>(Arrays.asList(user1, user2)));
-        when(userMapper.toDto(any(UserEntity.class))).thenReturn(userDetails1).thenReturn(userDetails2);
+    public void shouldGetUsersSuccessfully() {
+        Page<UserEntity> pageResult = new PageImpl<>(List.of(userEntity1, userEntity2));
+        when(userRepository.findAll(any(PageRequest.class))).thenReturn(pageResult);
+        when(userMapper.toDto(userEntity1)).thenReturn(userDto1);
+        when(userMapper.toDto(userEntity2)).thenReturn(userDto2);
 
-        List<User> users = userService.getUsers(0, 10);
+        List<User> result = userService.getUsers(0, 10);
 
-        assertNotNull(users);
-        assertEquals(2, users.size());
-        assertEquals(userDetails1, users.get(0));
-        assertEquals(userDetails2, users.get(1));
-
-        verify(userRepository, times(1)).findAll(any(PageRequest.class));
-        verify(userMapper, times(2)).toDto(any(UserEntity.class));
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertEquals(userDto1, result.get(0));
+        assertEquals(userDto2, result.get(1));
     }
 
     @Test
-    public void shouldReturnUserById() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
-        when(userMapper.toDetailsDto(user1)).thenReturn(userDetails1);
+    public void shouldGetUserByIdSuccessfully() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity1));
+        when(userMapper.toDetailsDto(userEntity1)).thenReturn(userDetailsDto1);
 
-        UserDetails userDetails = userService.getUser(user1.getId().toString());
+        UserDetails result = userService.getUser(userId.toString());
 
-        assertNotNull(userDetails);
-        assertEquals(userDetails1, userDetails);
-
-        verify(userRepository, times(1)).findById(user1.getId());
-        verify(userMapper, times(1)).toDetailsDto(user1);
+        assertNotNull(result);
+        assertEquals(userDetailsDto1, result);
     }
 
     @Test
-    public void shouldReturnNotFoundWhenUserNotFound() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
+    public void shouldThrowNotFoundWhenGettingNonExistentUser() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        assertThrows(UserException.class, () -> {
-            userService.getUser(user1.getId().toString());
-        });
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.getUser(userId.toString())
+        );
 
-        verify(userRepository, times(1)).findById(user1.getId());
+        assertEquals(UserException.FailReason.NOT_FOUND, exception.getFailReason());
+        assertEquals("Error occurred: NOT_FOUND", exception.getMessage());
     }
 
     @Test
-    public void shouldReturnCurrentUser() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        SecurityContextHolder.setContext(securityContext);
+    public void shouldGetCurrentUserSuccessfully() {
+        try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(user1.getEmail());
+            mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getName()).thenReturn("test@example.com");
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
-        when(userMapper.toDto(user1)).thenReturn(userDetails1);
+            when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userEntity1));
+            when(userMapper.toDto(userEntity1)).thenReturn(userDto1);
 
-        User user = userService.getCurrentUser();
+            User result = userService.getCurrentUser();
 
-        assertNotNull(user);
-        assertEquals(userDetails1, user);
-
-        verify(userRepository, times(1)).findByEmail(user1.getEmail());
-        verify(userMapper, times(1)).toDto(user1);
+            assertNotNull(result);
+            assertEquals(userDto1, result);
+        }
     }
 
     @Test
-    public void shouldReturnNotFoundWhenCurrentUserNotFound() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        SecurityContextHolder.setContext(securityContext);
+    public void shouldThrowNotFoundWhenGettingCurrentUser() {
+        try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(user1.getEmail());
+            mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getName()).thenReturn("test@example.com");
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.empty());
+            when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
 
-        assertThrows(UserException.class, () -> {
-            userService.getCurrentUser();
-        });
+            UserException exception = assertThrows(UserException.class, () ->
+                    userService.getCurrentUser()
+            );
 
-        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+            assertEquals(UserException.FailReason.NOT_FOUND, exception.getFailReason());
+            assertEquals("Error occurred: NOT_FOUND", exception.getMessage());
+        }
+    }
+
+
+    @Test
+    public void shouldUpdateCurrentUserSuccessfully() {
+        try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
+
+            mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getName()).thenReturn("test@example.com");
+
+            when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.of(userEntity1));
+            when(userMapper.toDto(userEntity1)).thenReturn(userDto1);
+
+            User result = userService.updateCurrentUser(userCreate);
+
+            assertNotNull(result);
+            verify(userRepository).save(userEntity1);
+            assertEquals(userDto1, result);
+        }
+    }
+
+
+    @Test
+    public void shouldThrowNotFoundWhenUpdatingCurrentUser() {
+        try (MockedStatic<SecurityContextHolder> mockedSecurityContextHolder = mockStatic(SecurityContextHolder.class)) {
+            SecurityContext securityContext = mock(SecurityContext.class);
+            Authentication authentication = mock(Authentication.class);
+
+            mockedSecurityContextHolder.when(SecurityContextHolder::getContext).thenReturn(securityContext);
+            when(securityContext.getAuthentication()).thenReturn(authentication);
+            when(authentication.getName()).thenReturn("test@example.com");
+
+            when(userRepository.findByEmail("test@example.com")).thenReturn(Optional.empty());
+
+            UserException exception = assertThrows(UserException.class, () ->
+                    userService.updateCurrentUser(userCreate)
+            );
+
+            assertEquals(UserException.FailReason.NOT_FOUND, exception.getFailReason());
+            assertEquals("Error occurred: NOT_FOUND", exception.getMessage());
+        }
+    }
+
+
+    @Test
+    public void shouldUpdateUserSuccessfully() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity1));
+        when(userMapper.toDetailsDto(userEntity1)).thenReturn(userDetailsDto1);
+
+        UserDetails result = userService.updateUser(userId.toString(), userCreate);
+
+        assertNotNull(result);
+        verify(userRepository).save(userEntity1);
+        assertEquals(userDetailsDto1, result);
     }
 
     @Test
-    public void shouldUpdateCurrentUser() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        SecurityContextHolder.setContext(securityContext);
+    public void shouldThrowNotFoundWhenUpdatingNonExistentUser() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(user1.getEmail());
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.updateUser(userId.toString(), userCreate)
+        );
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
-        when(userRepository.findByEmail(userCreate.getEmail())).thenReturn(java.util.Optional.empty());
-        when(userRepository.save(any(UserEntity.class))).thenReturn(user1);
-        when(userMapper.toDto(user1)).thenReturn(userDetails1);
-
-        User user = userService.updateCurrentUser(userCreate);
-
-        assertNotNull(user);
-        assertEquals(userDetails1, user);
-
-        verify(userRepository, times(1)).findByEmail(user1.getEmail());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(userMapper, times(1)).toDto(user1);
+        assertEquals(UserException.FailReason.NOT_FOUND, exception.getFailReason());
+        assertEquals("Error occurred: NOT_FOUND", exception.getMessage());
     }
 
     @Test
-    public void shouldReturnNotFoundWhenCurrentUserToUpdateNotFound() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        SecurityContextHolder.setContext(securityContext);
+    public void shouldDeleteUserSuccessfully() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.of(userEntity1));
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(user1.getEmail());
+        userService.deleteUser(userId.toString());
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.empty());
-
-        assertThrows(UserException.class, () -> userService.updateCurrentUser(userCreate));
-
-        verify(userRepository, times(1)).findByEmail(user1.getEmail());
+        verify(userRepository).delete(userEntity1);
     }
 
     @Test
-    public void shouldReturnNotUniqueEmailWhenUpdatingCurrentUser() {
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        SecurityContextHolder.setContext(securityContext);
+    public void shouldThrowNotFoundWhenDeletingNonExistentUser() {
+        UUID userId = UUID.randomUUID();
+        when(userRepository.findById(userId)).thenReturn(Optional.empty());
 
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        when(authentication.getName()).thenReturn(user1.getEmail());
+        UserException exception = assertThrows(UserException.class, () ->
+                userService.deleteUser(userId.toString())
+        );
 
-        when(userRepository.findByEmail(user1.getEmail())).thenReturn(java.util.Optional.of(user1));
-        when(userRepository.findByEmail(userCreate.getEmail())).thenReturn(java.util.Optional.of(user2));
-
-        assertThrows(UserException.class, () -> userService.updateCurrentUser(userCreate));
-
-        verify(userRepository, times(1)).findByEmail(user1.getEmail());
-        verify(userRepository, times(1)).findByEmail(userCreate.getEmail());
+        assertEquals(UserException.FailReason.NOT_FOUND, exception.getFailReason());
+        assertEquals("Error occurred: NOT_FOUND", exception.getMessage());
     }
-
-    @Test
-    public void shouldUpdateUser() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
-        when(userRepository.save(any(UserEntity.class))).thenReturn(user1);
-        when(userMapper.toDetailsDto(user1)).thenReturn(userDetails1);
-
-        UserDetails userDetails = userService.updateUser(user1.getId().toString(), userCreate);
-
-        assertNotNull(userDetails);
-        assertEquals(userDetails1, userDetails);
-
-        verify(userRepository, times(1)).findById(user1.getId());
-        verify(userRepository, times(1)).save(any(UserEntity.class));
-        verify(userMapper, times(1)).toDetailsDto(user1);
-    }
-
-    @Test
-    public void shouldReturnNotFoundWhenUserToUpdateNotFound() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
-
-        assertThrows(UserException.class, () -> userService.updateUser(user1.getId().toString(), userCreate));
-
-        verify(userRepository, times(1)).findById(user1.getId());
-    }
-
-    @Test
-    public void shouldDeleteUser() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.of(user1));
-
-        userService.deleteUser(user1.getId().toString());
-
-        verify(userRepository, times(1)).findById(user1.getId());
-        verify(userRepository, times(1)).delete(user1);
-    }
-
-    @Test
-    public void shouldReturnNotFoundWhenUserToDeleteNotFound() {
-        when(userRepository.findById(user1.getId())).thenReturn(java.util.Optional.empty());
-
-        assertThrows(UserException.class, () -> userService.deleteUser(user1.getId().toString()));
-
-        verify(userRepository, times(1)).findById(user1.getId());
-    }
-}*/
+}

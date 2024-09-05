@@ -1,4 +1,3 @@
-/*
 package com.example.workouttracker.exception;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -65,4 +64,3 @@ public class GlobalExceptionHandlerTest {
         assertThat(result.getProperties()).containsEntry("errorCode", "INTERNAL_SERVER_ERROR");
     }
 }
-*/
