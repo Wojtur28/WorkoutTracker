@@ -1,9 +1,6 @@
 pipeline {
     agent any
 
-    tools {
-        jdk 'jdk-21'
-    }
 
     stages {
         stage('Build and Test') {
