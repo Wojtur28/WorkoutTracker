@@ -19,8 +19,8 @@ pipeline {
                         ssh ${env.username_server}@${env.remote_server} 'cd /home && ./start_workouttracker.sh ${jarFile}'
                         """
                     }
+                }
             }
         }
     }
 }
-
