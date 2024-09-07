@@ -791,6 +791,53 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/ErrorResponse'
 
+    /exercise/{exerciseName}:
+        get:
+            tags:
+                - exercise
+            summary: Get exercises by name
+            operationId: getExercisesByName
+            parameters:
+                - name: exerciseName
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                '200':
+                    description: A list of exercises
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    $ref: '#/components/schemas/Exercise'
+                '400':
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '401':
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '403':
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+                '404':
+                    description: Exercises not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/ErrorResponse'
+
+
 components:
     securitySchemes:
         bearerAuth:
