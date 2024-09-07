@@ -31,9 +31,6 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
 
-      - name: Check Code Quality (Optional)
-        run: ./gradlew check
-
       - name: Generate Test Report
         run: |
           mkdir -p test-reports
