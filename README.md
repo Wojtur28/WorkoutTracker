@@ -4,17 +4,20 @@ WorkoutTracker is a comprehensive application designed to help users track and m
 
 ## Features
 
-- User Authentication and Authorization
-- Workout Logging and Tracking
-- Customizable Workout Plans
-- Progress Monitoring and Analytics
+- User Authentication and Authorization: Secured using JWT tokens.
+- Workout Logging and Tracking: Allows users to log their workouts and track progress.
+- Customizable Workout Plans: Users can create, modify, and delete workout plans.
+- Progress Monitoring and Analytics: Users can monitor their performance and receive detailed insights.
+- Password Reset and Account Management: Supports password reset requests and user profile updates.
 
 ## Technologies Used
 
 - Java 21
-- Spring Boot
+- Spring Boot 3.x
 - Gradle
-- Docker
+- Docker (for containerized deployment)
+- JWT (for authentication)
+- Testcontainers (for testing)
 
 ## Getting Started
 
