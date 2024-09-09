@@ -61,6 +61,8 @@ dependencies {
     testImplementation ("org.testcontainers:testcontainers:1.16.0")
     testImplementation ("org.testcontainers:junit-jupiter:1.16.0")
     testImplementation ("org.testcontainers:postgresql:1.16.0")
+    testImplementation ("org.springframework.boot:spring-boot-starter-webflux")
+    testImplementation ("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
     // dependencies for swagger-codegen
     implementation("io.gsonfire:gson-fire:1.9.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")

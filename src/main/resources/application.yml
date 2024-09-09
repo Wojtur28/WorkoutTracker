@@ -29,7 +29,7 @@ spring:
 
 security:
   jwt:
-    secret-key: test
+    secret-key: yourVeryStrongSecretKeyThatIsLongEnoughToPassTests
     expiration-time: 3600000
 
 logging:

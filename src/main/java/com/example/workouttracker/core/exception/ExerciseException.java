@@ -1,11 +1,9 @@
 package com.example.workouttracker.core.exception;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-@AllArgsConstructor
 @Getter
 public class ExerciseException extends RuntimeException {
 
@@ -14,5 +12,10 @@ public class ExerciseException extends RuntimeException {
         TRAINING_NOT_FOUND,
     }
 
-    ExerciseException.FailReason failReason;
+    TrainingException.FailReason failReason;
+
+    public ExerciseException(TrainingException.FailReason failReason) {
+        super("Error occurred: " + failReason);
+        this.failReason = failReason;
+    }
 }

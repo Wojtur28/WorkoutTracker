@@ -57,27 +57,27 @@ public class UserController implements UserApi {
     }
 
     @ExceptionHandler(UserException.class)
-    public ResponseEntity<String> handleException(UserException e) {
+    public ResponseEntity<ErrorResponse> handleException(UserException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         switch (e.getFailReason()) {
             case NOT_FOUND:
                 errorResponse.setCode("USER_NOT_FOUND");
                 errorResponse.setMessage("User not found");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             case NOT_UNIQUE_EMAIL:
                 errorResponse.setCode("EMAIL_NOT_UNIQUE");
                 errorResponse.setMessage("Email is not unique");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             case DOES_NOT_HAVE_PROPER_ROLE:
             case DOES_NOT_HAVE_ROLE:
             case ROLE_NOT_FOUND:
                 errorResponse.setCode("ROLE_ERROR");
                 errorResponse.setMessage("Role error");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
             default:
                 errorResponse.setCode("INTERNAL_SERVER_ERROR");
                 errorResponse.setMessage("Internal server error");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }

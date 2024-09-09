@@ -61,21 +61,21 @@ public class TrainingController implements TrainingApi {
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleException(TrainingException e) {
+    public ResponseEntity<ErrorResponse> handleException(TrainingException e) {
         ErrorResponse errorResponse = new ErrorResponse();
         switch (e.getFailReason()) {
             case NOT_FOUND:
                 errorResponse.setCode("TRAINING_NOT_FOUND");
                 errorResponse.setMessage("Training not found");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             case USER_NOT_FOUND:
                 errorResponse.setCode("USER_NOT_FOUND");
                 errorResponse.setMessage("User not found");
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
             default:
                 errorResponse.setCode("INTERNAL_SERVER_ERROR");
                 errorResponse.setMessage("Internal server error");
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.toString());
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
         }
     }
 }
