@@ -54,7 +54,7 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Enumerated(EnumType.STRING)
     Set<UserGender> genders;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<TrainingEntity> trainings;
 
     @ElementCollection(targetClass = RoleType.class, fetch = FetchType.EAGER)
@@ -96,5 +96,17 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "UserEntity{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", isTermsAndConditionsAccepted=" + isTermsAndConditionsAccepted +
+                ", genders=" + genders +
+                '}';
     }
 }

@@ -31,7 +31,7 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-public class TrainingControllerTest {
+public class TrainingControllerIT {
 
     @LocalServerPort
     private int port;

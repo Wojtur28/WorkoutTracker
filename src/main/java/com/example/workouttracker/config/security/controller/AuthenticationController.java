@@ -9,6 +9,7 @@ import com.example.workouttracker.config.security.service.JwtService;
 import com.example.workouttracker.core.user.UserEntity;
 import com.example.workouttracker.mapper.UserMapper;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,9 +29,13 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     public ResponseEntity<User> signup(@RequestBody SignUpUser signUpUser) {
-        UserEntity registeredUser = authenticationService.signup(signUpUser);
-
-        return ResponseEntity.ok(userMapper.toDto(registeredUser));
+        try {
+            UserEntity registeredUser = authenticationService.signup(signUpUser);
+            return ResponseEntity.ok(userMapper.toDto(registeredUser));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @PostMapping("/signin")

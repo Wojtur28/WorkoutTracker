@@ -21,10 +21,18 @@ public class ExerciseEntity extends AuditBase {
 
     private String description;
 
-    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<ExerciseSetEntity> sets = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "training_id")
     private TrainingEntity training;
+
+    @Override
+    public String toString() {
+        return "ExerciseEntity{" +
+                "description='" + description + '\'' +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }

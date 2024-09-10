@@ -23,5 +23,13 @@ public class ExerciseSetEntity extends AuditBase {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "exercise_id")
     private ExerciseEntity exercise;
+
+    @Override
+    public String toString() {
+        return "ExerciseSetEntity{" +
+                "reps=" + reps +
+                ", weight=" + weight +
+                '}';
+    }
 }
 
