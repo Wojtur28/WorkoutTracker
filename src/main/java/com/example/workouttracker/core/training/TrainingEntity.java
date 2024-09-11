@@ -25,14 +25,14 @@ public class TrainingEntity extends AuditBase {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<ExerciseEntity> exercises = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 
-    @ElementCollection(targetClass = TrainingCategoryEntity.class, fetch = FetchType.LAZY)
+    @ElementCollection(targetClass = TrainingCategoryEntity.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "training_category", joinColumns = @JoinColumn(name = "training_id"))
     @Column(name = "category_name", nullable = false)
     @Enumerated(EnumType.STRING)

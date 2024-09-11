@@ -28,7 +28,7 @@ import static org.mockito.Mockito.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Testcontainers
-public class UserControllerTest {
+public class UserControllerIT {
 
     @LocalServerPort
     private int port;
