@@ -3,6 +3,7 @@ package com.example.workouttracker.core.training;
 import com.example.api.TrainingApi;
 import com.example.model.*;
 import com.example.workouttracker.core.exception.TrainingException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,19 +32,19 @@ public class TrainingController implements TrainingApi {
     }
 
     @Override
-    public ResponseEntity<Training> createTraining(@RequestBody TrainingCreate trainingCreate) {
+    public ResponseEntity<Training> createTraining(@RequestBody @Valid TrainingCreate trainingCreate) {
         Training createdTraining = trainingService.createTraining(trainingCreate);
         return ResponseEntity.ok(createdTraining);
     }
 
     @Override
-    public ResponseEntity<TrainingDetails> updateTraining(@PathVariable String trainingId, @RequestBody TrainingCreate trainingCreate) {
+    public ResponseEntity<TrainingDetails> updateTraining(@PathVariable String trainingId, @RequestBody @Valid TrainingCreate trainingCreate) {
         TrainingDetails updatedTraining = trainingService.updateTraining(trainingId, trainingCreate);
         return ResponseEntity.ok(updatedTraining);
     }
 
     @Override
-    public ResponseEntity<TrainingDetails> patchTrainingExercises(@PathVariable String trainingId, @RequestBody List<ExerciseUpdate> exercises) {
+    public ResponseEntity<TrainingDetails> patchTrainingExercises(@PathVariable String trainingId, @RequestBody @Valid List<ExerciseUpdate> exercises) {
         TrainingDetails updatedTraining = trainingService.patchExercisesInTraining(trainingId, exercises);
         return ResponseEntity.ok(updatedTraining);
     }

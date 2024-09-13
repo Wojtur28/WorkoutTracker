@@ -6,6 +6,7 @@ import com.example.model.User;
 import com.example.model.UserCreate;
 import com.example.model.UserDetails;
 import com.example.workouttracker.core.exception.UserException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,13 +40,13 @@ public class UserController implements UserApi {
     }
 
     @Override
-    public ResponseEntity<User> updateCurrentUser(UserCreate userCreate) {
+    public ResponseEntity<User> updateCurrentUser(@RequestBody @Valid UserCreate userCreate) {
         User updatedUser = userService.updateCurrentUser(userCreate);
         return ResponseEntity.ok(updatedUser);
     }
 
     @Override
-    public ResponseEntity<UserDetails> updateUser(@PathVariable("userId") String userId, @RequestBody UserCreate userCreate) {
+    public ResponseEntity<UserDetails> updateUser(@PathVariable("userId") String userId, @RequestBody @Valid UserCreate userCreate) {
         UserDetails updatedUser = userService.updateUser(userId, userCreate);
         return ResponseEntity.ok(updatedUser);
     }
