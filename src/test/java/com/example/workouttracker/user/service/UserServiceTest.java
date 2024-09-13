@@ -52,12 +52,16 @@ public class UserServiceTest {
                 .firstName("John")
                 .lastName("Doe")
                 .email("john.doe@example.com")
+                .age(52)
+                .height(180)
                 .build();
 
         userEntity2 = UserEntity.builder()
                 .firstName("Jane")
                 .lastName("Doe")
                 .email("jane.doe@example.com")
+                .age(34)
+                .height(190)
                 .build();
 
         userEntity1.setId(UUID.randomUUID());
@@ -68,24 +72,32 @@ public class UserServiceTest {
         userDto1.setFirstName(userEntity1.getFirstName());
         userDto1.setLastName(userEntity1.getLastName());
         userDto1.setEmail(userEntity1.getEmail());
+        userDto1.setAge(userEntity1.getAge());
+        userDto1.setHeight(userEntity1.getHeight());
 
         userDto2 = new User();
         userDto2.setId(userEntity2.getId().toString());
         userDto2.setFirstName(userEntity2.getFirstName());
         userDto2.setLastName(userEntity2.getLastName());
         userDto2.setEmail(userEntity2.getEmail());
+        userDto2.setAge(userEntity2.getAge());
+        userDto2.setHeight(userEntity2.getHeight());
 
         userDetailsDto1 = new UserDetails();
         userDetailsDto1.setId(userEntity1.getId().toString());
         userDetailsDto1.setFirstName(userEntity1.getFirstName());
         userDetailsDto1.setLastName(userEntity1.getLastName());
         userDetailsDto1.setEmail(userEntity1.getEmail());
+        userDetailsDto1.setAge(userEntity1.getAge());
+        userDetailsDto1.setHeight(userEntity1.getHeight());
 
         userCreate = new UserCreate();
         userCreate.setFirstName("UpdatedFirstName");
         userCreate.setLastName("UpdatedLastName");
         userCreate.setEmail("updated.email@example.com");
         userCreate.setGender("MALE");
+        userCreate.setAge(32);
+        userCreate.setHeight(177);
     }
 
     @Test

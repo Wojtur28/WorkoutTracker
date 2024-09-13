@@ -862,6 +862,10 @@ components:
                     type: string
                 genders:
                     type: string
+                age:
+                    type: integer
+                height:
+                    type: integer
                 userMeasurements:
                     type: array
                     items:
