@@ -45,8 +45,12 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Length(min = 3, max = 255, message = "Password must be between 3 and 32 characters long")
     private String password;
 
-    @NotNull
+    @NotNull(message = "Terms must be accepted")
     private Boolean isTermsAndConditionsAccepted;
+
+    private int age;
+
+    private int height;
 
     @ElementCollection(targetClass = UserGender.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_gender", joinColumns = @JoinColumn(name = "user_id"))

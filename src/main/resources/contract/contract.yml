@@ -883,6 +883,10 @@ components:
                     type: string
                 genders:
                     type: string
+                age:
+                    type: integer
+                height:
+                    type: integer
 
         UserCreate:
             type: object
@@ -895,6 +899,10 @@ components:
                     type: string
                 gender:
                     type: string
+                age:
+                    type: integer
+                height:
+                    type: integer
         UserMeasurement:
             type: object
             properties:
@@ -905,10 +913,6 @@ components:
                 modifiedOn:
                     type: string
                 weight:
-                    type: number
-                height:
-                    type: number
-                age:
                     type: number
                 arms:
                     type: number
@@ -922,10 +926,6 @@ components:
             type: object
             properties:
                 weight:
-                    type: number
-                height:
-                    type: number
-                age:
                     type: number
                 arms:
                     type: number
