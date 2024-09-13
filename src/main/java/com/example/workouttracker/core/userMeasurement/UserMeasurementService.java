@@ -71,8 +71,6 @@ public class UserMeasurementService {
                     .orElseThrow(() -> new UserMeasurementException(UserMeasurementException.FailReason.NOT_FOUND));
 
             existingUserMeasurementEntity.setWeight(userMeasurementCreate.getWeight().doubleValue());
-            existingUserMeasurementEntity.setHeight(userMeasurementCreate.getHeight().doubleValue());
-            existingUserMeasurementEntity.setAge(userMeasurementCreate.getAge().doubleValue());
             existingUserMeasurementEntity.setArms(userMeasurementCreate.getArms().doubleValue());
             existingUserMeasurementEntity.setChest(userMeasurementCreate.getChest().doubleValue());
             existingUserMeasurementEntity.setBelly(userMeasurementCreate.getBelly().doubleValue());

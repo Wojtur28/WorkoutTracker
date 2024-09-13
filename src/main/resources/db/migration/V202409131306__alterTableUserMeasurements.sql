@@ -1,0 +1,3 @@
+ALTER TABLE user_measurements
+DROP COLUMN IF EXISTS age,
+DROP COLUMN IF EXISTS height;

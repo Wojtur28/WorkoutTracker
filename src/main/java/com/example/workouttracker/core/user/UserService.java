@@ -64,6 +64,8 @@ public class UserService {
             existingUser.setLastName(userCreate.getLastName());
             existingUser.setEmail(userCreate.getEmail());
             existingUser.setGenders(new HashSet<>(Collections.singleton(UserGender.valueOf(userCreate.getGender()))));
+            existingUser.setAge(userCreate.getAge());
+            existingUser.setHeight(userCreate.getHeight());
 
             userRepository.save(existingUser);
             return userMapper.toDto(existingUser);
@@ -85,6 +87,8 @@ public class UserService {
             existingUser.setLastName(userCreate.getLastName());
             existingUser.setEmail(userCreate.getEmail());
             existingUser.setGenders(new HashSet<>(Collections.singleton(UserGender.valueOf(userCreate.getGender()))));
+            existingUser.setAge(userCreate.getAge());
+            existingUser.setHeight(userCreate.getHeight());
 
             userRepository.save(existingUser);
             return userMapper.toDetailsDto(existingUser);
