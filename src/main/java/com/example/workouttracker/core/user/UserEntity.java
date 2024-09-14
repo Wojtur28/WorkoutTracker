@@ -5,8 +5,10 @@ import com.example.workouttracker.AuditBase;
 import com.example.workouttracker.core.training.TrainingEntity;
 import com.example.workouttracker.core.userMeasurement.UserMeasurementEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,29 +29,37 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserEntity extends AuditBase implements UserDetails {
 
-    @NotNull
-    @NotBlank
-    @Length(min = 3, max = 32, message = "Email must be between 3 and 32 characters long")
+    @Email
     @Column(unique = true)
     private String email;
 
-    @NotNull
+    @NotBlank(message = "The first name can't be blank")
     @Length(min = 3, max = 32, message = "First name must be between 3 and 32 characters long")
     private String firstName;
 
-    @NotNull
+    @NotBlank(message = "The last name can't be blank")
     @Length(min = 3, max = 32, message = "Last name must be between 3 and 32 characters long")
     private String lastName;
 
-    @NotNull
+    @NotBlank
     @Length(min = 3, max = 255, message = "Password must be between 3 and 32 characters long")
+    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,40}$", message = """
+            Password must be:\
+            Have 8 characters or more (8-40)
+            Include a capital letter
+            Use at least one lowercase letter
+            Consists of at least one digit
+            Need to have one special symbol (i.e., @, #, $, %, etc.)
+            Doesn’t contain space, tab, etc.""")
     private String password;
 
     @NotNull(message = "Terms must be accepted")
     private Boolean isTermsAndConditionsAccepted;
 
+    @NotBlank(message = "The age can't be blank")
     private int age;
 
+    @NotBlank(message = "The height can't be blank")
     private int height;
 
     @ElementCollection(targetClass = UserGender.class, fetch = FetchType.EAGER)
@@ -105,12 +115,14 @@ public class UserEntity extends AuditBase implements UserDetails {
     @Override
     public String toString() {
         return "UserEntity{" +
-                "email='" + email + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
+                "genders=" + genders +
+                ", height=" + height +
+                ", age=" + age +
                 ", isTermsAndConditionsAccepted=" + isTermsAndConditionsAccepted +
-                ", genders=" + genders +
+                ", password='" + password + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

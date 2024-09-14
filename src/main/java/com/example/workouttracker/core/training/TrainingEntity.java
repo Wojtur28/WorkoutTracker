@@ -6,6 +6,8 @@ import com.example.workouttracker.core.trainingCategory.TrainingCategoryEntity;
 import com.example.workouttracker.core.exercise.ExerciseEntity;
 import com.example.workouttracker.core.user.UserEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -20,9 +22,11 @@ import java.util.List;
 public class TrainingEntity extends AuditBase {
 
     @Column(name = "name")
+    @NotBlank(message = "The name can't be blank")
     private String name;
 
     @Column(name = "description")
+    @NotNull(message = "The description can't be null")
     private String description;
 
     @OneToMany(mappedBy = "training", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

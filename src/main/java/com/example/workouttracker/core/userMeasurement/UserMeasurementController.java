@@ -5,6 +5,7 @@ import com.example.model.ErrorResponse;
 import com.example.model.UserMeasurement;
 import com.example.model.UserMeasurementCreate;
 import com.example.workouttracker.core.exception.UserMeasurementException;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,13 @@ public class UserMeasurementController implements UserMeasurementApi {
     }
 
     @Override
-    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody UserMeasurementCreate userMeasurementCreate) {
+    public ResponseEntity<UserMeasurement> createUserMeasurement(@RequestBody @Valid UserMeasurementCreate userMeasurementCreate) {
         UserMeasurement createdUserMeasurement = userMeasurementService.createUserMeasurement(userMeasurementCreate);
         return ResponseEntity.ok(createdUserMeasurement);
     }
 
     @Override
-    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, @RequestBody UserMeasurementCreate userMeasurementCreate) {
+    public ResponseEntity<UserMeasurement> updateUserMeasurement(@PathVariable String userMeasurementId, @RequestBody @Valid UserMeasurementCreate userMeasurementCreate) {
         UserMeasurement updatedUserMeasurement = userMeasurementService.updateUserMeasurement(userMeasurementId, userMeasurementCreate);
         return ResponseEntity.ok(updatedUserMeasurement);
     }
