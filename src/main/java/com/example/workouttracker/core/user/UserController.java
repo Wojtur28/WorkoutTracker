@@ -6,12 +6,12 @@ import com.example.model.User;
 import com.example.model.UserCreate;
 import com.example.model.UserDetails;
 import com.example.workouttracker.core.exception.UserException;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
