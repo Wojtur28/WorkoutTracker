@@ -5,12 +5,12 @@ import com.example.model.ErrorResponse;
 import com.example.model.UserMeasurement;
 import com.example.model.UserMeasurementCreate;
 import com.example.workouttracker.core.exception.UserMeasurementException;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
