@@ -108,11 +108,13 @@ public class TrainingService {
                             .orElseThrow(() -> new TrainingException(TrainingException.FailReason.EXERCISE_NOT_FOUND));
 
                     exerciseEntity.setName(update.getName());
+                    exerciseEntity.setDescription(update.getDescription());
 
                     exerciseEntity.getSets().clear();
                 } else {
                     exerciseEntity = new ExerciseEntity();
                     exerciseEntity.setName(update.getName());
+                    exerciseEntity.setDescription(update.getDescription());
                     exerciseEntity.setTraining(trainingEntity);
                     trainingEntity.getExercises().add(exerciseEntity);
                 }
