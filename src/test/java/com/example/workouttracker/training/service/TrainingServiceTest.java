@@ -151,7 +151,7 @@ public class TrainingServiceTest {
         when(trainingMapper.toDto(trainingEntity1)).thenReturn(trainingDto1);
         when(trainingMapper.toDto(trainingEntity2)).thenReturn(trainingDto2);
 
-        List<Training> result = trainingService.getTrainings(page, size);
+        List<Training> result = trainingService.getTrainingsPage(page, size);
 
         assertNotNull(result);
         assertEquals(2, result.size());

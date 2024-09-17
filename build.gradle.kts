@@ -64,6 +64,8 @@ dependencies {
     testImplementation ("org.springframework.boot:spring-boot-starter-webflux")
     testImplementation ("io.netty:netty-resolver-dns-native-macos:4.1.68.Final:osx-aarch_64")
     testImplementation("io.rest-assured:rest-assured:5.5.0")
+    implementation ("org.apache.poi:poi:5.2.3")
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
     // dependencies for swagger-codegen
     implementation("io.gsonfire:gson-fire:1.9.0")
     implementation("javax.annotation:javax.annotation-api:1.3.2")

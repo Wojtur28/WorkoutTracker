@@ -268,7 +268,7 @@ paths:
             tags:
                 - training
             summary: Get all trainings
-            operationId: getTrainings
+            operationId: getTrainingsPage
             parameters:
                 - name: page
                   in: query

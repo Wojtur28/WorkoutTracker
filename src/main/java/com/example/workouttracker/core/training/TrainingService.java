@@ -30,11 +30,19 @@ public class TrainingService {
     private final TrainingMapper trainingMapper;
     private final ExerciseRepository exerciseRepository;
 
-    public List<Training> getTrainings(Integer page, Integer size) {
+    public List<Training> getTrainingsPage(Integer page, Integer size) {
         log.info("Fetching trainings with page: {} and size: {}", page, size);
         return trainingRepository.findByCreatedBy_Email(SecurityContextHolder.getContext().getAuthentication().getName(),PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdOn")))
                 .map(trainingMapper::toDto)
                 .getContent();
+    }
+
+    public List<TrainingDetails> getTrainingsDetails(){
+        log.info("Fetching trainings");
+        return trainingRepository.findByCreatedBy_Email(SecurityContextHolder.getContext().getAuthentication().getName())
+                .stream()
+                .map(trainingMapper::toDetailsDto)
+                .toList();
     }
 
     public TrainingDetails getTraining(String trainingId) {
