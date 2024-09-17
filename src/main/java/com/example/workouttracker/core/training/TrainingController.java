@@ -3,12 +3,17 @@ package com.example.workouttracker.core.training;
 import com.example.api.TrainingApi;
 import com.example.model.*;
 import com.example.workouttracker.core.exception.TrainingException;
+import com.example.workouttracker.core.utils.ExcelGenerator;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 
 
@@ -19,9 +24,9 @@ public class TrainingController implements TrainingApi {
     private final TrainingService trainingService;
 
     @Override
-    public ResponseEntity<List<Training>> getTrainings(@RequestParam Integer page,
+    public ResponseEntity<List<Training>> getTrainingsPage(@RequestParam Integer page,
                                                        @RequestParam Integer size) {
-        List<Training> trainings = trainingService.getTrainings(page, size);
+        List<Training> trainings = trainingService.getTrainingsPage(page, size);
         return ResponseEntity.ok(trainings);
     }
 
@@ -59,6 +64,21 @@ public class TrainingController implements TrainingApi {
     public ResponseEntity<Void> deleteExerciseFromTraining(@PathVariable String trainingId, @PathVariable String exerciseId) {
         trainingService.deleteExerciseFromTraining(trainingId, exerciseId);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/download/excel")
+    public ResponseEntity<byte[]> downloadExcel() throws IOException {
+        List<TrainingDetails> trainings = trainingService.getTrainingsDetails();
+
+        ByteArrayInputStream byteArrayInputStream = ExcelGenerator.trainingsToExcel(trainings);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "attachment; filename=trainings.xlsx");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.parseMediaType("application/vnd.ms-excel"))
+                .body(byteArrayInputStream.readAllBytes());
     }
 
     @ExceptionHandler
